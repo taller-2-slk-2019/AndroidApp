@@ -1,6 +1,7 @@
 package com.taller2.hypechatapp.network;
 
 import com.taller2.hypechatapp.model.User;
+import com.taller2.hypechatapp.network.model.ConfirmationResponse;
 import com.taller2.hypechatapp.network.model.UserLocationRequest;
 
 import org.junit.Assert;
@@ -43,8 +44,8 @@ public class UserApiTest {
         user.setEmail("lalala@mail.com");
         user.setPicture("foto.jpg");
         try {
-            Response<Boolean> response=userApi.updateUser(userId,user).execute();
-            Assert.assertTrue(response.body());
+            Response<ConfirmationResponse> response=userApi.updateUser(userId,user).execute();
+            Assert.assertTrue(response.body().getSuccess());
         } catch (IOException e) {
             e.printStackTrace();
             fail();
@@ -56,7 +57,7 @@ public class UserApiTest {
         User user=new User();
         user.setName("Usuario");
         user.setSurname("Prueba");
-        user.setEmail("lalala@mail.com");
+        user.setEmail("otromas@mail.com");
         user.setPicture("foto.jpg");
         try {
             Response<User> response=userApi.registerUser(user).execute();
@@ -74,22 +75,22 @@ public class UserApiTest {
         userLocationRequest.setLatitude(new Double(40));
         userLocationRequest.setLongitude(new Double(10));
         try {
-            Response<Boolean> response=userApi.updateUserLocation(userId,userLocationRequest).execute();
-            Assert.assertTrue(response.body());
+            Response<ConfirmationResponse> response=userApi.updateUserLocation(userId,userLocationRequest).execute();
+            Assert.assertTrue(response.body().getSuccess());
         } catch (IOException e) {
             e.printStackTrace();
             fail();
         }
     }
 
-    @Test
+    /*@Test
     public void acceptInvitation() {
         try {
-            Response<Boolean> response=userApi.acceptInvitation("123a").execute();
-            Assert.assertFalse(response.body());
+            Response<ConfirmationResponse> response=userApi.acceptInvitation("131728915272fa1aa6367175b5b60303f7d9fec0").execute();
+            Assert.assertFalse(response.body().getSuccess());
         } catch (IOException e) {
             e.printStackTrace();
             fail();
         }
-    }
+    }*/
 }

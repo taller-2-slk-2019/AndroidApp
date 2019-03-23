@@ -2,6 +2,8 @@ package com.taller2.hypechatapp.network;
 
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
+import com.taller2.hypechatapp.network.model.TokenResponse;
+import com.taller2.hypechatapp.network.model.UserInvitationRequest;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -59,10 +61,12 @@ public class OrganizationApiTest {
     @Test
     public void inviteUser(){
         Integer organizationId=1;
-        Integer userId=1;
+        UserInvitationRequest userInvitationRequest=new UserInvitationRequest();
+        userInvitationRequest.setUserEmail("otro@mail.com");
         try {
-            Response<String> response = organizationApi.inviteUser(organizationId, userId).execute();
-            Assert.assertNotNull(response.body());
+            Response<TokenResponse> response = organizationApi.inviteUser(organizationId, userInvitationRequest).execute();
+
+            Assert.assertTrue(response.isSuccessful());
         } catch (IOException e) {
             e.printStackTrace();
             fail();

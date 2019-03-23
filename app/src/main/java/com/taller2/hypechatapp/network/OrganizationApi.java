@@ -2,6 +2,8 @@ package com.taller2.hypechatapp.network;
 
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
+import com.taller2.hypechatapp.network.model.TokenResponse;
+import com.taller2.hypechatapp.network.model.UserInvitationRequest;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,6 +20,6 @@ public interface OrganizationApi {
     @POST("/organizations/create")
     Call<Organization> createOrganization(@Body OrganizationRequest organization);
 
-    @PATCH("/organizations/{organizationId}/inviteUser/{userId}")
-    Call<String> inviteUser(@Path("organizationId") Integer organizationId, @Path("userId") Integer userId);
+    @PATCH("/organizations/{organizationId}/inviteUser")
+    Call<TokenResponse> inviteUser(@Path("organizationId") Integer organizationId, @Body UserInvitationRequest userInvitationRequest);
 }
