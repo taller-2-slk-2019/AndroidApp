@@ -3,7 +3,9 @@ package com.taller2.hypechatapp.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Channel {
+import java.io.Serializable;
+
+public class Channel implements Serializable {
 
     @SerializedName("id")
     @Expose
