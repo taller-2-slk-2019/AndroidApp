@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#42A5F5</color>
+    <color name="colorPrimaryDark">#0D47A1</color>
+    <color name="colorAccent">#82B1FF</color>
+
+    <!-- BLUE -->
+    <color name="Blue50">#E3F2FD</color>
+    <color name="Blue100">#BBDEFB</color>
+    <color name="Blue200">#90CAF9</color>
+    <color name="Blue300">#64B5F6</color>
+    <color name="Blue400">#42A5F5</color>
+    <color name="Blue500">#2196F3</color>
+    <color name="Blue600">#1E88E5</color>
+    <color name="Blue700">#1976D2</color>
+    <color name="Blue800">#1565C0</color>
+    <color name="Blue900">#0D47A1</color>
+    <color name="BlueAccent100">#82B1FF</color>
+    <color name="BlueAccent200">#448AFF</color>
+    <color name="BlueAccent400">#2979FF</color>
+    <color name="BlueAccent700">#2962FF</color>
+
+
 </resources>

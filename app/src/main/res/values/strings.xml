@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">HypechatApp</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_channel_chat">Hypechat</string>
+    <string name="app_name">Hypechat</string>
+    <string name="new_organization_title">Nueva Organización</string>
+    <string name="hint_organization_name">Nombre de la organización</string>
+    <string name="hint_organization_description">Descripción</string>
+    <string name="organization_welcome_message_hint">Mensaje de Bienvenida</string>
+    <string name="organization_location_label_text">Ubicación:</string>
+    <string name="organization_profile_image_label_text">Imagen de Perfil:</string>
+    <string name="new_organization_next_text">SIGUIENTE</string>
+    <string name="new_organization_end_text">FINALIZAR</string>
+
 </resources>

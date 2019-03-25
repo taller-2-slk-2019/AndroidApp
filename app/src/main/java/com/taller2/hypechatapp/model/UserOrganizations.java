@@ -4,7 +4,9 @@ package com.taller2.hypechatapp.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class UserOrganizations {
+import java.io.Serializable;
+
+public class UserOrganizations implements Serializable {
 
     @SerializedName("role")
     @Expose
