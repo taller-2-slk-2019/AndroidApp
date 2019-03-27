@@ -59,8 +59,13 @@ public class ChannelChatActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id) {
+            case R.id.action_settings:
+                return true;
+
+            case R.id.user_profile:
+                viewProfile();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -72,16 +77,14 @@ public class ChannelChatActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if(id == R.id.new_organization_item){
-            createNewOrganization();
-        }
+        switch(id) {
+            case R.id.new_organization_item:
+                createNewOrganization();
+                break;
 
-        if(id == R.id.new_channel_item){
-            createNewChannel();
-        }
-
-        if(id == R.id.user_profile){
-            viewProfile();
+            case R.id.new_channel_item:
+                createNewChannel();
+                break;
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
