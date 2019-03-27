@@ -15,5 +15,10 @@
     <string name="organization_profile_image_label_text">Imagen de Perfil:</string>
     <string name="new_organization_next_text">SIGUIENTE</string>
     <string name="new_organization_end_text">FINALIZAR</string>
+    <string name="user_profile_title">Profile</string>
+    <string name="update_user_profile_button">Update\nProfile</string>
+    <string name="name_user_profile"><b><i>Name: </i></b></string>
+    <string name="surname_user_profile"><b><i>Surname: </i></b></string>
+    <string name="email_user_profile"><b><i>Email: </i></b></string>
 
 </resources>

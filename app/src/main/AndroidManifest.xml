@@ -26,6 +26,9 @@
         <activity android:name=".activities.CreateOrganizationActivityStepTwo"
         android:label="@string/new_organization_title"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".activities.UserProfileActivity"
+            android:label="@string/user_profile_title"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

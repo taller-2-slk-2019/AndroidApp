@@ -80,12 +80,22 @@ public class ChannelChatActivity extends AppCompatActivity
             createNewChannel();
         }
 
+        if(id == R.id.user_profile){
+            viewProfile();
+        }
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    private void viewProfile() {
+        Intent intent = new Intent(this,UserProfileActivity.class);
+        startActivity(intent);
+    }
+
     private void createNewChannel() {
+
     }
 
     private void createNewOrganization() {
