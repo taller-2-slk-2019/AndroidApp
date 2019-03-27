@@ -72,7 +72,9 @@ public class CreateOrganizationActivityStepOne extends AppCompatActivity {
         OrganizationRequest newOrganization = new OrganizationRequest();
         newOrganization.setName(nameInputText.getText().toString());
         newOrganization.setDescription(descriptionInputText.getText().toString());
-        newOrganization.setPicture(filePath.getPath());
+        if (filePath != null) {
+            newOrganization.setPicture(filePath.getPath());
+        }
         return newOrganization;
     }
 
