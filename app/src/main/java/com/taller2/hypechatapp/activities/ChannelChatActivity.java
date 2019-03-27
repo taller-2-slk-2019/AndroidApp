@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.taller2.hypechatapp.R;
+import com.taller2.hypechatapp.ui.activities.Main2Activity;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -86,6 +87,8 @@ public class ChannelChatActivity extends AppCompatActivity
     }
 
     private void createNewChannel() {
+        Intent intent = new Intent(this, Main2Activity.class);
+        startActivity(intent);
     }
 
     private void createNewOrganization() {

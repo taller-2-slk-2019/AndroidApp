@@ -15,5 +15,10 @@
     <string name="organization_profile_image_label_text">Imagen de Perfil:</string>
     <string name="new_organization_next_text">SIGUIENTE</string>
     <string name="new_organization_end_text">FINALIZAR</string>
+    <string name="title_activity_create_channel">CreateChannelActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main2">Main2Activity</string>
 
 </resources>
