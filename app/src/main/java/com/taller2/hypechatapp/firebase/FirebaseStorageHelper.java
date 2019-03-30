@@ -28,60 +28,49 @@ public class FirebaseStorageHelper {
     }
 
     public void uploadLocalFile(final FirebaseStorageUploadInterface caller, Uri filePath){
-        this.upload(caller, "files/", filePath);
-    }
-
-    public void uploadLocalImage(final FirebaseStorageUploadInterface caller, Uri imagePath){
-        this.upload(caller, "images/", imagePath);
+        this.upload(caller, filePath);
     }
 
     public void downloadFile(final FirebaseStorageDownloadInterface caller, String url){
-        this.download(caller, url, null);
+        this.download(caller, url);
     }
 
-    public void downloadImage(final FirebaseStorageDownloadInterface caller, String url){
-        this.download(caller, url, ".jpg");
-    }
-
-    private void download(final FirebaseStorageDownloadInterface caller, String url, String extension){
+    private void download(final FirebaseStorageDownloadInterface caller, String url){
         final StorageReference storage = firebaseStorage.getReferenceFromUrl(url);
 
-        try {
-            if (extension == null){
-                extension = storage.getName().split(".")[1];
-            }
-            final File localFile = File.createTempFile(storage.getName(), extension);
+        File dir = caller.getContext().getFilesDir();
+        final File localFile = new File(dir.getAbsolutePath() + '/' + storage.getName());
 
-            storage.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    // Local temp file has been created
-                    Log.i("Firebase file download", localFile.getAbsolutePath());
-                    if (caller != null){
-                        caller.onFileDownloaded(localFile.getAbsolutePath());
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
-                    Log.e("Firebase download error", exception.toString());
-                    if (caller != null){
-                        caller.onFileDownloadError(exception);
-                    }
-                }
-            });
-
-        } catch (IOException e) {
-            Log.e("Firebase download error", e.toString());
+        if (localFile.isFile() && localFile.length() > 0){
+            // File already exists, do not download again
             if (caller != null){
-                caller.onFileDownloadError(e);
+                caller.onFileDownloaded(localFile.getAbsolutePath());
             }
         }
+
+        storage.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                // Local temp file has been created
+                Log.i("Firebase file download", localFile.getAbsolutePath());
+                if (caller != null){
+                    caller.onFileDownloaded(localFile.getAbsolutePath());
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                Log.e("Firebase download error", exception.toString());
+                if (caller != null){
+                    caller.onFileDownloadError(exception);
+                }
+            }
+        });
     }
 
-    private void upload(final FirebaseStorageUploadInterface caller, String folder, Uri file){
-        final StorageReference storage = firebaseStorage.getReference().child(folder + UUID.randomUUID().toString() + file.getLastPathSegment());
+    private void upload(final FirebaseStorageUploadInterface caller, Uri file){
+        final StorageReference storage = firebaseStorage.getReference().child(UUID.randomUUID().toString() + file.getLastPathSegment());
         UploadTask uploadTask = storage.putFile(file);
         uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
