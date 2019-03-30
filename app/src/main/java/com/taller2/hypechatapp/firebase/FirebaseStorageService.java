@@ -19,11 +19,11 @@ import java.util.UUID;
 
 import androidx.annotation.NonNull;
 
-public class FirebaseStorageHelper {
+public class FirebaseStorageService {
 
     private FirebaseStorage firebaseStorage;
 
-    public FirebaseStorageHelper(){
+    public FirebaseStorageService(){
         firebaseStorage = FirebaseStorage.getInstance();
     }
 
