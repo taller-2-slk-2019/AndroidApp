@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1009732394195-rkmubpdqvqepnfrdo56kuh9ae12icknf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taller2.hypechatapp",
+            "certificate_hash": "09f6219d8f298990d6031ddb1f4d8a6ff8300394"
+          }
+        },
+        {
           "client_id": "1009732394195-6kcnl9jbr31i4tnc29n9ohm4d36801je.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1009732394195-6kcnl9jbr31i4tnc29n9ohm4d36801je.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
