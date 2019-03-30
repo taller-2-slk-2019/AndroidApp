@@ -20,5 +20,9 @@
     <string name="name_user_profile"><b><i>Name: </i></b></string>
     <string name="surname_user_profile"><b><i>Surname: </i></b></string>
     <string name="email_user_profile"><b><i>Email: </i></b></string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="facebook_app_id">318283042209713</string> <string name="fb_login_protocol_scheme">fb318283042209713</string>
+    <string name="login_button_message">Ingresar</string>
+
 
 </resources>
