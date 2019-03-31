@@ -23,6 +23,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.taller2.hypechatapp.R;
+import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 
 import androidx.annotation.NonNull;
 
@@ -55,11 +56,11 @@ public class LoginActivity extends Activity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validateUserInput()) {
-                    return;
-                }
+            if (!validateUserInput()) {
+                return;
+            }
 
-                handleNormalLogin();
+            handleNormalLogin();
             }
         });
     }
@@ -79,13 +80,13 @@ public class LoginActivity extends Activity {
             @Override
             public void onCancel() {
                 Log.d("Facebook login", "facebook:onCancel");
-                //TODO error
+                showError();
             }
 
             @Override
             public void onError(FacebookException exception) {
                 Log.d("Facebook login", "facebook:onError", exception);
-                //TODO error
+                showError();
             }
         });
     }
@@ -93,18 +94,25 @@ public class LoginActivity extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null)
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        userLoggedIn();
+        if (FirebaseAuthService.isUserLoggedIn()){
+            userLoggedIn();
+        }
+    }
+
+    private void showError(){
+        //TODO do something here
     }
 
     public void userLoggedIn(){
-        Log.i("LoginActivity","User is logged in");
-        // TODO do something when logged in
+        Log.i("LoginActivity","User is logged in with token: " + FirebaseAuthService.getCurrentUserToken());
+        Intent intent = new Intent(this, ChannelChatActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // For Facebook log in
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -118,12 +126,12 @@ public class LoginActivity extends Activity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Log.i("Firebase log in", "signInWithCredential:success");
+                        Log.i("Firebase log in", "Log in succesfull");
                         userLoggedIn();
                     } else {
                         // If sign in fails, display a message to the user.
-                        Log.w("Firebase log in", "signInWithCredential:failure", task.getException());
-                        //TODO error
+                        Log.w("Firebase log in", "Log in failed", task.getException());
+                        showError();
                     }
                 }
             });
@@ -137,12 +145,12 @@ public class LoginActivity extends Activity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Log.i("Firebase log in", "signInWithEmail:success");
+                        Log.i("Firebase log in", "Log in succesfull");
                         userLoggedIn();
                     } else {
                         // If sign in fails, display a message to the user.
-                        Log.w("Firebase log in", "signInWithCredential:failure", task.getException());
-                        //TODO error
+                        Log.w("Firebase log in", "Log in failed", task.getException());
+                        showError();
                     }
                 }
             });

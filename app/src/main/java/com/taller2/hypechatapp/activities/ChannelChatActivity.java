@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.taller2.hypechatapp.R;
+import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -66,6 +67,10 @@ public class ChannelChatActivity extends AppCompatActivity
             case R.id.user_profile:
                 viewProfile();
                 return true;
+
+            case R.id.action_log_out:
+                logOut();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -94,6 +99,12 @@ public class ChannelChatActivity extends AppCompatActivity
 
     private void viewProfile() {
         Intent intent = new Intent(this,UserProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void logOut(){
+        FirebaseAuthService.logOut();
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 
