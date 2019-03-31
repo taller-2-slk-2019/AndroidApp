@@ -23,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
+import com.taller2.hypechatapp.model.User;
+import com.taller2.hypechatapp.services.UserService;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
     private FirebaseAuth mAuth;
+    private UserService userService;
 
     private TextView emailText;
     private TextView passwordText;
@@ -42,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
 
         callbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
+        userService = new UserService();
 
         setFacebookLogin();
         setNormalLogin();
@@ -59,8 +63,8 @@ public class LoginActivity extends AppCompatActivity {
             if (!validateUserInput()) {
                 return;
             }
-
-            handleNormalLogin();
+            loading();
+            firebaseNormalLogin();
             }
         });
     }
@@ -69,12 +73,19 @@ public class LoginActivity extends AppCompatActivity {
         LoginButton loginButton = findViewById(R.id.login_button_facebook);
         loginButton.setReadPermissions("email", "public_profile");
 
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loading();
+            }
+        });
+
         // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d("Facebook login", "facebook:onSuccess:" + loginResult);
-                handleFacebookLogin(loginResult.getAccessToken());
+                firebaseFacebookLogin(loginResult.getAccessToken());
             }
 
             @Override
@@ -99,8 +110,12 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void loading(){
+    }
+
     private void showError(){
         //TODO do something here
+        FirebaseAuthService.logOut();
     }
 
     public void userLoggedIn(){
@@ -110,6 +125,36 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
+    public void facebookUserLoggedIn(){
+        FirebaseUser user = FirebaseAuthService.getCurrentUser();
+        User userRequest = new User();
+        userRequest.setEmail(user.getEmail());
+        userRequest.setName(user.getDisplayName());
+        userRequest.setToken(FirebaseAuthService.getCurrentUserToken());
+        userRequest.setPicture(user.getPhotoUrl().toString());
+
+        userLoggedIn(); // TODO delete this
+        /* TODO enable this when fixed in server side
+        userService.registerUser(userRequest, new Client<User>(){
+
+            @Override
+            public void onResponseSuccess(User responseUser) {
+                userLoggedIn();
+            }
+
+            @Override
+            public void onResponseError(String errorMessage) {
+                showError();
+            }
+
+            @Override
+            public Context getContext() {
+                return LoginActivity.this;
+            }
+        });
+        */
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // For Facebook log in
@@ -117,7 +162,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void handleFacebookLogin(AccessToken token) {
+    private void firebaseFacebookLogin(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         Log.i("Firebase log in", "handling facebook access token");
         mAuth.signInWithCredential(credential)
@@ -127,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
                         Log.i("Firebase log in", "Log in succesfull");
-                        userLoggedIn();
+                        facebookUserLoggedIn();
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w("Firebase log in", "Log in failed", task.getException());
@@ -137,7 +182,7 @@ public class LoginActivity extends AppCompatActivity {
             });
     }
 
-    private void handleNormalLogin() {
+    private void firebaseNormalLogin() {
         Log.i("Firebase log in", "handling normal log in");
         mAuth.signInWithEmailAndPassword(emailText.getText().toString(), passwordText.getText().toString())
             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
