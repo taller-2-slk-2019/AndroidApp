@@ -54,7 +54,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
             @Override
             public void onResponseError(String errorMessage) {
-
+                dialog.dismiss();
             }
 
             @Override

@@ -1,7 +1,9 @@
 package com.taller2.hypechatapp.activities;
 
 import android.app.ProgressDialog;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -15,7 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 
 public class OrganizationProfileActivity extends AppCompatActivity {
     OrganizationService organizationService;
-    TextView name, description, welcome_message;
+    TextView name, description, welcomeMessage;
     ProgressDialog dialog;
 
     @Override
@@ -36,7 +38,7 @@ public class OrganizationProfileActivity extends AppCompatActivity {
 
         name = findViewById(R.id.organization_name);
         description = findViewById(R.id.organization_description);
-        welcome_message = findViewById(R.id.organization_welcome_message);
+        welcomeMessage = findViewById(R.id.organization_welcome_message);
 
         organizationService = new OrganizationService();
 
@@ -48,17 +50,31 @@ public class OrganizationProfileActivity extends AppCompatActivity {
             public void onResponseSuccess(Organization responseBody) {
                 name.setText(responseBody.getName());
                 description.setText(responseBody.getDescription());
-                welcome_message.setText(responseBody.getWelcome());
+                welcomeMessage.setText(responseBody.getWelcome());
                 dialog.dismiss();
             }
 
             @Override
             public void onResponseError(String errorMessage) {
-
+                dialog.dismiss();
+                setAlertDialog();
             }
 
             @Override
             public Context getContext() { return OrganizationProfileActivity.this; }
         });
+    }
+
+    private void setAlertDialog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Alerta");
+        alertDialog.setMessage("Se produjo un error al obtener la información de la organización");
+        alertDialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alertDialog.create().show();
     }
 }
