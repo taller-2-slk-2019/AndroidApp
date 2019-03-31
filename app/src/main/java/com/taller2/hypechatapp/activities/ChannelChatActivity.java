@@ -210,7 +210,11 @@ public class ChannelChatActivity extends AppCompatActivity
                 return true;
 
             case R.id.user_profile:
-                viewProfile();
+                viewUserProfile();
+                return true;
+
+            case R.id.organization_profile:
+                viewOrganizationProfile();
                 return true;
         }
 
@@ -240,8 +244,13 @@ public class ChannelChatActivity extends AppCompatActivity
         return true;
     }
 
-    private void viewProfile() {
+    private void viewUserProfile() {
         Intent intent = new Intent(this,UserProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void viewOrganizationProfile() {
+        Intent intent = new Intent(this, OrganizationProfileActivity.class);
         startActivity(intent);
     }
 

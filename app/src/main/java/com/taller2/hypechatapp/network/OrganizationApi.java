@@ -26,6 +26,6 @@ public interface OrganizationApi {
     @POST("/organizations/")
     Call<Organization> createOrganization(@Body OrganizationRequest organization);
 
-    @PATCH("/organizations/{organizationId}/inviteUser")
+    @POST("/organizations/{organizationId}/invitations")
     Call<TokenResponse> inviteUser(@Path("organizationId") Integer organizationId, @Body UserInvitationRequest userInvitationRequest);
 }
