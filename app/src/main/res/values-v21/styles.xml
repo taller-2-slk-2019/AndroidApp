@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ButtonSecondaryAction" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:backgroundTint">@android:color/darker_gray</item>
+    </style>
+</resources>

@@ -1,4 +1,4 @@
-package com.taller2.hypechatapp.activities;
+package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -107,7 +107,8 @@ public class ChannelChatActivity extends AppCompatActivity
     }
 
     private void createNewChannel() {
-
+        Intent intent = new Intent(this, CreateChannelActivity.class);
+        startActivity(intent);
     }
 
     private void createNewOrganization() {
