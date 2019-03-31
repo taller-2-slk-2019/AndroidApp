@@ -20,5 +20,8 @@
     <color name="BlueAccent400">#2979FF</color>
     <color name="BlueAccent700">#2962FF</color>
 
+    <!-- BLACK -->
+    <color name="black">#000000</color>
+
 
 </resources>
