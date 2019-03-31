@@ -17,9 +17,9 @@ public interface OrganizationApi {
     @GET("/organizations/{id}")
     Call<Organization> getOrganization(@Path("id")Integer organizationId);
 
-    @POST("/organizations/create")
+    @POST("/organizations")
     Call<Organization> createOrganization(@Body OrganizationRequest organization);
 
-    @PATCH("/organizations/{organizationId}/inviteUser")
+    @POST("/organizations/{organizationId}/invitations")
     Call<TokenResponse> inviteUser(@Path("organizationId") Integer organizationId, @Body UserInvitationRequest userInvitationRequest);
 }
