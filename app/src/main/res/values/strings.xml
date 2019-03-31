@@ -34,10 +34,15 @@
     <string name="channel_label_welcome">Mensaje de bienvenida</string>
 
     <!-- user profile view -->
-    <string name="user_profile_title">Profile</string>
-    <string name="update_user_profile_button">Update\nProfile</string>
-    <string name="name_user_profile"><b><i>Name: </i></b></string>
-    <string name="surname_user_profile"><b><i>Surname: </i></b></string>
+    <string name="user_profile_title">Perfil de usuario</string>
+    <string name="update_user_profile_button">Actualizar\nPerfil</string>
+    <string name="name_user_profile"><b><i>Nombre: </i></b></string>
+    <string name="surname_user_profile"><b><i>Apellido: </i></b></string>
     <string name="email_user_profile"><b><i>Email: </i></b></string>
+    <string name="organization_profile_title">Perfil de la organización</string>
+    <string name="description_organization_profile"><b><i>Descripción: </i></b></string>
+    <string name="name_organization_profile"><b><i>Nombre de la organización: </i></b></string>
+    <string name="welcome_organization_profile"><b><i>Mensaje de bienvenida: </i></b></string>
+    <string name="update_organization_information_button"><b><i>Actualizar\ninformación</i></b></string>
 
 </resources>

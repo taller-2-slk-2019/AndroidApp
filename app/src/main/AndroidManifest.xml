@@ -29,8 +29,11 @@
             android:name=".ui.activities.CreateOrganizationActivityStepTwo"
             android:label="@string/new_organization_title"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".activities.UserProfileActivity"
+        <activity android:name=".ui.activities.UserProfileActivity"
             android:label="@string/user_profile_title"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.activities.OrganizationProfileActivity"
+            android:label="@string/organization_profile_title"
             android:screenOrientation="portrait"></activity>
     </application>
 

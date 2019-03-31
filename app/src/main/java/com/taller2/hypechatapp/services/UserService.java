@@ -63,18 +63,4 @@ public class UserService extends RestService {
             }
         });
     }
-
-    public void acceptInvitation(String token, final Client client){
-        userApi.acceptInvitation(token).enqueue(new Callback<ConfirmationResponse>() {
-            @Override
-            public void onResponse(Call<ConfirmationResponse> call, Response<ConfirmationResponse> response) {
-                manageSuccessResponse(response,SERVICE_TAG,client);
-            }
-
-            @Override
-            public void onFailure(Call<ConfirmationResponse> call, Throwable t) {
-                manageFailure(SERVICE_TAG,t,client);
-            }
-        });
-    }
 }

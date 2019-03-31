@@ -7,7 +7,6 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.taller2.hypechatapp.R;
-import com.taller2.hypechatapp.activities.UserProfileActivity;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,7 +64,11 @@ public class ChannelChatActivity extends AppCompatActivity
                 return true;
 
             case R.id.user_profile:
-                viewProfile();
+                viewUserProfile();
+                return true;
+
+            case R.id.organization_profile:
+                viewOrganizationProfile();
                 return true;
         }
 
@@ -93,8 +96,13 @@ public class ChannelChatActivity extends AppCompatActivity
         return true;
     }
 
-    private void viewProfile() {
-        Intent intent = new Intent(this, UserProfileActivity.class);
+    private void viewUserProfile() {
+        Intent intent = new Intent(this,UserProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void viewOrganizationProfile() {
+        Intent intent = new Intent(this, OrganizationProfileActivity.class);
         startActivity(intent);
     }
 

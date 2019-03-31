@@ -16,4 +16,7 @@ public interface ChannelApi {
 
     @POST("/channels")
     Call<Channel> createChannel(@Body ChannelRequest channel);
+
+    @POST("/channels/{id}/users")
+    Call<Channel> addUser(@Body ChannelRequest channel);
 }
