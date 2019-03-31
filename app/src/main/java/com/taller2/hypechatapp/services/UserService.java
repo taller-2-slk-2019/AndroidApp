@@ -1,9 +1,9 @@
-package com.taller2.hypechatapp.network;
+package com.taller2.hypechatapp.services;
 
-import android.util.Log;
-
-import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.model.User;
+import com.taller2.hypechatapp.network.ApiClient;
+import com.taller2.hypechatapp.network.Client;
+import com.taller2.hypechatapp.network.UserApi;
 import com.taller2.hypechatapp.network.model.ConfirmationResponse;
 import com.taller2.hypechatapp.network.model.UserLocationRequest;
 
@@ -11,7 +11,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserService extends RestService{
+public class UserService extends RestService {
 
     private UserApi userApi;
 
@@ -63,19 +63,4 @@ public class UserService extends RestService{
             }
         });
     }
-
-    /* TODO revisar la nueva url
-    public void acceptInvitation(String token, final Client client){
-        userApi.acceptInvitation(token).enqueue(new Callback<ConfirmationResponse>() {
-            @Override
-            public void onResponse(Call<ConfirmationResponse> call, Response<ConfirmationResponse> response) {
-                manageSuccessResponse(response,SERVICE_TAG,client);
-            }
-
-            @Override
-            public void onFailure(Call<ConfirmationResponse> call, Throwable t) {
-                manageFailure(SERVICE_TAG,t,client);
-            }
-        });
-    }*/
 }

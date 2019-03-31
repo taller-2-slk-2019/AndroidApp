@@ -1,6 +1,9 @@
-package com.taller2.hypechatapp.network;
+package com.taller2.hypechatapp.services;
 
 import com.taller2.hypechatapp.model.Organization;
+import com.taller2.hypechatapp.network.ApiClient;
+import com.taller2.hypechatapp.network.Client;
+import com.taller2.hypechatapp.network.OrganizationApi;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
 import com.taller2.hypechatapp.network.model.TokenResponse;
 import com.taller2.hypechatapp.network.model.UserInvitationRequest;

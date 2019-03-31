@@ -1,4 +1,4 @@
-package com.taller2.hypechatapp.activities;
+package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,12 +19,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.network.OrganizationService;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
+import com.taller2.hypechatapp.services.OrganizationService;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentActivity;
 
 public class CreateOrganizationActivityStepTwo extends AppCompatActivity
         implements OnMapReadyCallback, GoogleMap.OnMapClickListener {

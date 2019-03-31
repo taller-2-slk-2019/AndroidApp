@@ -1,4 +1,4 @@
-package com.taller2.hypechatapp.activities;
+package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;

@@ -17,8 +17,9 @@
          <meta-data
              android:name="com.google.android.geo.API_KEY"
              android:value="AIzaSyA_oWLv-IusRmW1x8iCh6Nqe3CkcpvT8DU" />
+        <activity android:name=".ui.activities.CreateChannelActivity"></activity>
         <activity
-            android:name=".activities.ChannelChatActivity"
+            android:name=".ui.activities.ChannelChatActivity"
             android:label="@string/title_activity_channel_chat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,22 +28,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.CreateOrganizationActivityStepOne"
+            android:name=".ui.activities.CreateOrganizationActivityStepOne"
             android:label="@string/new_organization_title"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.CreateOrganizationActivityStepTwo"
+            android:name=".ui.activities.CreateOrganizationActivityStepTwo"
             android:label="@string/new_organization_title"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.UserProfileActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.activities.UserProfileActivity"
             android:label="@string/user_profile_title"
-            android:screenOrientation="portrait" />
-        <activity android:name=".activities.ChooseLocationActivity" />
-        <activity android:name=".activities.OrganizationProfileActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.activities.OrganizationProfileActivity"
             android:label="@string/organization_profile_title"
             android:screenOrientation="portrait"></activity>
-
+        <activity android:name=".ui.activities.ChooseLocationActivity" />
     </application>
 
 </manifest>

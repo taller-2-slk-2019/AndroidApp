@@ -1,4 +1,4 @@
-package com.taller2.hypechatapp.activities;
+package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,9 +16,11 @@ import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.network.OrganizationService;
-import com.taller2.hypechatapp.network.UserService;
+import com.taller2.hypechatapp.services.ChannelService;
+import com.taller2.hypechatapp.services.OrganizationService;
+import com.taller2.hypechatapp.services.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -44,6 +46,8 @@ public class ChannelChatActivity extends AppCompatActivity
 
     private UserService userService;
     private OrganizationService organizationService;
+    private ChannelService channelsService;
+
     private List<Channel> channels;
     private List<Organization> organizations;
 
@@ -54,6 +58,7 @@ public class ChannelChatActivity extends AppCompatActivity
 
         userService=new UserService();
         organizationService=new OrganizationService();
+        channelsService=new ChannelService();
 
         setupUI();
     }
@@ -89,6 +94,8 @@ public class ChannelChatActivity extends AppCompatActivity
                 ProgressBar loadingView = findViewById(R.id.loading_main);
                 loadingView.setVisibility(View.INVISIBLE);
                 loadOrganizationsToDrawerMenu(organizations);
+                //TODO Eliminar esto cuando este el ChannelService funcionando
+                loadChannelsToDrawerMenu(new ArrayList<Channel>());
             }
 
             @Override
@@ -110,46 +117,34 @@ public class ChannelChatActivity extends AppCompatActivity
             }
         });
 
-        /*Organization organization1=new Organization();
-        organization1.setId(0);
-        organization1.setName("ORGA 1");
+        /*channelService.getChannelsByOrganizationByUser(1, 1,new Client<List<Organization>>() {
+            @Override
+            public void onResponseSuccess(List<Organization> organizations) {
+                ProgressBar loadingView = findViewById(R.id.loading_main);
+                loadingView.setVisibility(View.INVISIBLE);
+                loadOrganizationsToDrawerMenu(organizations);
+            }
 
-        Organization organization2=new Organization();
-        organization2.setId(1);
-        organization2.setName("ORGA 2");
+            @Override
+            public void onResponseError(String errorMessage) {
+                String textToShow;
+                if(!TextUtils.isEmpty(errorMessage)){
+                    textToShow=errorMessage;
+                } else {
+                    textToShow="Ha ocurrido un error al intentar obtener las organizaciones del usuario";
+                }
 
-        Organization organization3=new Organization();
-        organization3.setId(2);
-        organization3.setName("ORGA 3");
+                Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
 
-        List<Organization> organizationsMock=new ArrayList<>();
-        organizationsMock.add(organization1);
-        organizationsMock.add(organization2);
-        organizationsMock.add(organization3);*/
+            }
 
-        //loadOrganizationsToDrawerMenu(organizations);
+            @Override
+            public Context getContext() {
+                return ChannelChatActivity.this;
+            }
+        });*/
 
-        /*Channel channel1=new Channel();
-        channel1.setId(0);
-        channel1.setName("CHANNEL 1");
-
-        Channel channel2=new Channel();
-        channel2.setId(0);
-        channel2.setName("CHANNEL 1");
-
-        Channel channel3=new Channel();
-        channel3.setId(0);
-        channel3.setName("CHANNEL 1");
-
-        List<Channel> channelMock=new ArrayList<>();
-        channelMock.add(channel1);
-        channelMock.add(channel2);
-        channelMock.add(channel3);
-
-
-        loadChannelsToDrawerMenu(channelMock);*/
-
-    }
+   }
 
     private void loadOrganizationsToDrawerMenu(List<Organization> organizations) {
         this.organizations=organizations;
@@ -171,7 +166,6 @@ public class ChannelChatActivity extends AppCompatActivity
         int i=0;
         for (Channel channel : channels) {
             MenuItem menuItem=channelsSubMenu.add(CHANNELS_GROUP_ID,channel.getId(),i,channel.getName());
-            //menuItem.setIcon(R.drawable.ic_menu_camera);
             i++;
         }
 
@@ -255,7 +249,8 @@ public class ChannelChatActivity extends AppCompatActivity
     }
 
     private void createNewChannel() {
-
+        Intent intent = new Intent(this, CreateChannelActivity.class);
+        startActivity(intent);
     }
 
     private void createNewOrganization() {

@@ -1,4 +1,4 @@
-package com.taller2.hypechatapp.activities;
+package com.taller2.hypechatapp.ui.activities;
 
 import android.app.ProgressDialog;
 import android.app.AlertDialog;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.network.OrganizationService;
+import com.taller2.hypechatapp.services.OrganizationService;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
