@@ -11,11 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.activities.CreateChannelActivity"></activity>
         <activity
-            android:name=".ui.activities.Main2Activity"
-            android:label="@string/title_activity_main2"></activity>
-        <activity
-            android:name=".activities.ChannelChatActivity"
+            android:name=".ui.activities.ChannelChatActivity"
             android:label="@string/title_activity_channel_chat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,11 +22,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.CreateOrganizationActivityStepOne"
+            android:name=".ui.activities.CreateOrganizationActivityStepOne"
             android:label="@string/new_organization_title"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.CreateOrganizationActivityStepTwo"
+            android:name=".ui.activities.CreateOrganizationActivityStepTwo"
             android:label="@string/new_organization_title"
             android:screenOrientation="portrait" />
     </application>

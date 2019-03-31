@@ -1,6 +1,8 @@
-package com.taller2.hypechatapp.network;
+package com.taller2.hypechatapp.services;
 
 import android.util.Log;
+
+import com.taller2.hypechatapp.network.Client;
 
 import retrofit2.Response;
 

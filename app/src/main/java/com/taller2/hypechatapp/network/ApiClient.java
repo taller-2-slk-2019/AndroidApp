@@ -1,6 +1,7 @@
 package com.taller2.hypechatapp.network;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -23,7 +24,12 @@ public class ApiClient {
 
     private void buildRetrofit() {
 
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(logging);
+
         Retrofit.Builder builder =
                 new Retrofit.Builder()
                         .baseUrl(API_BASE_URL)

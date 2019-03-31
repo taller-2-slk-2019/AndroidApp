@@ -17,8 +17,18 @@
     <string name="new_organization_end_text">FINALIZAR</string>
     <string name="title_activity_create_channel">CreateChannelActivity</string>
 
+    <string name="channel_privacy_open">Abierto</string>
+    <string name="channel_privacy_closed">Cerrado</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_main2">Main2Activity</string>
+    <string name="channel_description">Los canales son el lugar donde se comunican los miembros de la organización</string>
+    <string name="btn_create_channel">Crear un canal</string>
+    <string name="example_channel_name">Ej clientes</string>
+    <string name="channel_label_description">Descripción</string>
+    <string name="channel_hint_purpose">¿De qué trata este canal?</string>
+    <string name="btn_channel_create">Crear canal</string>
+    <string name="btn_channel_cancel">Cancelar</string>
+    <string name="channel_label_welcome">Mensaje de bienvenida</string>
 
 </resources>
