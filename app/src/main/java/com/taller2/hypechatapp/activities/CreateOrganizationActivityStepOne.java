@@ -19,6 +19,8 @@ import java.io.IOException;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import static android.content.Intent.FLAG_ACTIVITY_FORWARD_RESULT;
+
 public class CreateOrganizationActivityStepOne extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 2;
@@ -30,8 +32,6 @@ public class CreateOrganizationActivityStepOne extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_organization_step1);
-
-
 
         setUpUI();
     }
@@ -45,17 +45,19 @@ public class CreateOrganizationActivityStepOne extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                TextInputEditText nameInputText=findViewById(R.id.organization_name_input);
-                TextInputEditText descriptionInputText=findViewById(R.id.organization_description_input);
+            TextInputEditText nameInputText=findViewById(R.id.organization_name_input);
+            TextInputEditText descriptionInputText=findViewById(R.id.organization_description_input);
 
-                if (!validateUserInput(nameInputText, descriptionInputText))
-                    return;
+            if (!validateUserInput(nameInputText, descriptionInputText))
+                return;
 
-                OrganizationRequest newOrganization=createNewOrganizationRequest(nameInputText, descriptionInputText);
+            OrganizationRequest newOrganization=createNewOrganizationRequest(nameInputText, descriptionInputText);
 
-                Intent intent=new Intent(CreateOrganizationActivityStepOne.this, CreateOrganizationActivityStepTwo.class);
-                intent.putExtra("newOrganization",newOrganization);
-                startActivity(intent);
+            Intent intent=new Intent(CreateOrganizationActivityStepOne.this, CreateOrganizationActivityStepTwo.class);
+            intent.putExtra("newOrganization",newOrganization);
+            intent.addFlags(FLAG_ACTIVITY_FORWARD_RESULT);
+            startActivity(intent);
+            finish();
             }
         });
 
@@ -66,13 +68,23 @@ public class CreateOrganizationActivityStepOne extends AppCompatActivity {
                 chooseImage();
             }
         });
+
+        ImageView pickImageView=findViewById(R.id.organization_profile_image_view);
+        pickImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage();
+            }
+        });
     }
 
     private OrganizationRequest createNewOrganizationRequest(TextInputEditText nameInputText, TextInputEditText descriptionInputText) {
         OrganizationRequest newOrganization = new OrganizationRequest();
-        newOrganization.setName(nameInputText.getText().toString());
-        newOrganization.setDescription(descriptionInputText.getText().toString());
-        newOrganization.setPicture(filePath.getPath());
+        newOrganization.name=nameInputText.getText().toString();
+        newOrganization.description=descriptionInputText.getText().toString();
+        if (filePath != null) {
+            newOrganization.picture=filePath.getPath();
+        }
         return newOrganization;
     }
 

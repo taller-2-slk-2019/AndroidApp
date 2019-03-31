@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,11 +29,13 @@ import androidx.fragment.app.FragmentActivity;
 public class CreateOrganizationActivityStepTwo extends AppCompatActivity
         implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
+    private static final int STEP_CODE = 300;
     OrganizationRequest newOrganization;
     OrganizationService organizationService;
 
     private static final int REQUEST_CODE = 2;
     public static final int RESULT_CODE = 400;
+
     private MapFragment mapFragment;
     private GoogleMap map;
     private static final int DEFAULT_ZOOM = 14;
@@ -82,14 +85,14 @@ public class CreateOrganizationActivityStepTwo extends AppCompatActivity
 
                 if(!validateUserInput(welcomeMessageInputText))
                     return;
-                /*TODO Choose a location*/
-                //newOrganization.setLongitude(10.0);
-                //newOrganization.setLatitude(20.0);
 
                 /*TODO Set the user id*/
-                newOrganization.setCreatorId(1);
+                newOrganization.creatorId=1;
 
-                newOrganization.setWelcome(welcomeMessageInputText.getText().toString());
+                newOrganization.welcome=welcomeMessageInputText.getText().toString();
+
+                ProgressBar loadingView = findViewById(R.id.loading_create_orga_step2);
+                loadingView.setVisibility(View.VISIBLE);
 
                 createNewOrganization(newOrganization);
             }
@@ -98,12 +101,19 @@ public class CreateOrganizationActivityStepTwo extends AppCompatActivity
     }
 
     private void createNewOrganization(OrganizationRequest newOrganization) {
+        ProgressBar loadingView = findViewById(R.id.loading_create_orga_step2);
+        loadingView.setVisibility(View.INVISIBLE);
+
         organizationService.createOrganization(newOrganization, new Client<Organization>(){
 
             @Override
-            public void onResponseSuccess(Organization responseBody) {
-                Toast.makeText(getContext(), "Se ha creado la Organización con id:"+responseBody.getId(),
-                        Toast.LENGTH_LONG).show();
+            public void onResponseSuccess(Organization organization) {
+                ProgressBar loadingView = findViewById(R.id.loading_create_orga_step2);
+                loadingView.setVisibility(View.INVISIBLE);
+                Intent intent = new Intent();
+                intent.putExtra("createdOrganization",organization);
+                setResult(STEP_CODE, intent);
+                finish();
             }
 
             @Override
@@ -133,8 +143,8 @@ public class CreateOrganizationActivityStepTwo extends AppCompatActivity
 
             if (requestCode == REQUEST_CODE && resultCode == RESULT_CODE) {
                 LatLng selectedLocation=(LatLng) data.getParcelableExtra("selectedLocation");
-                newOrganization.setLatitude(selectedLocation.latitude);
-                newOrganization.setLongitude(selectedLocation.longitude);
+                newOrganization.latitude=selectedLocation.latitude;
+                newOrganization.longitude=selectedLocation.longitude;
 
                 map.clear();
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(
@@ -167,7 +177,7 @@ public class CreateOrganizationActivityStepTwo extends AppCompatActivity
         Intent intent = new Intent(CreateOrganizationActivityStepTwo.this,
                 ChooseLocationActivity.class);
         intent.putExtra("startLocation",
-                new LatLng(newOrganization.getLatitude(),newOrganization.getLongitude()));
+                new LatLng(newOrganization.latitude,newOrganization.longitude));
         startActivityForResult(intent,REQUEST_CODE);
     }
 }

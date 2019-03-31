@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.List;
 
-import retrofit2.Call;
 import retrofit2.Response;
 
 import static org.junit.Assert.*;
@@ -29,8 +29,20 @@ public class OrganizationApiTest {
     public void getOrganization() {
         Integer idToTest=1;
         try {
-            Response<Organization> response=organizationApi.getOrganization(idToTest).execute();
+            Response<Organization> response=organizationApi.getOrganizationProfile(idToTest).execute();
             Assert.assertEquals(idToTest,response.body().getId());
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void getOrganizationsByUser() {
+        Integer userIdToTest=1;
+        try {
+            Response<List<Organization>> response=organizationApi.getOrganizationsByUser(userIdToTest).execute();
+            Assert.assertTrue(response.body().size()>0);
         } catch (IOException e) {
             e.printStackTrace();
             fail();
@@ -41,13 +53,13 @@ public class OrganizationApiTest {
     public void createOrganization(){
 
         OrganizationRequest organizationRequest=new OrganizationRequest();
-        organizationRequest.setName("Orga Prueba");
-        organizationRequest.setLatitude(new Double(10));
-        organizationRequest.setLongitude(new Double(20));
-        organizationRequest.setPicture("foto.jpg");
-        organizationRequest.setDescription("Esta es la descripcion");
-        organizationRequest.setWelcome("Mensaje de bienvenida");
-        organizationRequest.setCreatorId(new Integer(1));
+        organizationRequest.name="Orga Prueba";
+        organizationRequest.latitude=new Double(10);
+        organizationRequest.longitude=new Double(20);
+        organizationRequest.picture="foto.jpg";
+        organizationRequest.description="Esta es la descripcion";
+        organizationRequest.welcome="Mensaje de bienvenida";
+        organizationRequest.creatorId=new Integer(1);
 
         try {
             Response<Organization> response=organizationApi.createOrganization(organizationRequest).execute();

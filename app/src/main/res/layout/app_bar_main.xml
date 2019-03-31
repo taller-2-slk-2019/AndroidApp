@@ -20,6 +20,16 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ProgressBar
+        android:id="@+id/loading_main"
+        style="?android:attr/progressBarStyle"
+
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        />
+
     <include layout="@layout/content_main" />
 
 

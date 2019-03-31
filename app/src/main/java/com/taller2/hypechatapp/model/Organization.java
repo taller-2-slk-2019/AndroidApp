@@ -43,7 +43,7 @@ public class Organization implements Serializable {
     private List<Channel> channels = null;
     @SerializedName("userOrganizations")
     @Expose
-    private List<UserOrganizations> userOrganizations = null;
+    private UserOrganizations userOrganizations;
 
 
     public Integer getId() {
@@ -134,11 +134,12 @@ public class Organization implements Serializable {
         this.channels = channels;
     }
 
-    public List<UserOrganizations> getUserOrganizations() {
+    public UserOrganizations getUserOrganizations() {
         return userOrganizations;
     }
 
-    public void setUserOrganizations(List<UserOrganizations> userOrganizations) {
+    public void setUserOrganizations(UserOrganizations userOrganizations) {
         this.userOrganizations = userOrganizations;
     }
+
 }
