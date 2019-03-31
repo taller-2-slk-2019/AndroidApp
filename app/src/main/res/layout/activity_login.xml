@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.LoginActivity">
+    tools:context=".ui.activities.LoginActivity">
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button_facebook"
@@ -49,13 +49,14 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
-        android:hint="Email"
+        android:hint="@string/login_email_hint"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.776" />
+        app:layout_constraintVertical_bias="0.776"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/passwordText"
@@ -68,13 +69,14 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
-        android:hint="Contraseña"
+        android:hint="@string/login_password_hint"
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailText"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:autofillHints="" />
 
     <TextView
         android:id="@+id/title"
@@ -86,7 +88,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="HypeChat"
+        android:text="@string/app_name"
         android:textColor="@color/common_google_signin_btn_text_light_pressed"
         android:textSize="36sp"
         android:textStyle="italic"

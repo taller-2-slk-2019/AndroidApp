@@ -35,6 +35,20 @@ public class UserService extends RestService {
         });
     }
 
+    public void registerUser(User user, final Client client){
+        userApi.registerUser(user).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                manageSuccessResponse(response,SERVICE_TAG,client);
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                manageFailure(SERVICE_TAG,t,client);
+            }
+        });
+    }
+
     public void updateUser(Integer userId, User user, final Client client){
         userApi.updateUser(userId, user).enqueue(new Callback<ConfirmationResponse>() {
             @Override

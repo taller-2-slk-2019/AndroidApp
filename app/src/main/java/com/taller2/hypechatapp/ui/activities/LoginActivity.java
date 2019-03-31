@@ -1,8 +1,7 @@
-package com.taller2.hypechatapp.activities;
+package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -26,8 +25,9 @@ import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
     private FirebaseAuth mAuth;

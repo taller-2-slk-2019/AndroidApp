@@ -19,7 +19,7 @@ public interface UserApi {
     @PATCH("/users/{id}")
     Call<ConfirmationResponse> updateUser(@Path("id") Integer userId, @Body User user);
 
-    @POST("/users/register")
+    @POST("/users")
     Call<User> registerUser(@Body User user);
 
     @PATCH("/users/{userId}/location")
