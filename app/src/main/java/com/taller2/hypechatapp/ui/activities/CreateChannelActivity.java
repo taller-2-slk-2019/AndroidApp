@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.Switch;
 
 import com.taller2.hypechatapp.R;
+import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.network.ChannelService;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.ChannelRequest;
@@ -64,9 +65,9 @@ public class CreateChannelActivity extends AppCompatActivity {
             public void onClick(View v) {
                 loading.setVisibility(View.VISIBLE);
                 ChannelRequest channelRequest = createRequest();
-                channelService.createChannel(channelRequest, new Client<Void>() {
+                channelService.createChannel(channelRequest, new Client<Channel>() {
                     @Override
-                    public void onResponseSuccess(Void responseBody) {
+                    public void onResponseSuccess(Channel responseBody) {
                         loading.setVisibility(View.INVISIBLE);
                         Intent intent = new Intent(CreateChannelActivity.this, ChannelChatActivity.class);
                         startActivity(intent);

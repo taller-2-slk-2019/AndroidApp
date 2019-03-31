@@ -18,7 +18,7 @@ public class ChannelService extends RestService {
         this.channelApi = ApiClient.getInstance().getChannelClient();
     }
 
-    public void createChannel(ChannelRequest channelRequest, final Client<Void> client) {
+    public void createChannel(ChannelRequest channelRequest, final Client<Channel> client) {
         channelApi.createChannel(channelRequest).enqueue(new Callback<Channel>() {
             @Override
             public void onResponse(Call<Channel> call, Response<Channel> response) {
