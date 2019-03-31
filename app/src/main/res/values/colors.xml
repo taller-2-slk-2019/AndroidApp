@@ -20,5 +20,8 @@
     <color name="BlueAccent400">#2979FF</color>
     <color name="BlueAccent700">#2962FF</color>
 
+    <color name="lightGrey">#BBBBBB</color>
+    <color name="DarkGrey">#5E5E5E</color>
+
 
 </resources>

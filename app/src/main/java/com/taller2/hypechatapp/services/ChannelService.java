@@ -1,7 +1,10 @@
-package com.taller2.hypechatapp.network;
+package com.taller2.hypechatapp.services;
 
 
 import com.taller2.hypechatapp.model.Channel;
+import com.taller2.hypechatapp.network.ApiClient;
+import com.taller2.hypechatapp.network.ChannelApi;
+import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.ChannelRequest;
 
 import retrofit2.Call;

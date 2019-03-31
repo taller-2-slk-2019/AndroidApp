@@ -1,4 +1,4 @@
-package com.taller2.hypechatapp.activities;
+package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.taller2.hypechatapp.R;
+import com.taller2.hypechatapp.activities.UserProfileActivity;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -98,7 +99,7 @@ public class ChannelChatActivity extends AppCompatActivity
     }
 
     private void viewProfile() {
-        Intent intent = new Intent(this,UserProfileActivity.class);
+        Intent intent = new Intent(this, UserProfileActivity.class);
         startActivity(intent);
     }
 
@@ -109,7 +110,8 @@ public class ChannelChatActivity extends AppCompatActivity
     }
 
     private void createNewChannel() {
-
+        Intent intent = new Intent(this, CreateChannelActivity.class);
+        startActivity(intent);
     }
 
     private void createNewOrganization() {
