@@ -64,6 +64,7 @@ public class UserService extends RestService{
         });
     }
 
+    /* TODO revisar la nueva url
     public void acceptInvitation(String token, final Client client){
         userApi.acceptInvitation(token).enqueue(new Callback<ConfirmationResponse>() {
             @Override
@@ -76,5 +77,5 @@ public class UserService extends RestService{
                 manageFailure(SERVICE_TAG,t,client);
             }
         });
-    }
+    }*/
 }

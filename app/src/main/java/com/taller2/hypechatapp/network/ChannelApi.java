@@ -14,6 +14,9 @@ import retrofit2.http.Path;
 
 public interface ChannelApi {
 
-    @POST("/channels/create")
+    @POST("/channels")
     Call<Channel> createChannel(@Body ChannelRequest channel);
+
+    @POST("/channels/{id}/users")
+    Call<Channel> addUser(@Body ChannelRequest channel);
 }

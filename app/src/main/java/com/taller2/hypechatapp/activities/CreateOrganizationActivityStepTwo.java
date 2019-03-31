@@ -74,6 +74,7 @@ public class CreateOrganizationActivityStepTwo extends AppCompatActivity {
             public void onResponseSuccess(Organization responseBody) {
                 Toast.makeText(getContext(), "Se ha creado la Organización con id:"+responseBody.getId(),
                         Toast.LENGTH_LONG).show();
+                /* TODO Hacer que vuelva al menú principal o que salte a la pantalla de invitacion a usuarios*/
             }
 
             @Override
