@@ -74,6 +74,7 @@ public class CreateChannelActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponseError(String errorMessage) {
+                        //TODO: add generic error message
                         loading.setVisibility(View.INVISIBLE);
                     }
 
