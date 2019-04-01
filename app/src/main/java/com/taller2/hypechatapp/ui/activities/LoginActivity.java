@@ -111,10 +111,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loading(){
+        //TODO show spinner
     }
 
     private void showError(){
         //TODO do something here
+        //TODO hide spinner
         FirebaseAuthService.logOut();
     }
 
@@ -136,7 +138,6 @@ public class LoginActivity extends AppCompatActivity {
         userLoggedIn(); // TODO delete this
         /* TODO enable this when fixed in server side
         userService.registerUser(userRequest, new Client<User>(){
-
             @Override
             public void onResponseSuccess(User responseUser) {
                 userLoggedIn();

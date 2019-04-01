@@ -20,6 +20,16 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ProgressBar
+        android:id="@+id/loading_create_orga_step2"
+        style="?android:attr/progressBarStyle"
+
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        />
+
     <include layout="@layout/content_create_organization_step2" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

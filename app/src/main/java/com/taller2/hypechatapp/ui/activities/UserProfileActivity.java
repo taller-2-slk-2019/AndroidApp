@@ -1,15 +1,14 @@
-package com.taller2.hypechatapp.activities;
+package com.taller2.hypechatapp.ui.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.network.UserService;
+import com.taller2.hypechatapp.services.UserService;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -17,7 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 public class UserProfileActivity extends AppCompatActivity {
     UserService userService;
     TextView name, surname, email;
-    ProgressBar progressbar;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +30,9 @@ public class UserProfileActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_user_profile);
         setSupportActionBar(toolbar);
 
-        progressbar = (ProgressBar) findViewById(R.id.progressBar);
+        dialog = new ProgressDialog(UserProfileActivity.this);
+        dialog.setMessage("Cargando...");
+        dialog.show();
 
         name = findViewById(R.id.user_name);
         surname = findViewById(R.id.user_surname);
@@ -39,7 +40,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         userService = new UserService();
 
-        int userId = 1; // Reemplzar por el Id correspondiente al usuario
+        int userId = 1; // TODO Reemplzar por el Id correspondiente al usuario
 
         userService.getUser(userId, new Client<User>() {
 
@@ -48,12 +49,12 @@ public class UserProfileActivity extends AppCompatActivity {
                 name.append(responseBody.getName());
                 surname.append(responseBody.getSurname());
                 email.append(responseBody.getEmail());
-                progressbar.setVisibility(View.GONE);
+                dialog.dismiss();
             }
 
             @Override
             public void onResponseError(String errorMessage) {
-
+                dialog.dismiss();
             }
 
             @Override

@@ -33,13 +33,21 @@
     <string name="btn_channel_create">Crear canal</string>
     <string name="btn_channel_cancel">Cancelar</string>
     <string name="channel_label_welcome">Mensaje de bienvenida</string>
+    <string name="input_channel_name_error">Ingrese el nombre del canal</string>
+    <string name="input_channel_description_error">Ingrese la descripción del canal</string>
+    <string name="input_channel_welcome_error">Ingrese el mensaje de bienvenida</string>
 
     <!-- user profile view -->
-    <string name="user_profile_title">Profile</string>
-    <string name="update_user_profile_button">Update\nProfile</string>
-    <string name="name_user_profile"><b><i>Name: </i></b></string>
-    <string name="surname_user_profile"><b><i>Surname: </i></b></string>
+    <string name="user_profile_title">Perfil de usuario</string>
+    <string name="update_user_profile_button">Actualizar\nPerfil</string>
+    <string name="name_user_profile"><b><i>Nombre: </i></b></string>
+    <string name="surname_user_profile"><b><i>Apellido: </i></b></string>
     <string name="email_user_profile"><b><i>Email: </i></b></string>
+    <string name="organization_profile_title">Perfil de la organización</string>
+    <string name="description_organization_profile"><b><i>Descripción: </i></b></string>
+    <string name="name_organization_profile"><b><i>Nombre de la organización: </i></b></string>
+    <string name="welcome_organization_profile"><b><i>Mensaje de bienvenida: </i></b></string>
+    <string name="update_organization_information_button">ACTUALIZAR\nINFORMACIÓN</string>
 
     <!-- login and register view -->
     <string name="title_activity_login">LoginActivity</string>
