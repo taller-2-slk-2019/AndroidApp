@@ -39,13 +39,13 @@
     <!-- user profile view -->
     <string name="user_profile_title">Perfil de usuario</string>
     <string name="update_user_profile_button">Actualizar\nPerfil</string>
-    <string name="name_user_profile"><b><i>Nombre: </i></b></string>
-    <string name="surname_user_profile"><b><i>Apellido: </i></b></string>
-    <string name="email_user_profile"><b><i>Email: </i></b></string>
+    <string name="name_user_profile">Nombre: </string>
+    <string name="surname_user_profile">Apellido: </string>
+    <string name="email_user_profile">Email: </string>
     <string name="organization_profile_title">Perfil de la organización</string>
-    <string name="description_organization_profile"><b><i>Descripción: </i></b></string>
-    <string name="name_organization_profile"><b><i>Nombre de la organización: </i></b></string>
-    <string name="welcome_organization_profile"><b><i>Mensaje de bienvenida: </i></b></string>
+    <string name="description_organization_profile">Descripción: </string>
+    <string name="name_organization_profile">Nombre de la organización: </string>
+    <string name="welcome_organization_profile">Mensaje de bienvenida: </string>
     <string name="update_organization_information_button">ACTUALIZAR\nINFORMACIÓN</string>
 
 </resources>
