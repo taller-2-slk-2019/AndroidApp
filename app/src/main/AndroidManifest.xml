@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.taller2.hypechatapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -10,7 +12,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+         <meta-data
+             android:name="com.google.android.geo.API_KEY"
+             android:value="AIzaSyA_oWLv-IusRmW1x8iCh6Nqe3CkcpvT8DU" />
         <activity android:name=".ui.activities.CreateChannelActivity"></activity>
         <activity
             android:name=".ui.activities.ChannelChatActivity"
@@ -35,6 +41,7 @@
         <activity android:name=".ui.activities.OrganizationProfileActivity"
             android:label="@string/organization_profile_title"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.activities.ChooseLocationActivity" />
     </application>
 
 </manifest>

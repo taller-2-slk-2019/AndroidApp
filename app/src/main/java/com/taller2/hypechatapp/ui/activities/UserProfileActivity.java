@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.network.UserService;
+import com.taller2.hypechatapp.services.UserService;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.network.OrganizationService;
+import com.taller2.hypechatapp.services.OrganizationService;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -44,7 +44,7 @@ public class OrganizationProfileActivity extends AppCompatActivity {
 
         int organizationId = 1; // TODO Reemplzar por el Id correspondiente a la organizacion
 
-        organizationService.getOrganization(organizationId, new Client<Organization>() {
+        organizationService.getOrganizationProfile(organizationId, new Client<Organization>() {
 
             @Override
             public void onResponseSuccess(Organization responseBody) {

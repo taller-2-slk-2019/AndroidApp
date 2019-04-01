@@ -43,6 +43,6 @@
     <string name="description_organization_profile"><b><i>Descripción: </i></b></string>
     <string name="name_organization_profile"><b><i>Nombre de la organización: </i></b></string>
     <string name="welcome_organization_profile"><b><i>Mensaje de bienvenida: </i></b></string>
-    <string name="update_organization_information_button"><b><i>Actualizar\ninformación</i></b></string>
+    <string name="update_organization_information_button">ACTUALIZAR\nINFORMACIÓN</string>
 
 </resources>

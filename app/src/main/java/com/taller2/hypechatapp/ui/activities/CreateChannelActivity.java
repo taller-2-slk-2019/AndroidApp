@@ -12,9 +12,9 @@ import android.widget.Switch;
 
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.Channel;
-import com.taller2.hypechatapp.network.ChannelService;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.ChannelRequest;
+import com.taller2.hypechatapp.services.ChannelService;
 
 import androidx.appcompat.app.AppCompatActivity;
 
