@@ -32,6 +32,9 @@
     <string name="btn_channel_create">Crear canal</string>
     <string name="btn_channel_cancel">Cancelar</string>
     <string name="channel_label_welcome">Mensaje de bienvenida</string>
+    <string name="input_channel_name_error">Ingrese el nombre del canal</string>
+    <string name="input_channel_description_error">Ingrese la descripción del canal</string>
+    <string name="input_channel_welcome_error">Ingrese el mensaje de bienvenida</string>
 
     <!-- user profile view -->
     <string name="user_profile_title">Perfil de usuario</string>

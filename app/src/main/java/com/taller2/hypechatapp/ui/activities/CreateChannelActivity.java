@@ -3,6 +3,7 @@ package com.taller2.hypechatapp.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -42,7 +43,6 @@ public class CreateChannelActivity extends AppCompatActivity {
         description = findViewById(R.id.txt_description);
         welcome = findViewById(R.id.txt_welcome);
         channelPrivacy = findViewById(R.id.swt_privacy);
-        channelPrivacy = findViewById(R.id.swt_privacy);
         btnCreate = findViewById(R.id.btn_create);
         btnCancel = findViewById(R.id.btn_cancel);
         loading = findViewById(R.id.loading);
@@ -63,6 +63,11 @@ public class CreateChannelActivity extends AppCompatActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (!isValidForm(channelName, description, welcome)) {
+                    return;
+                }
+
                 loading.setVisibility(View.VISIBLE);
                 ChannelRequest channelRequest = createRequest();
                 channelService.createChannel(channelRequest, new Client<Channel>() {
@@ -95,6 +100,26 @@ public class CreateChannelActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private boolean isValidForm(EditText channelName, EditText description, EditText welcome) {
+        if (TextUtils.isEmpty(channelName.getText().toString())) {
+            channelName.setError(getString(R.string.input_channel_name_error));
+            return false;
+        }
+
+        if (TextUtils.isEmpty(description.getText().toString())) {
+            description.setError(getString(R.string.input_channel_description_error));
+            return false;
+        }
+
+        if (TextUtils.isEmpty(welcome.getText().toString())) {
+            welcome.setError(getString(R.string.input_channel_welcome_error));
+            return false;
+        }
+
+        return true;
+
     }
 
     private ChannelRequest createRequest() {
