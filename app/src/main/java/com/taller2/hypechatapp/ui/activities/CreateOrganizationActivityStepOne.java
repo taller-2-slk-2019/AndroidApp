@@ -69,7 +69,7 @@ public class CreateOrganizationActivityStepOne extends AppCompatActivity {
             }
         });
 
-        ImageView pickImageView=findViewById(R.id.organization_profile_image_view);
+        ImageView pickImageView=findViewById(R.id.profile_image_view);
         pickImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,7 +117,7 @@ public class CreateOrganizationActivityStepOne extends AppCompatActivity {
             filePath = data.getData();
             try {
                 profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                ImageView profileImageView=findViewById(R.id.organization_profile_image_view);
+                ImageView profileImageView=findViewById(R.id.profile_image_view);
                 profileImageView.setImageBitmap(profileImageBitmap);
                 profileImageView.setVisibility(View.VISIBLE);
                 MaterialButton pickImageButton=findViewById(R.id.pick_profile_image_button);
