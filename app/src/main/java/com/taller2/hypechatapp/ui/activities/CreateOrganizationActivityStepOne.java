@@ -41,15 +41,15 @@ public class CreateOrganizationActivityStepOne extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-            TextInputEditText nameInputText=findViewById(R.id.organization_name_input);
-            TextInputEditText descriptionInputText=findViewById(R.id.organization_description_input);
+            TextInputEditText nameInputText = findViewById(R.id.organization_name_input);
+            TextInputEditText descriptionInputText = findViewById(R.id.organization_description_input);
 
             if (!validateUserInput(nameInputText, descriptionInputText))
                 return;
 
-            OrganizationRequest newOrganization=createNewOrganizationRequest(nameInputText, descriptionInputText);
+            OrganizationRequest newOrganization = createNewOrganizationRequest(nameInputText, descriptionInputText);
 
-            Intent intent=new Intent(CreateOrganizationActivityStepOne.this, CreateOrganizationActivityStepTwo.class);
+            Intent intent = new Intent(CreateOrganizationActivityStepOne.this, CreateOrganizationActivityStepTwo.class);
             intent.putExtra("newOrganization",newOrganization);
             intent.addFlags(FLAG_ACTIVITY_FORWARD_RESULT);
             startActivity(intent);
@@ -57,7 +57,7 @@ public class CreateOrganizationActivityStepOne extends AppCompatActivity {
             }
         });
 
-        MaterialButton pickImageButton=findViewById(R.id.pick_profile_image_button);
+        MaterialButton pickImageButton = findViewById(R.id.pick_profile_image_button);
         pickImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +65,7 @@ public class CreateOrganizationActivityStepOne extends AppCompatActivity {
             }
         });
 
-        ImageView pickImageView=findViewById(R.id.profile_image_view);
+        ImageView pickImageView = findViewById(R.id.profile_image_view);
         pickImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

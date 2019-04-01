@@ -32,11 +32,15 @@ public class ImagePicker {
             Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), filePath);
 
             ImageView profileImageView = activity.findViewById(R.id.profile_image_view);
-            profileImageView.setImageBitmap(profileImageBitmap);
-            profileImageView.setVisibility(View.VISIBLE);
+            if (profileImageView != null) {
+                profileImageView.setImageBitmap(profileImageBitmap);
+                profileImageView.setVisibility(View.VISIBLE);
+            }
 
             MaterialButton pickImageButton = activity.findViewById(R.id.pick_profile_image_button);
-            pickImageButton.setVisibility(View.INVISIBLE);
+            if (pickImageButton != null) {
+                pickImageButton.setVisibility(View.INVISIBLE);
+            }
         }
         catch (IOException e)
         {
