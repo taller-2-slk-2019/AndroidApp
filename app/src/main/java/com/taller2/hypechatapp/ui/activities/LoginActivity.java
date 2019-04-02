@@ -53,8 +53,17 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setNormalLogin(){
         Button loginButton = findViewById(R.id.login_button);
-        emailText = findViewById(R.id.emailText);
-        passwordText = findViewById(R.id.passwordText);
+        emailText = findViewById(R.id.email_text);
+        passwordText = findViewById(R.id.password_text);
+
+        TextView noAccountText = findViewById(R.id.no_account_text);
+        noAccountText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Callback registration
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -171,11 +180,9 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
                         Log.i("Firebase log in", "Log in succesfull");
                         facebookUserLoggedIn();
                     } else {
-                        // If sign in fails, display a message to the user.
                         Log.w("Firebase log in", "Log in failed", task.getException());
                         showError();
                     }
@@ -190,11 +197,9 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
                         Log.i("Firebase log in", "Log in succesfull");
                         userLoggedIn();
                     } else {
-                        // If sign in fails, display a message to the user.
                         Log.w("Firebase log in", "Log in failed", task.getException());
                         showError();
                     }

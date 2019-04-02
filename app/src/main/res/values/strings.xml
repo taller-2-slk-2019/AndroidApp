@@ -56,6 +56,9 @@
     <string name="login_button_message">Ingresar</string>
     <string name="login_email_hint">Email</string>
     <string name="login_password_hint">Contraseña</string>
+    <string name="register_button">Registrarse</string>
+    <string name="register_name">Nombre y Apellido</string>
+    <string name="no_account_text"><u>No tienes cuenta? Registrate</u></string>
 
 
 </resources>
