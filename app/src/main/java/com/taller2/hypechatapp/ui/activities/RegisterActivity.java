@@ -1,9 +1,5 @@
 package com.taller2.hypechatapp.ui.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,14 +7,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,8 +20,10 @@ import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.firebase.FirebaseStorageService;
 import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.User;
-import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity implements FirebaseStorageUploadInterface {
 
@@ -57,23 +51,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
         email = findViewById(R.id.email_register);
         password = findViewById(R.id.password_register);
         name = findViewById(R.id.name_register);
-        imagePicker = new ImagePicker();
-
-        MaterialButton pickImageButton = findViewById(R.id.pick_profile_image_button);
-        pickImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseImage();
-            }
-        });
-
-        ImageView pickImageView = findViewById(R.id.profile_image_view);
-        pickImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseImage();
-            }
-        });
+        imagePicker = new ImagePicker(this);
 
         Button registerButton = findViewById(R.id.register_button);
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -161,10 +139,6 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
             return false;
         }
         return filePath != null;
-    }
-
-    private void chooseImage() {
-        startActivityForResult(imagePicker.getImagePickerIntent(), imagePicker.PICK_IMAGE_REQUEST);
     }
 
     @Override
