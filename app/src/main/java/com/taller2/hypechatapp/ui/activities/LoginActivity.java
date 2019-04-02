@@ -1,6 +1,5 @@
 package com.taller2.hypechatapp.ui.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -25,7 +24,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.User;
-import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
 
 import androidx.annotation.NonNull;
