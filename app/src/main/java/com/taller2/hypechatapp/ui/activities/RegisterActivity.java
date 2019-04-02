@@ -24,14 +24,17 @@ import com.google.firebase.auth.FirebaseUser;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.components.ImagePicker;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
+import com.taller2.hypechatapp.firebase.FirebaseStorageService;
+import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.User;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements FirebaseStorageUploadInterface {
 
     private TextView email;
     private TextView password;
     private TextView name;
     private Uri filePath;
+    private String imageUrl;
     private ImagePicker imagePicker;
     private FirebaseAuth mAuth;
 
@@ -89,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Log.i("Firebase register", "Register succesfull");
-                            userRegistered();
+                            uploadProfileImage();
                         } else {
                             Log.w("Firebase register", "register failed", task.getException());
                             showError();
@@ -103,7 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
         userRequest.setEmail(email.toString());
         userRequest.setName(name.toString());
         userRequest.setToken(FirebaseAuthService.getCurrentUserToken());
-        userRequest.setPicture(filePath.toString());
+        userRequest.setPicture(imageUrl);
 
         endRegister(); // TODO delete this
         /* TODO enable this when fixed in server side
@@ -167,5 +170,21 @@ public class RegisterActivity extends AppCompatActivity {
                 && data != null && data.getData() != null ) {
             filePath = imagePicker.analyzeResult(this, data);
         }
+    }
+
+    @Override
+    public void onFileUploaded(String downloadUrl) {
+        imageUrl = downloadUrl;
+        userRegistered();
+    }
+
+    @Override
+    public void onFileUploadError(Exception exception) {
+        showError();
+    }
+
+    private void uploadProfileImage(){
+        FirebaseStorageService storage = new FirebaseStorageService();
+        storage.uploadLocalFile(this, filePath);
     }
 }
