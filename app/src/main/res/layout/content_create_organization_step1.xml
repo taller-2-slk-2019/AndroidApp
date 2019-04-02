@@ -47,41 +47,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <TextView
-        android:id="@+id/organization_profile_image_label"
+    <include
+        layout="@layout/profile_image_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/organization_profile_image_label_text"
-        android:textSize="16sp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/organization_description_input_layout"/>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/pick_profile_image_button"
-        style="@style/Widget.MaterialComponents.Button.Icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:icon="@drawable/baseline_add_a_photo_white_48dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/organization_profile_image_label"/>
-
-    <ImageView
-        android:id="@+id/organization_profile_image_view"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/organization_profile_image_label"
-        app:layout_constraintBottom_toTopOf="@+id/new_organization_next_button"
-        android:layout_marginBottom="24dp"
-        android:visibility="invisible"/>
+        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/organization_description_input_layout"
+        app:layout_constraintVertical_bias="0.055" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/new_organization_next_button"
