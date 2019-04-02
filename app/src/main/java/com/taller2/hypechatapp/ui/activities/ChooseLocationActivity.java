@@ -9,6 +9,7 @@ import android.view.View;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -19,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
-import com.google.android.gms.maps.OnMapReadyCallback;
 
 public class ChooseLocationActivity extends FragmentActivity
         implements OnMapReadyCallback, GoogleMap.OnMapClickListener{
@@ -80,7 +80,6 @@ public class ChooseLocationActivity extends FragmentActivity
             }
         });
 
-        getLocationPermission();
 
         updateLocationUI();
     }
