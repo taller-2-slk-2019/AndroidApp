@@ -49,7 +49,7 @@ public class OrganizationProfileActivity extends AppCompatActivity {
             @Override
             public void onResponseSuccess(Organization responseBody) {
                 name.setText(responseBody.getName());
-                description.setText(responseBody.getDescription() + "\nEsta\nDescripcion\nes\nlarga\ntal\nvez");
+                description.setText(responseBody.getDescription());
                 welcomeMessage.setText(responseBody.getWelcome());
                 dialog.dismiss();
             }
