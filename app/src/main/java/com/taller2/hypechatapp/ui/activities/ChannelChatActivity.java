@@ -100,6 +100,8 @@ public class ChannelChatActivity extends AppCompatActivity
 
             @Override
             public void onResponseError(String errorMessage) {
+                ProgressBar loadingView = findViewById(R.id.loading_main);
+                loadingView.setVisibility(View.INVISIBLE);
                 String textToShow;
                 if(!TextUtils.isEmpty(errorMessage)){
                     textToShow=errorMessage;
