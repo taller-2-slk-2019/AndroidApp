@@ -3,7 +3,9 @@ package com.taller2.hypechatapp.ui.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.User;
@@ -54,7 +56,17 @@ public class UserProfileActivity extends AppCompatActivity {
 
             @Override
             public void onResponseError(String errorMessage) {
-                dialog.dismiss();
+
+                //dialog.dismiss();
+
+                String textToShow;
+                if(!TextUtils.isEmpty(errorMessage)){
+                    textToShow=errorMessage;
+                } else {
+                    textToShow="No fue posible obtener el perfil del usuario. Intente más tarde.";
+                }
+                Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
+                finish();
             }
 
             @Override

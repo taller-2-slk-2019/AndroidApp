@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.Channel;
@@ -80,13 +81,20 @@ public class CreateChannelActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponseError(String errorMessage) {
-                        //TODO: add generic error message
                         loading.setVisibility(View.INVISIBLE);
+                        String textToShow;
+                        if(!TextUtils.isEmpty(errorMessage)){
+                            textToShow=errorMessage;
+                        } else {
+                            textToShow="No fue posible crear un canal. Intente más tarde.";
+                        }
+                        Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
+                        finish();
                     }
 
                     @Override
                     public Context getContext() {
-                        return null;
+                        return CreateChannelActivity.this;
                     }
                 });
 

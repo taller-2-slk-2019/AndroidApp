@@ -117,7 +117,16 @@ public class CreateOrganizationActivityStepTwo extends AppCompatActivity
 
             @Override
             public void onResponseError(String errorMessage) {
-
+                ProgressBar loadingView = findViewById(R.id.loading_create_orga_step2);
+                loadingView.setVisibility(View.INVISIBLE);
+                String textToShow;
+                if(!TextUtils.isEmpty(errorMessage)){
+                    textToShow=errorMessage;
+                } else {
+                    textToShow="No fue posible crear una organización. Intente más tarde.";
+                }
+                Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
+                finish();
             }
 
             @Override
