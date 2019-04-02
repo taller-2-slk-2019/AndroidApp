@@ -10,56 +10,68 @@
 
     <ImageView
         android:id="@+id/user_picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/ProfileImageCreationView"
         app:srcCompat="@drawable/default_user"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/user_name"/>
+        app:layout_constraintBottom_toTopOf="@id/user_name_title"/>
 
     <TextView
-        android:id="@+id/user_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/user_name_title"
         android:text="@string/name_user_profile"
-        android:textSize="16sp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="8dp"
+        style="@style/ProfileItemTextView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/user_picture"
         android:gravity="start"/>
 
     <TextView
-        android:id="@+id/user_surname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/user_name"
+        style="@style/ProfileResponseTextView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_name_title"
+        app:layout_constraintBottom_toTopOf="@id/user_surname_title"/>
+
+    <TextView
+        android:id="@+id/user_surname_title"
         android:text="@string/surname_user_profile"
-        android:textSize="16sp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="8dp"
+        style="@style/ProfileItemTextView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_name"
+        app:layout_constraintBottom_toTopOf="@id/user_surname"/>
+
+    <TextView
+        android:id="@+id/user_surname"
+        style="@style/ProfileResponseTextView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_surname_title"
+        app:layout_constraintBottom_toTopOf="@id/user_email_title"/>
+
+    <TextView
+        android:id="@+id/user_email_title"
+        android:text="@string/email_user_profile"
+        style="@style/ProfileItemTextView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_surname"
         app:layout_constraintBottom_toTopOf="@id/user_email"/>
 
     <TextView
         android:id="@+id/user_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/email_user_profile"
-        android:textSize="16sp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="8dp"
+        style="@style/ProfileResponseTextView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_surname"
+        app:layout_constraintTop_toBottomOf="@+id/user_email_title"
         app:layout_constraintBottom_toTopOf="@id/update_profile"/>
 
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/update_profile"
+        style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/update_user_profile_button"
