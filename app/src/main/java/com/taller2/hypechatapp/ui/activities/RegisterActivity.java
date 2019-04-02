@@ -3,6 +3,7 @@ package com.taller2.hypechatapp.ui.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.firebase.FirebaseStorageService;
 import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.User;
+import com.taller2.hypechatapp.network.Client;
+import com.taller2.hypechatapp.services.UserService;
 
 public class RegisterActivity extends AppCompatActivity implements FirebaseStorageUploadInterface {
 
@@ -37,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
     private String imageUrl;
     private ImagePicker imagePicker;
     private FirebaseAuth mAuth;
+    private UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
         setContentView(R.layout.activity_register);
 
         mAuth = FirebaseAuth.getInstance();
+        userService = new UserService();
 
         setupUI();
     }
@@ -103,13 +108,13 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
 
     private void userRegistered() {
         User userRequest = new User();
-        userRequest.setEmail(email.toString());
-        userRequest.setName(name.toString());
+        userRequest.setEmail(email.getText().toString());
+        userRequest.setName(name.getText().toString());
         userRequest.setToken(FirebaseAuthService.getCurrentUserToken());
         userRequest.setPicture(imageUrl);
 
         endRegister(); // TODO delete this
-        /* TODO enable this when fixed in server side
+        /* TODO enable this when fixed in server side (working ok in branch auth)
         userService.registerUser(userRequest, new Client<User>(){
             @Override
             public void onResponseSuccess(User responseUser) {
@@ -125,8 +130,8 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
             public Context getContext() {
                 return RegisterActivity.this;
             }
-        });
-        */
+        });*/
+
     }
 
     private void endRegister() {
