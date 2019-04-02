@@ -18,6 +18,28 @@ public class ImagePicker {
 
     public static final int PICK_IMAGE_REQUEST = 71;
 
+    public ImagePicker(final AppCompatActivity activity){
+        MaterialButton pickImageButton = activity.findViewById(R.id.pick_profile_image_button);
+        pickImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage(activity);
+            }
+        });
+
+        ImageView pickImageView = activity.findViewById(R.id.profile_image_view);
+        pickImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage(activity);
+            }
+        });
+    }
+
+    private void chooseImage(AppCompatActivity activity) {
+        activity.startActivityForResult(getImagePickerIntent(), PICK_IMAGE_REQUEST);
+    }
+
     public Intent getImagePickerIntent(){
         Intent intent = new Intent();
         intent.setType("image/*");
