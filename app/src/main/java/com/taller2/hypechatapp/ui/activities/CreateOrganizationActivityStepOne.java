@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -27,7 +26,7 @@ public class CreateOrganizationActivityStepOne extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_organization_step1);
-        imagePicker = new ImagePicker();
+        imagePicker = new ImagePicker(this);
 
         setUpUI();
     }
@@ -56,22 +55,6 @@ public class CreateOrganizationActivityStepOne extends AppCompatActivity {
             finish();
             }
         });
-
-        MaterialButton pickImageButton = findViewById(R.id.pick_profile_image_button);
-        pickImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseImage();
-            }
-        });
-
-        ImageView pickImageView = findViewById(R.id.profile_image_view);
-        pickImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseImage();
-            }
-        });
     }
 
     private OrganizationRequest createNewOrganizationRequest(TextInputEditText nameInputText, TextInputEditText descriptionInputText) {
@@ -95,10 +78,6 @@ public class CreateOrganizationActivityStepOne extends AppCompatActivity {
             return false;
         }
         return true;
-    }
-
-    private void chooseImage() {
-        startActivityForResult(imagePicker.getImagePickerIntent(), imagePicker.PICK_IMAGE_REQUEST);
     }
 
     @Override
