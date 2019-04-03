@@ -6,19 +6,17 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.material.navigation.NavigationView;
 import com.taller2.hypechatapp.R;
-import com.taller2.hypechatapp.model.Channel;
+import com.taller2.hypechatapp.adapters.INavigation;
+import com.taller2.hypechatapp.adapters.NavigationAdapter;
+import com.taller2.hypechatapp.model.NavigationDrawerShowable;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.services.ChannelService;
-import com.taller2.hypechatapp.services.OrganizationService;
-import com.taller2.hypechatapp.services.UserService;
+import com.taller2.hypechatapp.services.NavigationMenuService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,45 +27,42 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class ChannelChatActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import static com.taller2.hypechatapp.ui.model.NavigationActionItem.ActionType.CREATE_CHANNEL;
+import static com.taller2.hypechatapp.ui.model.NavigationActionItem.ActionType.CREATE_ORGANIZATION;
 
-    private static final String TAG = "CHANNELCHATACTIVITY";
-    public static final int ORGANIZATIONS_GROUP_ID = 0;
-    public static final int NEW_ORGA_CHANNEL_ID = -1;
-    public static final int CHANNELS_GROUP_ID = 1;
+public class ChannelChatActivity extends AppCompatActivity implements INavigation {
+
     private static final int CREATE_ORG_REQUEST_CODE = 1;
     private static final int RESULT_CODE = 300;
 
-    private NavigationView navigationView;
-    private SubMenu organizationsSubMenu;
-    private SubMenu channelsSubMenu;
+    private static final Integer USER_ID = 1; //TODO: harcoded values, change me!
+    private static final Integer ORG_ID = 1;
 
-    private UserService userService;
-    private OrganizationService organizationService;
-    private ChannelService channelsService;
+    private Toolbar toolbar;
+    private NavigationAdapter navigationAdapter;
 
-    private List<Channel> channels;
-    private List<Organization> organizations;
+    private NavigationMenuService navigationMenuService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        navigationMenuService = new NavigationMenuService();
+
         setContentView(R.layout.activity_main);
 
-        userService=new UserService();
-        organizationService=new OrganizationService();
-        channelsService=new ChannelService();
-
         setupUI();
+        setUpRecyclerView();
+        showOrganizationUserInfo();
     }
 
     private void setupUI() {
-        /** TODO Usar esto para poner el nombre de la organización seleccionada en este momento*/
         //setTitle("LALALA");
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -75,27 +70,32 @@ public class ChannelChatActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        setUpDrawerMenu();
     }
 
-    private void setUpDrawerMenu() {
-        Menu menu=navigationView.getMenu();
-        menu.clear();
+    private void setUpRecyclerView() {
+
+        RecyclerView recyclerView = findViewById(R.id.rvDrawerList);
+        navigationAdapter = new NavigationAdapter(this, new ArrayList<NavigationDrawerShowable>());
+        recyclerView.setAdapter(navigationAdapter);
+
+        LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(this); // (Context context, int spanCount)
+        mLinearLayoutManagerVertical.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    private void showOrganizationUserInfo() {
         ProgressBar loadingView = findViewById(R.id.loading_main);
         loadingView.setVisibility(View.VISIBLE);
 
-        organizationService.getOrganizationsByUser(1, new Client<List<Organization>>() {
+        navigationMenuService.getNavigationMenuData(ORG_ID, USER_ID, new Client<List<Comparable>>() {
             @Override
-            public void onResponseSuccess(List<Organization> organizations) {
+            public void onResponseSuccess(List<Comparable> navigationUserInfo) {
                 ProgressBar loadingView = findViewById(R.id.loading_main);
                 loadingView.setVisibility(View.INVISIBLE);
-                loadOrganizationsToDrawerMenu(organizations);
-                //TODO Eliminar esto cuando este el ChannelService funcionando
-                loadChannelsToDrawerMenu(new ArrayList<Channel>());
+
+                navigationAdapter.refreshAdapter(navigationUserInfo);
             }
 
             @Override
@@ -103,14 +103,13 @@ public class ChannelChatActivity extends AppCompatActivity
                 ProgressBar loadingView = findViewById(R.id.loading_main);
                 loadingView.setVisibility(View.INVISIBLE);
                 String textToShow;
-                if(!TextUtils.isEmpty(errorMessage)){
-                    textToShow=errorMessage;
+                if (!TextUtils.isEmpty(errorMessage)) {
+                    textToShow = errorMessage;
                 } else {
-                    textToShow="Ha ocurrido un error al intentar obtener las organizaciones del usuario";
+                    textToShow = "Ha ocurrido un error al intentar obtener los datos del usuario";
                 }
 
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
-
             }
 
             @Override
@@ -118,62 +117,40 @@ public class ChannelChatActivity extends AppCompatActivity
                 return ChannelChatActivity.this;
             }
         });
-
-        /*channelService.getChannelsByOrganizationByUser(1, 1,new Client<List<Organization>>() {
-            @Override
-            public void onResponseSuccess(List<Organization> organizations) {
-                ProgressBar loadingView = findViewById(R.id.loading_main);
-                loadingView.setVisibility(View.INVISIBLE);
-                loadOrganizationsToDrawerMenu(organizations);
-            }
-
-            @Override
-            public void onResponseError(String errorMessage) {
-                String textToShow;
-                if(!TextUtils.isEmpty(errorMessage)){
-                    textToShow=errorMessage;
-                } else {
-                    textToShow="Ha ocurrido un error al intentar obtener las organizaciones del usuario";
-                }
-
-                Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
-
-            }
-
-            @Override
-            public Context getContext() {
-                return ChannelChatActivity.this;
-            }
-        });*/
-
-   }
-
-    private void loadOrganizationsToDrawerMenu(List<Organization> organizations) {
-        this.organizations=organizations;
-        Menu menu=navigationView.getMenu();
-        organizationsSubMenu=menu.addSubMenu("Organizaciones");
-        int i=0;
-        for (Organization organization : organizations) {
-            MenuItem menuItem=organizationsSubMenu.add(ORGANIZATIONS_GROUP_ID,organization.getId(),i,organization.getName());
-            i++;
-        }
-
-        organizationsSubMenu.add(ORGANIZATIONS_GROUP_ID, NEW_ORGA_CHANNEL_ID,i,"Nueva Organización...");
-        navigationView.invalidate();
     }
 
-    private void loadChannelsToDrawerMenu(List<Channel> channels) {
-        Menu menu=navigationView.getMenu();
-        channelsSubMenu=menu.addSubMenu("Canales");
-        int i=0;
-        for (Channel channel : channels) {
-            MenuItem menuItem=channelsSubMenu.add(CHANNELS_GROUP_ID,channel.getId(),i,channel.getName());
-            i++;
+    private void viewUserProfile() {
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void viewOrganizationProfile() {
+        Intent intent = new Intent(this, OrganizationProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void createNewChannel() {
+        Intent intent = new Intent(this, CreateChannelActivity.class);
+        startActivity(intent);
+    }
+
+    private void createNewOrganization() {
+        Intent intent = new Intent(this, CreateOrganizationActivityStepOne.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onViewClick(int position) {
+        Toast.makeText(this, "position: " + position, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onIconClick(String type) {
+        if (CREATE_ORGANIZATION.toString().equals(type)) {
+            createNewOrganization();
+        } else {
+            createNewChannel();
         }
-
-        channelsSubMenu.add(CHANNELS_GROUP_ID,NEW_ORGA_CHANNEL_ID,i,"Nuevo Canal...");
-
-        navigationView.invalidate();
     }
 
     @Override
@@ -201,7 +178,7 @@ public class ChannelChatActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        switch(id) {
+        switch (id) {
             case R.id.action_settings:
                 return true;
 
@@ -215,61 +192,5 @@ public class ChannelChatActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        //Toco en una organización
-        if(item.getGroupId()==0){
-            if(item.getItemId()==NEW_ORGA_CHANNEL_ID);
-                createNewOrganization();
-
-        }
-        //Toco en un canal
-        if(item.getGroupId()==1){
-            if(item.getItemId()==NEW_ORGA_CHANNEL_ID);
-                createNewChannel();
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    private void viewUserProfile() {
-        Intent intent = new Intent(this,UserProfileActivity.class);
-        startActivity(intent);
-    }
-
-    private void viewOrganizationProfile() {
-        Intent intent = new Intent(this, OrganizationProfileActivity.class);
-        startActivity(intent);
-    }
-
-    private void createNewChannel() {
-        Intent intent = new Intent(this, CreateChannelActivity.class);
-        startActivity(intent);
-    }
-
-    private void createNewOrganization() {
-        Intent intent = new Intent(this,CreateOrganizationActivityStepOne.class);
-        startActivityForResult(intent, CREATE_ORG_REQUEST_CODE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CREATE_ORG_REQUEST_CODE && resultCode == RESULT_CODE) {
-            Organization createdOrganization = (Organization) data.getSerializableExtra("createdOrganization");
-            Toast.makeText(ChannelChatActivity.this, "Se ha creado la Organización con id:"+createdOrganization.getId(),
-                   Toast.LENGTH_LONG).show();
-
-            setUpDrawerMenu();
-        }
     }
 }

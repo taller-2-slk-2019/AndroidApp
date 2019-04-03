@@ -83,10 +83,10 @@ public class CreateChannelActivity extends AppCompatActivity {
                     public void onResponseError(String errorMessage) {
                         loading.setVisibility(View.INVISIBLE);
                         String textToShow;
-                        if(!TextUtils.isEmpty(errorMessage)){
-                            textToShow=errorMessage;
+                        if (!TextUtils.isEmpty(errorMessage)) {
+                            textToShow = errorMessage;
                         } else {
-                            textToShow="No fue posible crear un canal. Intente más tarde.";
+                            textToShow = "No fue posible crear un canal. Intente más tarde.";
                         }
                         Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
                         finish();
@@ -134,7 +134,7 @@ public class CreateChannelActivity extends AppCompatActivity {
         ChannelRequest channelRequest = new ChannelRequest();
         channelRequest.name = channelName.getText().toString();
         channelRequest.description = description.getText().toString();
-        channelRequest.visibility = channelPrivacy.isChecked() ? "Visible" : "Privado";
+        channelRequest.visibility = channelPrivacy.isChecked() ? "public" : "private";
         channelRequest.welcome = welcome.getText().toString();
         channelRequest.organizationId = 1;
         channelRequest.creatorId = 1;
