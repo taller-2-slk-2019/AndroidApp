@@ -109,10 +109,8 @@ public class CreateOrganizationActivityStepTwo extends AppCompatActivity
             public void onResponseSuccess(Organization organization) {
                 ProgressBar loadingView = findViewById(R.id.loading_create_orga_step2);
                 loadingView.setVisibility(View.INVISIBLE);
-                Intent intent = new Intent();
-                intent.putExtra("createdOrganization",organization);
-                setResult(STEP_CODE, intent);
-                finish();
+                Intent intent = new Intent(CreateOrganizationActivityStepTwo.this, ChannelChatActivity.class);
+                startActivity(intent);
             }
 
             @Override

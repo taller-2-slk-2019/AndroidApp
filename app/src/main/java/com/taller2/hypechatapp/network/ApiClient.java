@@ -1,5 +1,7 @@
 package com.taller2.hypechatapp.network;
 
+import java.util.concurrent.Executors;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -10,7 +12,9 @@ public class ApiClient {
     private final static String API_BASE_URL = "https://slack-taller2.herokuapp.com/";
 
     private static ApiClient instance;
+
     private Retrofit retrofit;
+    private Retrofit retrofitExecutorCallback;
 
     private ApiClient() {
         buildRetrofit();
@@ -38,9 +42,28 @@ public class ApiClient {
         retrofit = builder
                 .client(httpClient.build())
                 .build();
+
+
+        builder = new Retrofit.Builder()
+                        .baseUrl(API_BASE_URL)
+                        .callbackExecutor(Executors.newSingleThreadExecutor())
+                        .addConverterFactory(GsonConverterFactory.create());
+
+        retrofitExecutorCallback = builder
+                .client(httpClient.build())
+                .build();
+
     }
 
+
     public OrganizationApi getOrganizationClient() {
+        return getOrganizationClient(false);
+    }
+
+    public OrganizationApi getOrganizationClient(boolean withCallbackExecutor) {
+        if (withCallbackExecutor) {
+            return retrofitExecutorCallback.create(OrganizationApi.class);
+        }
         return retrofit.create(OrganizationApi.class);
     }
 
@@ -49,6 +72,13 @@ public class ApiClient {
     }
 
     public ChannelApi getChannelClient() {
+        return getChannelClient(false);
+    }
+
+    public ChannelApi getChannelClient(boolean withCallbackExecutor) {
+        if (withCallbackExecutor) {
+            return retrofitExecutorCallback.create(ChannelApi.class);
+        }
         return retrofit.create(ChannelApi.class);
     }
 
