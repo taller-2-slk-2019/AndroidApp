@@ -4,10 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
+import com.taller2.hypechatapp.components.PicassoLoader;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
@@ -19,6 +21,8 @@ public class UserProfileActivity extends AppCompatActivity {
     UserService userService;
     TextView name, surname, email;
     ProgressDialog dialog;
+    ImageView profilePicture;
+    String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class UserProfileActivity extends AppCompatActivity {
         name = findViewById(R.id.user_name);
         surname = findViewById(R.id.user_surname);
         email = findViewById(R.id.user_email);
+        profilePicture = findViewById(R.id.user_picture);
 
         userService = new UserService();
 
@@ -51,6 +56,8 @@ public class UserProfileActivity extends AppCompatActivity {
                 name.append(responseBody.getName());
                 surname.append(responseBody.getSurname());
                 email.append(responseBody.getEmail());
+                url = responseBody.getPicture();
+                PicassoLoader.load(getApplicationContext(), url, profilePicture);
                 dialog.dismiss();
             }
 
