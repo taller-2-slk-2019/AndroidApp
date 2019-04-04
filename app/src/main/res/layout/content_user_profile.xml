@@ -11,7 +11,7 @@
     <ImageView
         android:id="@+id/user_picture"
         style="@style/ProfileImageCreationView"
-        app:srcCompat="@drawable/default_user"
+        app:srcCompat="@drawable/default_image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
