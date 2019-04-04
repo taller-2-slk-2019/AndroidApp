@@ -14,14 +14,12 @@ import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.INavigation;
 import com.taller2.hypechatapp.adapters.NavigationAdapter;
 import com.taller2.hypechatapp.model.NavigationDrawerShowable;
-import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.NavigationMenuService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;

@@ -67,6 +67,9 @@
     <style name="SwitchCreationView" parent="Theme.AppCompat.Light">
         <item name="android:switchMinWidth">60dp</item>
         <item name="android:switchPadding">10dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/DarkGrey</item>
+        <item name="android:textStyle">bold</item>
 
         <!-- colorPrimary is used for the default action bar background -->
         <item name="colorPrimary">@color/colorPrimaryDark</item>
