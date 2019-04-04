@@ -113,9 +113,11 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Ba
 
         List<NavigationDrawerShowable> itemsOrdered = new ArrayList<>();
         itemsOrdered.add(new NavigationActionItem("ORGANIZACIONES", R.drawable.ic_plus, NavigationActionItem.ActionType.CREATE_ORGANIZATION));
-        itemsOrdered.addAll(dataOrderedByType.get(NavigationDrawerItemType.ORGANIZATIONS.toString()));
+        List<NavigationDrawerShowable> organizationList = dataOrderedByType.get(NavigationDrawerItemType.ORGANIZATIONS.toString());
+        if (organizationList != null) itemsOrdered.addAll(organizationList);
         itemsOrdered.add(new NavigationActionItem("CANALES", R.drawable.ic_plus, NavigationActionItem.ActionType.CREATE_CHANNEL));
-        itemsOrdered.addAll(dataOrderedByType.get(NavigationDrawerItemType.CHANNELS.toString()));
+        List<NavigationDrawerShowable> channelList = dataOrderedByType.get(NavigationDrawerItemType.CHANNELS.toString());
+        if (channelList != null) itemsOrdered.addAll(channelList);
 
         return itemsOrdered;
 

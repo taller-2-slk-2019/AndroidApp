@@ -25,7 +25,7 @@
 
     <!-- channel creation view -->
     <string name="channel_description">Los canales son el lugar donde se comunican los miembros de la organización</string>
-    <string name="btn_create_channel">Crear un canal</string>
+    <string name="new_channel_title">Nuevo Canal</string>
     <string name="example_channel_name">Ej clientes</string>
     <string name="channel_label_description">Descripción</string>
     <string name="channel_hint_purpose">¿De qué trata este canal?</string>
@@ -35,6 +35,12 @@
     <string name="input_channel_name_error">Ingrese el nombre del canal</string>
     <string name="input_channel_description_error">Ingrese la descripción del canal</string>
     <string name="input_channel_welcome_error">Ingrese el mensaje de bienvenida</string>
+    <string name="channel_name_hint">Nombre</string>
+    <string name="channel_description_hint">Descripción</string>
+    <string name="channel_welcome_hint">Mensaje de bienvenida</string>
+    <string name="hint_regards_channel">Saluda a los invitados! ┌( ಠ_ಠ )┘</string>
+    <string name="hint_about_channel">¿De qué trata este canal?</string>
+    <string name="hint_example_channel_name">Ej: #clientes</string>
 
     <!-- user profile view -->
     <string name="user_profile_title">Perfil de usuario</string>
