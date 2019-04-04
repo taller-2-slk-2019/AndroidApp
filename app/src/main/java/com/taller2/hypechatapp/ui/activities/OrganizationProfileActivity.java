@@ -24,7 +24,6 @@ public class OrganizationProfileActivity extends AppCompatActivity {
     TextView name, description, welcomeMessage;
     ProgressDialog dialog;
     ImageView profilePicture;
-    String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +57,7 @@ public class OrganizationProfileActivity extends AppCompatActivity {
                 name.setText(responseBody.getName());
                 description.setText(responseBody.getDescription());
                 welcomeMessage.setText(responseBody.getWelcome());
-                url = responseBody.getPicture();
+                String url = responseBody.getPicture();
                 PicassoLoader.load(getApplicationContext(), url, profilePicture);
                 dialog.dismiss();
             }

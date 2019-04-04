@@ -22,7 +22,6 @@ public class UserProfileActivity extends AppCompatActivity {
     TextView name, surname, email;
     ProgressDialog dialog;
     ImageView profilePicture;
-    String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +55,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 name.append(responseBody.getName());
                 surname.append(responseBody.getSurname());
                 email.append(responseBody.getEmail());
-                url = responseBody.getPicture();
+                String url = responseBody.getPicture();
                 PicassoLoader.load(getApplicationContext(), url, profilePicture);
                 dialog.dismiss();
             }
