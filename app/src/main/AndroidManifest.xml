@@ -17,7 +17,9 @@
          <meta-data
              android:name="com.google.android.geo.API_KEY"
              android:value="AIzaSyA_oWLv-IusRmW1x8iCh6Nqe3CkcpvT8DU" />
-        <activity android:name=".ui.activities.CreateChannelActivity"></activity>
+        <activity android:name=".ui.activities.CreateChannelActivity"
+            android:label="@string/new_channel_title">
+        </activity>
         <activity
             android:name=".ui.activities.ChannelChatActivity"
             android:label="@string/title_activity_channel_chat">
