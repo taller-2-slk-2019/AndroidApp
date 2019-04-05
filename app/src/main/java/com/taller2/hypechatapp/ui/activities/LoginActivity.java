@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -35,8 +36,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private UserService userService;
 
-    private TextView emailText;
-    private TextView passwordText;
+    private TextInputEditText emailText;
+    private TextInputEditText passwordText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
