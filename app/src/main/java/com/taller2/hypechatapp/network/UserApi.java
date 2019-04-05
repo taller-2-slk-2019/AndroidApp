@@ -7,21 +7,21 @@ import com.taller2.hypechatapp.network.model.UserLocationRequest;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.PUT;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
 
 public interface UserApi {
 
-    @GET("/users/{id}")
-    Call<User> getUser(@Path("id") Integer userId);
+    @GET("/users/profile")
+    Call<User> getUser(@Query("userToken") String userToken);
 
-    @PUT("/users/{id}")
-    Call<ConfirmationResponse> updateUser(@Path("id") Integer userId, @Body User user);
+    @PUT("/users")
+    Call<ConfirmationResponse> updateUser(@Query("userToken") String userToken, @Body User user);
 
     @POST("/users")
     Call<User> registerUser(@Body User user);
 
-    @PUT("/users/{userId}/location")
-    Call<ConfirmationResponse> updateUserLocation(@Path("userId") Integer userId, @Body UserLocationRequest userLocationRequest);
+    @PUT("/users/location")
+    Call<ConfirmationResponse> updateUserLocation(@Query("userToken") String userToken, @Body UserLocationRequest userLocationRequest);
 }
