@@ -6,8 +6,15 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -20,12 +27,6 @@ import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.services.UserService;
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +39,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText emailText;
     private TextInputEditText passwordText;
+    private Button loginButton;
+    private LoginButton fbLoginButton;
+    private ProgressBar loading;
+    private TextView errorText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +52,15 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
         userService = new UserService();
+        loading = findViewById(R.id.loading);
+        errorText = findViewById(R.id.error_text);
 
         setFacebookLogin();
         setNormalLogin();
     }
 
     private void setNormalLogin(){
-        Button loginButton = findViewById(R.id.login_button);
+        loginButton = findViewById(R.id.login_button);
         emailText = findViewById(R.id.email_text);
         passwordText = findViewById(R.id.password_text);
 
@@ -80,10 +87,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setFacebookLogin(){
-        LoginButton loginButton = findViewById(R.id.login_button_facebook);
-        loginButton.setReadPermissions("email", "public_profile");
+        fbLoginButton = findViewById(R.id.login_button_facebook);
+        fbLoginButton.setReadPermissions("email", "public_profile");
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        fbLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loading();
@@ -91,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // Callback registration
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d("Facebook login", "facebook:onSuccess:" + loginResult);
@@ -101,13 +108,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCancel() {
                 Log.d("Facebook login", "facebook:onCancel");
-                showError();
+                showError(true);
             }
 
             @Override
             public void onError(FacebookException exception) {
                 Log.d("Facebook login", "facebook:onError", exception);
-                showError();
+                showError(true);
             }
         });
     }
@@ -121,12 +128,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loading(){
-        //TODO show spinner
+        loading.setVisibility(View.VISIBLE);
+        loginButton.setClickable(false);
+        fbLoginButton.setClickable(false);
+        errorText.setText("");
     }
 
-    private void showError(){
-        //TODO do something here
-        //TODO hide spinner
+    private void showError(boolean fb){
+        if (fb){
+            errorText.setText(R.string.fb_log_in_error);
+        } else {
+            errorText.setText(R.string.log_in_error);
+        }
+
+        loading.setVisibility(View.INVISIBLE);
+        loginButton.setClickable(true);
+        fbLoginButton.setClickable(true);
         FirebaseAuthService.logOut();
     }
 
@@ -185,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
                         facebookUserLoggedIn();
                     } else {
                         Log.w("Firebase log in", "Log in failed", task.getException());
-                        showError();
+                        showError(true);
                     }
                 }
             });
@@ -202,7 +219,7 @@ public class LoginActivity extends AppCompatActivity {
                         userLoggedIn();
                     } else {
                         Log.w("Firebase log in", "Log in failed", task.getException());
-                        showError();
+                        showError(false);
                     }
                 }
             });
