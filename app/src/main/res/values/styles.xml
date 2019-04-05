@@ -27,6 +27,35 @@
         <item name="android:textColor">#000000</item>
     </style>
 
+    <!-- Profile styles -->
+    <style name="ProfileImageCreationView">
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+    </style>
+
+    <style name="ProfileTextView" parent="android:Widget.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+    <style name="ProfileItemTextView" parent="ProfileTextView">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+    </style>
+
+    <style name="ProfileResponseTextView" parent="ProfileTextView">
+        <item name="android:background">@drawable/profile_border</item>
+        <item name="android:layout_marginLeft">12dp</item>
+        <item name="android:layout_marginRight">12dp</item>
+    </style>
+
     <style name="ButtonPrimaryAction" parent="Widget.AppCompat.Button.Borderless.Colored">
 
     </style>
@@ -38,6 +67,9 @@
     <style name="SwitchCreationView" parent="Theme.AppCompat.Light">
         <item name="android:switchMinWidth">60dp</item>
         <item name="android:switchPadding">10dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/DarkGrey</item>
+        <item name="android:textStyle">bold</item>
 
         <!-- colorPrimary is used for the default action bar background -->
         <item name="colorPrimary">@color/colorPrimaryDark</item>

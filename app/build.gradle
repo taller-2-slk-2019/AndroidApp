@@ -47,6 +47,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:16.1.0'
     implementation 'com.google.firebase:firebase-auth:16.2.0'
     implementation 'com.google.firebase:firebase-core:16.0.8'
+
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

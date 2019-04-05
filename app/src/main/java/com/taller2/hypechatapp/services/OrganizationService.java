@@ -8,8 +8,6 @@ import com.taller2.hypechatapp.network.model.OrganizationRequest;
 import com.taller2.hypechatapp.network.model.TokenResponse;
 import com.taller2.hypechatapp.network.model.UserInvitationRequest;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,20 +31,6 @@ public class OrganizationService extends RestService {
 
             @Override
             public void onFailure(Call<Organization> call, Throwable t) {
-                manageFailure(SERVICE_TAG,t,client);
-            }
-        });
-    }
-
-    public void getOrganizationsByUser(Integer userId, final Client client){
-        organizationApi.getOrganizationsByUser(userId).enqueue(new Callback<List<Organization>>() {
-            @Override
-            public void onResponse(Call<List<Organization>> call, Response<List<Organization>> response) {
-                manageSuccessResponse(response,SERVICE_TAG,client);
-            }
-
-            @Override
-            public void onFailure(Call<List<Organization>> call, Throwable t) {
                 manageFailure(SERVICE_TAG,t,client);
             }
         });

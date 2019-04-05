@@ -81,7 +81,7 @@ public class ChooseLocationActivity extends FragmentActivity
         });
 
 
-        updateLocationUI();
+        getLocationPermission();
     }
 
     @Override
@@ -104,6 +104,7 @@ public class ChooseLocationActivity extends FragmentActivity
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
+            updateLocationUI();
         } else {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
@@ -141,13 +142,11 @@ public class ChooseLocationActivity extends FragmentActivity
         }
         try {
             if (mLocationPermissionGranted) {
-                map.setMyLocationEnabled(true);
                 map.getUiSettings().setMyLocationButtonEnabled(true);
+                map.setMyLocationEnabled(true);
             } else {
                 map.setMyLocationEnabled(false);
                 map.getUiSettings().setMyLocationButtonEnabled(false);
-                //mLastKnownLocation = null;
-                getLocationPermission();
             }
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());

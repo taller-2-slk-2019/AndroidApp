@@ -10,9 +10,8 @@
 
     <ImageView
         android:id="@+id/organization_picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/default_user"
+        style="@style/ProfileImageCreationView"
+        app:srcCompat="@drawable/default_image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -21,54 +20,24 @@
 
     <TextView
         android:id="@+id/organization_name_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/name_organization_profile"
-        android:textSize="16sp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="12dp"
+        style="@style/ProfileItemTextView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/organization_picture"
-        />
+        app:layout_constraintTop_toBottomOf="@id/organization_picture"/>
 
     <TextView
         android:id="@+id/organization_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/BlueAccent100"
+        style="@style/ProfileResponseTextView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/organization_name_title"
         app:layout_constraintBottom_toTopOf="@id/organization_description_title"/>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"
-        android:orientation="horizontal"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/organization_name"
-        app:layout_constraintBottom_toTopOf="@id/organization_description_title"/>
-
     <TextView
         android:id="@+id/organization_description_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/description_organization_profile"
-        android:textSize="16sp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        style="@style/ProfileItemTextView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/organization_name"
@@ -76,40 +45,16 @@
 
     <TextView
         android:id="@+id/organization_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/BlueAccent100"
+        style="@style/ProfileResponseTextView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/organization_description_title"
         app:layout_constraintBottom_toTopOf="@id/organization_welcome_message_title"/>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"
-        android:orientation="horizontal"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/organization_description"
-        app:layout_constraintBottom_toTopOf="@id/organization_welcome_message_title"/>
-
     <TextView
         android:id="@+id/organization_welcome_message_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/welcome_organization_profile"
-        android:textSize="16sp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        style="@style/ProfileItemTextView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/organization_description"
@@ -117,21 +62,16 @@
 
     <TextView
         android:id="@+id/organization_welcome_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/BlueAccent100"
+        style="@style/ProfileResponseTextView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/organization_welcome_message_title"
         app:layout_constraintBottom_toTopOf="@id/update_information"/>
 
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/update_information"
+        style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/update_organization_information_button"
