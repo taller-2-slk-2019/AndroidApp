@@ -34,6 +34,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
     private TextView email;
     private TextView password;
     private TextView name;
+    private TextView username;
     private Uri filePath;
     private String imageUrl;
     private ImagePicker imagePicker;
@@ -60,6 +61,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
         email = findViewById(R.id.email_register);
         password = findViewById(R.id.password_register);
         name = findViewById(R.id.name_register);
+        username = findViewById(R.id.username_register);
         imagePicker = new ImagePicker(this);
 
         loading = findViewById(R.id.loading);
@@ -100,6 +102,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
         User userRequest = new User();
         userRequest.setEmail(email.getText().toString());
         userRequest.setName(name.getText().toString());
+        userRequest.setUsername(username.getText().toString());
         userRequest.setToken(FirebaseAuthService.getCurrentUserToken());
         userRequest.setPicture(imageUrl);
 
@@ -150,6 +153,10 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
     private boolean validateUserInput() {
         if(TextUtils.isEmpty(email.getText().toString())){
             email.setError("Ingrese un email");
+            return false;
+        }
+        if(TextUtils.isEmpty(username.getText().toString())){
+            username.setError("Ingrese un nombre de usuario");
             return false;
         }
         if(TextUtils.isEmpty(password.getText().toString())){

@@ -19,7 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 
 public class UserProfileActivity extends AppCompatActivity {
     UserService userService;
-    TextView name, surname, email;
+    TextView name, username, email;
     ProgressDialog dialog;
     ImageView profilePicture;
 
@@ -40,7 +40,7 @@ public class UserProfileActivity extends AppCompatActivity {
         dialog.show();
 
         name = findViewById(R.id.user_name);
-        surname = findViewById(R.id.user_surname);
+        username = findViewById(R.id.user_username);
         email = findViewById(R.id.user_email);
         profilePicture = findViewById(R.id.user_picture);
 
@@ -53,7 +53,7 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onResponseSuccess(User responseBody) {
                 name.append(responseBody.getName());
-                surname.append(responseBody.getSurname());
+                username.append(responseBody.getUsername());
                 email.append(responseBody.getEmail());
                 String url = responseBody.getPicture();
                 PicassoLoader.load(getApplicationContext(), url, profilePicture);

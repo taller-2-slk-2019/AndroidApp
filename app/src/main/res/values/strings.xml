@@ -49,7 +49,7 @@
     <string name="user_profile_title">Perfil de usuario</string>
     <string name="update_user_profile_button">Actualizar\nPerfil</string>
     <string name="name_user_profile">Nombre: </string>
-    <string name="surname_user_profile">Apellido: </string>
+    <string name="username_user_profile">Usuario: </string>
     <string name="email_user_profile">Email: </string>
     <string name="organization_profile_title">Perfil de la organización</string>
     <string name="description_organization_profile">Descripción: </string>
@@ -71,5 +71,6 @@
     <string name="register_button_text">Registrarse</string>
     <string name="error_register">El nombre de usuario ya existe</string>
     <string name="error_register_firebase">El email ya existe o es inválido</string>
+    <string name="register_username">Usuario</string>
 
 </resources>
