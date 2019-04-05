@@ -1,5 +1,6 @@
 package com.taller2.hypechatapp.ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,7 +8,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,6 +23,7 @@ import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.firebase.FirebaseStorageService;
 import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.User;
+import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
 
 import androidx.annotation.NonNull;
@@ -33,6 +37,11 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
     private Uri filePath;
     private String imageUrl;
     private ImagePicker imagePicker;
+    private Button registerButton;
+
+    private TextView errorText;
+    private ProgressBar loading;
+
     private FirebaseAuth mAuth;
     private UserService userService;
 
@@ -53,7 +62,10 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
         name = findViewById(R.id.name_register);
         imagePicker = new ImagePicker(this);
 
-        Button registerButton = findViewById(R.id.register_button);
+        loading = findViewById(R.id.loading);
+        errorText = findViewById(R.id.error_text);
+
+        registerButton = findViewById(R.id.register_button);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
                             uploadProfileImage();
                         } else {
                             Log.w("Firebase register", "register failed", task.getException());
-                            showError();
+                            showError(true);
                         }
                     }
                 });
@@ -91,8 +103,6 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
         userRequest.setToken(FirebaseAuthService.getCurrentUserToken());
         userRequest.setPicture(imageUrl);
 
-        endRegister(); // TODO delete this
-        /* TODO enable this when fixed in server side (working ok in branch auth)
         userService.registerUser(userRequest, new Client<User>(){
             @Override
             public void onResponseSuccess(User responseUser) {
@@ -101,27 +111,39 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
 
             @Override
             public void onResponseError(String errorMessage) {
-                showError();
+                FirebaseAuthService.getCurrentUser().delete();
+                showError(false);
             }
 
             @Override
             public Context getContext() {
                 return RegisterActivity.this;
             }
-        });*/
+        });
 
     }
 
     private void endRegister() {
+        Toast.makeText(this, "Se ha registrado con éxito", Toast.LENGTH_LONG).show();
         finish();
     }
 
     private void loading() {
-        // TODO do something here
+        loading.setVisibility(View.VISIBLE);
+        registerButton.setClickable(false);
+        errorText.setText("");
+        imagePicker.disable();
     }
 
-    private void showError() {
-        // TODO do something here
+    private void showError(boolean firebase) {
+        if (firebase){
+            errorText.setText(R.string.error_register_firebase);
+        } else {
+            errorText.setText(R.string.error_register);
+        }
+        loading.setVisibility(View.INVISIBLE);
+        registerButton.setClickable(true);
+        imagePicker.enable();
         FirebaseAuthService.logOut();
     }
 
@@ -138,14 +160,14 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
             name.setError("Ingrese un nombre");
             return false;
         }
-        return filePath != null;
+        return imagePicker.validate();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == imagePicker.PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+        if(requestCode == ImagePicker.PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null ) {
             filePath = imagePicker.analyzeResult(this, data);
         }
@@ -159,7 +181,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
 
     @Override
     public void onFileUploadError(Exception exception) {
-        showError();
+        showError(false);
     }
 
     private void uploadProfileImage(){

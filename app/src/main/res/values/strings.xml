@@ -18,6 +18,8 @@
     <string name="new_organization_end_text">FINALIZAR</string>
     <string name="title_activity_create_channel">CreateChannelActivity</string>
 
+    <string name="image_picker_error">Debe seleccionar una imágen!</string>
+
     <string name="channel_privacy_open">Abierto</string>
     <string name="channel_privacy_closed">Cerrado</string>
 
@@ -62,11 +64,12 @@
     <string name="login_button_message">Ingresar</string>
     <string name="login_email_hint">Email</string>
     <string name="login_password_hint">Contraseña</string>
-    <string name="register_button">Registrarse</string>
     <string name="register_name">Nombre y Apellido</string>
     <string name="no_account_text"><u>No tienes cuenta? Registrate</u></string>
     <string name="fb_log_in_error">No se pudo iniciar sesión</string>
     <string name="log_in_error">Email o contraseña incorrectos</string>
-
+    <string name="register_button_text">Registrarse</string>
+    <string name="error_register">El nombre de usuario ya existe</string>
+    <string name="error_register_firebase">El email ya existe o es inválido</string>
 
 </resources>

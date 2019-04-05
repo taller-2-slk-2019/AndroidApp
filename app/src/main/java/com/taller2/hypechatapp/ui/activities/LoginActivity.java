@@ -1,5 +1,6 @@
 package com.taller2.hypechatapp.ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -26,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.User;
+import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
 
 import androidx.annotation.NonNull;
@@ -43,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     private LoginButton fbLoginButton;
     private ProgressBar loading;
     private TextView errorText;
+    private TextView noAccountText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         emailText = findViewById(R.id.email_text);
         passwordText = findViewById(R.id.password_text);
 
-        TextView noAccountText = findViewById(R.id.no_account_text);
+        noAccountText = findViewById(R.id.no_account_text);
         noAccountText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
         loading.setVisibility(View.VISIBLE);
         loginButton.setClickable(false);
         fbLoginButton.setClickable(false);
+        noAccountText.setClickable(false);
         errorText.setText("");
     }
 
@@ -144,6 +148,7 @@ public class LoginActivity extends AppCompatActivity {
         loading.setVisibility(View.INVISIBLE);
         loginButton.setClickable(true);
         fbLoginButton.setClickable(true);
+        noAccountText.setClickable(true);
         FirebaseAuthService.logOut();
     }
 
@@ -162,8 +167,6 @@ public class LoginActivity extends AppCompatActivity {
         userRequest.setToken(FirebaseAuthService.getCurrentUserToken());
         userRequest.setPicture(user.getPhotoUrl().toString());
 
-        userLoggedIn(); // TODO delete this
-        /* TODO enable this when fixed in server side (working ok in branch auth)
         userService.registerUser(userRequest, new Client<User>(){
             @Override
             public void onResponseSuccess(User responseUser) {
@@ -172,14 +175,14 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onResponseError(String errorMessage) {
-                showError();
+                showError(true);
             }
 
             @Override
             public Context getContext() {
                 return LoginActivity.this;
             }
-        });*/
+        });
 
     }
 
