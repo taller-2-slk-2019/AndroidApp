@@ -39,7 +39,7 @@ public class ChannelService extends RestService {
     }
 
     public void createChannel(ChannelRequest channelRequest, final Client client) {
-        channelApi.createChannel(channelRequest).enqueue(new Callback<Channel>() {
+        channelApi.createChannel(FirebaseAuthService.getCurrentUserToken(), channelRequest).enqueue(new Callback<Channel>() {
             @Override
             public void onResponse(Call<Channel> call, Response<Channel> response) {
                 manageSuccessResponse(response, SERVICE_TAG, client);

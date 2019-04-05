@@ -18,5 +18,5 @@ public interface ChannelApi {
                                     @Query("userToken") String userToken);
 
     @POST("/channels")
-    Call<Channel> createChannel(@Body ChannelRequest channel);
+    Call<Channel> createChannel(@Query("userToken") String userToken, @Body ChannelRequest channel);
 }

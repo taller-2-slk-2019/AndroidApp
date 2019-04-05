@@ -23,7 +23,7 @@ public interface OrganizationApi {
     Call<List<Organization>> getOrganizationsByUser(@Query("userToken")String userToken);
 
     @POST("/organizations/")
-    Call<Organization> createOrganization(@Body OrganizationRequest organization);
+    Call<Organization> createOrganization(@Query("userToken")String userToken, @Body OrganizationRequest organization);
 
     @POST("/organizations/{organizationId}/invitations")
     Call<TokenResponse> inviteUser(@Path("organizationId") Integer organizationId, @Body UserInvitationRequest userInvitationRequest);

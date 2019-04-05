@@ -1,5 +1,6 @@
 package com.taller2.hypechatapp.services;
 
+import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.Client;
@@ -37,7 +38,7 @@ public class OrganizationService extends RestService {
     }
 
     public void createOrganization(OrganizationRequest organizationRequest, final Client client){
-        organizationApi.createOrganization(organizationRequest).enqueue(new Callback<Organization>(){
+        organizationApi.createOrganization(FirebaseAuthService.getCurrentUserToken(), organizationRequest).enqueue(new Callback<Organization>(){
 
             @Override
             public void onResponse(Call<Organization> call, Response<Organization> response) {

@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    private final static String API_BASE_URL = "https://slack-taller2.herokuapp.com/";
+    private final static String API_BASE_URL = "http://10.0.2.2:3000/";
 
     private static ApiClient instance;
 
