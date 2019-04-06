@@ -45,10 +45,7 @@ public class UserProfileActivity extends AppCompatActivity {
         profilePicture = findViewById(R.id.user_picture);
 
         userService = new UserService();
-
-        int userId = 1; // TODO Reemplzar por el Id correspondiente al usuario
-
-        userService.getUser(userId, new Client<User>() {
+        userService.getUser(new Client<User>() {
 
             @Override
             public void onResponseSuccess(User responseBody) {

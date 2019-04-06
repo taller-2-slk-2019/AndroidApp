@@ -1,8 +1,9 @@
 package com.taller2.hypechatapp.network.model;
 
-import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 
 public class OrganizationRequest implements Serializable
 {
@@ -25,9 +26,7 @@ public class OrganizationRequest implements Serializable
     @SerializedName("welcome")
     @Expose
     public String welcome;
-    @SerializedName("creatorId")
-    @Expose
-    public Integer creatorId;
     private final static long serialVersionUID = -581573439418199621L;
+
 
 }

@@ -37,8 +37,7 @@ public class ChannelChatActivity extends AppCompatActivity implements INavigatio
     private static final int CREATE_ORG_REQUEST_CODE = 1;
     private static final int RESULT_CODE = 300;
 
-    private static final Integer USER_ID = 1; //TODO: harcoded values, change me!
-    private static final Integer ORG_ID = 1;
+    private static final Integer ORG_ID = 1; //TODO: harcoded values, change me!
 
     private Toolbar toolbar;
     private NavigationAdapter navigationAdapter;
@@ -87,7 +86,7 @@ public class ChannelChatActivity extends AppCompatActivity implements INavigatio
         ProgressBar loadingView = findViewById(R.id.loading_main);
         loadingView.setVisibility(View.VISIBLE);
 
-        navigationMenuService.getNavigationMenuData(ORG_ID, USER_ID, new Client<List<Comparable>>() {
+        navigationMenuService.getNavigationMenuData(ORG_ID, new Client<List<Comparable>>() {
             @Override
             public void onResponseSuccess(List<Comparable> navigationUserInfo) {
                 ProgressBar loadingView = findViewById(R.id.loading_main);

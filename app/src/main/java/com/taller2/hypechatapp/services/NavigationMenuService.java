@@ -1,5 +1,6 @@
 package com.taller2.hypechatapp.services;
 
+import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.ApiClient;
@@ -26,9 +27,10 @@ public class NavigationMenuService extends RestService {
         this.channelApi = ApiClient.getInstance().getChannelClient(true);
     }
 
-    public void getNavigationMenuData(Integer organizationId, Integer userId, final Client client) {
-        Call<List<Organization>> organizations = organizationApi.getOrganizationsByUser(userId);
-        Call<List<Channel>> channels = channelApi.getChannels(organizationId, userId);
+    public void getNavigationMenuData(Integer organizationId, final Client client) {
+        String userToken = FirebaseAuthService.getCurrentUserToken();
+        Call<List<Organization>> organizations = organizationApi.getOrganizationsByUser(userToken);
+        Call<List<Channel>> channels = channelApi.getChannels(organizationId, userToken);
 
         List<Call> apiCalls = new ArrayList<>();
         apiCalls.add(organizations);
@@ -57,7 +59,7 @@ public class NavigationMenuService extends RestService {
         }
 
         try {
-            apiCalls.await(2, TimeUnit.SECONDS);
+            apiCalls.await(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

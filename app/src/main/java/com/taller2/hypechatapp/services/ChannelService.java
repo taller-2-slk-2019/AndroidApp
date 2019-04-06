@@ -1,6 +1,7 @@
 package com.taller2.hypechatapp.services;
 
 
+import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.ChannelApi;
@@ -23,8 +24,8 @@ public class ChannelService extends RestService {
         this.channelApi = ApiClient.getInstance().getChannelClient();
     }
 
-    public void getChannelsByOrganizationAndUser(Integer organizationId, Integer userId, final Client client) {
-        channelApi.getChannels(organizationId, userId).enqueue(new Callback<List<Channel>>() {
+    public void getChannelsByOrganizationAndUser(Integer organizationId, final Client client) {
+        channelApi.getChannels(organizationId, FirebaseAuthService.getCurrentUserToken()).enqueue(new Callback<List<Channel>>() {
             @Override
             public void onResponse(Call<List<Channel>> call, Response<List<Channel>> response) {
                 manageSuccessResponse(response, SERVICE_TAG, client);
@@ -38,7 +39,7 @@ public class ChannelService extends RestService {
     }
 
     public void createChannel(ChannelRequest channelRequest, final Client client) {
-        channelApi.createChannel(channelRequest).enqueue(new Callback<Channel>() {
+        channelApi.createChannel(FirebaseAuthService.getCurrentUserToken(), channelRequest).enqueue(new Callback<Channel>() {
             @Override
             public void onResponse(Call<Channel> call, Response<Channel> response) {
                 manageSuccessResponse(response, SERVICE_TAG, client);
