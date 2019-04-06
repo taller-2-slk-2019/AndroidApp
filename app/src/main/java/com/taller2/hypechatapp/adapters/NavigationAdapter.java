@@ -196,8 +196,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Ba
         @Override
         public void bind(Channel channel) {
             displayName.setText(channel.getName());
-            boolean isPublic = channel.getVisibility().equals("public") ? true : false;
-            iconPrivacy.setImageResource(isPublic ? R.drawable.ic_hashtag : R.drawable.ic_private_channel);
+            iconPrivacy.setImageResource(channel.getIsPublic() ? R.drawable.ic_hashtag : R.drawable.ic_private_channel);
         }
 
         @Override

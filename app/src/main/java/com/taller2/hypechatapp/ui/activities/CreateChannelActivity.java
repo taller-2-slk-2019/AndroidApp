@@ -165,7 +165,7 @@ public class CreateChannelActivity extends AppCompatActivity {
         ChannelRequest channelRequest = new ChannelRequest();
         channelRequest.name = channelName.getText().toString();
         channelRequest.description = description.getText().toString();
-        channelRequest.visibility = channelPrivacy.isChecked() ? "public" : "private";
+        channelRequest.isPublic = channelPrivacy.isChecked();
         channelRequest.welcome = welcome.getText().toString();
         channelRequest.organizationId = 1; //TODO change this
 

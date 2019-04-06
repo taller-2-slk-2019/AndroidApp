@@ -13,9 +13,9 @@ public class Channel implements Serializable, NavigationDrawerShowable {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("visibility")
+    @SerializedName("isPublic")
     @Expose
-    private String visibility;
+    private Boolean isPublic;
     @SerializedName("description")
     @Expose
     private String description;
@@ -45,12 +45,12 @@ public class Channel implements Serializable, NavigationDrawerShowable {
         this.name = name;
     }
 
-    public String getVisibility() {
-        return visibility;
+    public Boolean getIsPublic() {
+        return isPublic;
     }
 
-    public void setVisibility(String visibility) {
-        this.visibility = visibility;
+    public void setIsPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
     }
 
     public String getDescription() {
