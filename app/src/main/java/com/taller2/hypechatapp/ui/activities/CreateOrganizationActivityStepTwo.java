@@ -85,9 +85,6 @@ public class CreateOrganizationActivityStepTwo extends AppCompatActivity
                 if(!validateUserInput(welcomeMessageInputText))
                     return;
 
-                /*TODO Set the user id*/
-                newOrganization.creatorId=1;
-
                 newOrganization.welcome=welcomeMessageInputText.getText().toString();
 
                 ProgressBar loadingView = findViewById(R.id.loading_create_orga_step2);

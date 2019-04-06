@@ -5,6 +5,5 @@ public class ChannelRequest {
     public String visibility;
     public String description;
     public String welcome;
-    public Integer creatorId;
     public Integer organizationId;
 }

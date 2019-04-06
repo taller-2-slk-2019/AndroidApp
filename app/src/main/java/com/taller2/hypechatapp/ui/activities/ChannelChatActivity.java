@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.INavigation;
 import com.taller2.hypechatapp.adapters.NavigationAdapter;
+import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.NavigationDrawerShowable;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.NavigationMenuService;
@@ -29,7 +30,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.taller2.hypechatapp.ui.model.NavigationActionItem.ActionType.CREATE_CHANNEL;
 import static com.taller2.hypechatapp.ui.model.NavigationActionItem.ActionType.CREATE_ORGANIZATION;
 
 public class ChannelChatActivity extends AppCompatActivity implements INavigation {
@@ -37,8 +37,7 @@ public class ChannelChatActivity extends AppCompatActivity implements INavigatio
     private static final int CREATE_ORG_REQUEST_CODE = 1;
     private static final int RESULT_CODE = 300;
 
-    private static final Integer USER_ID = 1; //TODO: harcoded values, change me!
-    private static final Integer ORG_ID = 1;
+    private static final Integer ORG_ID = 1; //TODO: harcoded values, change me!
 
     private Toolbar toolbar;
     private NavigationAdapter navigationAdapter;
@@ -87,7 +86,7 @@ public class ChannelChatActivity extends AppCompatActivity implements INavigatio
         ProgressBar loadingView = findViewById(R.id.loading_main);
         loadingView.setVisibility(View.VISIBLE);
 
-        navigationMenuService.getNavigationMenuData(ORG_ID, USER_ID, new Client<List<Comparable>>() {
+        navigationMenuService.getNavigationMenuData(ORG_ID, new Client<List<Comparable>>() {
             @Override
             public void onResponseSuccess(List<Comparable> navigationUserInfo) {
                 ProgressBar loadingView = findViewById(R.id.loading_main);
@@ -124,6 +123,13 @@ public class ChannelChatActivity extends AppCompatActivity implements INavigatio
 
     private void viewOrganizationProfile() {
         Intent intent = new Intent(this, OrganizationProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void logOut(){
+        FirebaseAuthService.logOut();
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
@@ -178,6 +184,10 @@ public class ChannelChatActivity extends AppCompatActivity implements INavigatio
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_settings:
+                return true;
+
+            case R.id.action_log_out:
+                logOut();
                 return true;
 
             case R.id.user_profile:

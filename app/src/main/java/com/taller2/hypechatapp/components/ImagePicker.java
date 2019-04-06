@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
 import com.taller2.hypechatapp.R;
@@ -18,8 +19,15 @@ public class ImagePicker {
 
     public static final int PICK_IMAGE_REQUEST = 71;
 
+    private ImageView profileImageView;
+    private MaterialButton pickImageButton;
+    private Uri filePath;
+    private TextView errorText;
+
     public ImagePicker(final AppCompatActivity activity){
-        MaterialButton pickImageButton = activity.findViewById(R.id.pick_profile_image_button);
+        errorText = activity.findViewById(R.id.profile_image_error);
+
+        pickImageButton = activity.findViewById(R.id.pick_profile_image_button);
         pickImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -27,8 +35,8 @@ public class ImagePicker {
             }
         });
 
-        ImageView pickImageView = activity.findViewById(R.id.profile_image_view);
-        pickImageView.setOnClickListener(new View.OnClickListener() {
+        profileImageView = activity.findViewById(R.id.profile_image_view);
+        profileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chooseImage(activity);
@@ -40,7 +48,7 @@ public class ImagePicker {
         activity.startActivityForResult(getImagePickerIntent(), PICK_IMAGE_REQUEST);
     }
 
-    public Intent getImagePickerIntent(){
+    private Intent getImagePickerIntent(){
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -49,20 +57,13 @@ public class ImagePicker {
 
 
     public Uri analyzeResult(AppCompatActivity activity, Intent data) {
-        Uri filePath = data.getData();
+        filePath = data.getData();
         try {
             Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), filePath);
 
-            ImageView profileImageView = activity.findViewById(R.id.profile_image_view);
-            if (profileImageView != null) {
-                profileImageView.setImageBitmap(profileImageBitmap);
-                profileImageView.setVisibility(View.VISIBLE);
-            }
-
-            MaterialButton pickImageButton = activity.findViewById(R.id.pick_profile_image_button);
-            if (pickImageButton != null) {
-                pickImageButton.setVisibility(View.INVISIBLE);
-            }
+            profileImageView.setImageBitmap(profileImageBitmap);
+            profileImageView.setVisibility(View.VISIBLE);
+            pickImageButton.setVisibility(View.INVISIBLE);
         }
         catch (IOException e)
         {
@@ -70,5 +71,21 @@ public class ImagePicker {
         }
 
         return filePath;
+    }
+
+    public void disable() {
+        profileImageView.setClickable(false);
+        pickImageButton.setClickable(false);
+    }
+
+    public void enable() {
+        profileImageView.setClickable(true);
+        pickImageButton.setClickable(true);
+    }
+
+    public boolean validate(){
+        boolean valid = filePath != null;
+        errorText.setVisibility(valid ? View.INVISIBLE : View.VISIBLE);
+        return valid;
     }
 }

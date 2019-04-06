@@ -5,6 +5,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="action_log_out">Cerrar Sesión</string>
     <string name="title_activity_channel_chat">Hypechat</string>
     <string name="app_name">Hypechat</string>
     <string name="new_organization_title">Nueva Organización</string>
@@ -16,6 +17,8 @@
     <string name="new_organization_next_text">SIGUIENTE</string>
     <string name="new_organization_end_text">FINALIZAR</string>
     <string name="title_activity_create_channel">CreateChannelActivity</string>
+
+    <string name="image_picker_error">Debe seleccionar una imágen!</string>
 
     <string name="channel_privacy_open">Abierto</string>
     <string name="channel_privacy_closed">Cerrado</string>
@@ -46,12 +49,28 @@
     <string name="user_profile_title">Perfil de usuario</string>
     <string name="update_user_profile_button">Actualizar\nPerfil</string>
     <string name="name_user_profile">Nombre: </string>
-    <string name="surname_user_profile">Apellido: </string>
+    <string name="username_user_profile">Usuario: </string>
     <string name="email_user_profile">Email: </string>
     <string name="organization_profile_title">Perfil de la organización</string>
     <string name="description_organization_profile">Descripción: </string>
     <string name="name_organization_profile">Nombre de la organización: </string>
     <string name="welcome_organization_profile">Mensaje de bienvenida: </string>
     <string name="update_organization_information_button">ACTUALIZAR\nINFORMACIÓN</string>
+
+    <!-- login and register view -->
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="facebook_app_id">318283042209713</string>
+    <string name="fb_login_protocol_scheme">fb318283042209713</string>
+    <string name="login_button_message">Ingresar</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Contraseña</string>
+    <string name="register_name">Nombre y Apellido</string>
+    <string name="no_account_text"><u>No tienes cuenta? Registrate</u></string>
+    <string name="fb_log_in_error">No se pudo iniciar sesión</string>
+    <string name="log_in_error">Email o contraseña incorrectos</string>
+    <string name="register_button_text">Registrarse</string>
+    <string name="error_register">El nombre de usuario ya existe</string>
+    <string name="error_register_firebase">El email ya existe o es inválido</string>
+    <string name="register_username">Usuario</string>
 
 </resources>

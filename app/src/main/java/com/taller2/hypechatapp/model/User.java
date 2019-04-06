@@ -12,12 +12,15 @@ public class User implements Serializable {
     @SerializedName("id")
     @Expose
     private Integer id;
+    @SerializedName("token")
+    @Expose
+    private String token;
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("surname")
+    @SerializedName("username")
     @Expose
-    private String surname;
+    private String username;
     @SerializedName("email")
     @Expose
     private String email;
@@ -57,6 +60,14 @@ public class User implements Serializable {
         this.id = id;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public String getName() {
         return name;
     }
@@ -65,12 +76,12 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getUsername() {
+        return username;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
