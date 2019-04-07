@@ -17,10 +17,14 @@
          <meta-data
              android:name="com.google.android.geo.API_KEY"
              android:value="AIzaSyA_oWLv-IusRmW1x8iCh6Nqe3CkcpvT8DU" />
-        <activity android:name=".ui.activities.CreateChannelActivity"></activity>
+        <activity android:name=".ui.activities.CreateChannelActivity"
+            android:label="@string/new_channel_title">
+        </activity>
+        <activity android:name=".ui.activities.RegisterActivity">
+        </activity>
         <activity
-            android:name=".ui.activities.ChannelChatActivity"
-            android:label="@string/title_activity_channel_chat">
+            android:name=".ui.activities.LoginActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,20 +32,46 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.activities.ChannelChatActivity"
+            android:label="@string/title_activity_channel_chat" />
+        <activity
             android:name=".ui.activities.CreateOrganizationActivityStepOne"
             android:label="@string/new_organization_title"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activities.CreateOrganizationActivityStepTwo"
             android:label="@string/new_organization_title"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.activities.UserProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.UserProfileActivity"
             android:label="@string/user_profile_title"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.activities.OrganizationProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.OrganizationProfileActivity"
             android:label="@string/organization_profile_title"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity android:name=".ui.activities.ChooseLocationActivity" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

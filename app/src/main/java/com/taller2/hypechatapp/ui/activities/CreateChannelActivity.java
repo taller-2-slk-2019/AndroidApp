@@ -3,13 +3,16 @@ package com.taller2.hypechatapp.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Switch;
+import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.network.Client;
@@ -17,13 +20,14 @@ import com.taller2.hypechatapp.network.model.ChannelRequest;
 import com.taller2.hypechatapp.services.ChannelService;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class CreateChannelActivity extends AppCompatActivity {
 
     private ChannelService channelService;
-    private EditText channelName, description, welcome;
+    private TextInputEditText channelName, description, welcome;
     private Switch channelPrivacy;
-    private Button btnCreate, btnCancel;
+    private Button btnCreate;
     private ProgressBar loading;
 
     @Override
@@ -38,17 +42,51 @@ public class CreateChannelActivity extends AppCompatActivity {
     }
 
     private void setUpView() {
-        channelName = findViewById(R.id.txt_name);
-        description = findViewById(R.id.txt_description);
-        welcome = findViewById(R.id.txt_welcome);
-        channelPrivacy = findViewById(R.id.swt_privacy);
+        Toolbar toolbar = findViewById(R.id.toolbar_create_channel);
+        setSupportActionBar(toolbar);
+
+        channelName = findViewById(R.id.edit_channel_name);
+        description = findViewById(R.id.edit_channel_description);
+        welcome = findViewById(R.id.edit_channel_welcome);
         channelPrivacy = findViewById(R.id.swt_privacy);
         btnCreate = findViewById(R.id.btn_create);
-        btnCancel = findViewById(R.id.btn_cancel);
         loading = findViewById(R.id.loading);
     }
 
     private void addUIBehaviour() {
+        channelName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    ((EditText)v).setHint(getString(R.string.hint_example_channel_name));
+                } else {
+                    ((EditText)v).setHint("");
+                }
+            }
+        });
+
+        description.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    ((EditText)v).setHint(getString(R.string.hint_about_channel));
+                } else {
+                    ((EditText)v).setHint("");
+                }
+            }
+        });
+
+        welcome.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    ((EditText)v).setHint(getString(R.string.hint_regards_channel));
+                } else {
+                    ((EditText)v).setHint("");
+                }
+            }
+        });
+
         channelPrivacy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -63,48 +101,73 @@ public class CreateChannelActivity extends AppCompatActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (!isValidForm(channelName, description, welcome)) {
+                    return;
+                }
+
                 loading.setVisibility(View.VISIBLE);
                 ChannelRequest channelRequest = createRequest();
                 channelService.createChannel(channelRequest, new Client<Channel>() {
                     @Override
                     public void onResponseSuccess(Channel responseBody) {
                         loading.setVisibility(View.INVISIBLE);
+                        Toast.makeText(getContext(), "Woow! Canal creado con el id: " + responseBody.getId(), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(CreateChannelActivity.this, ChannelChatActivity.class);
                         startActivity(intent);
+                        finish();
                     }
 
                     @Override
                     public void onResponseError(String errorMessage) {
-                        //TODO: add generic error message
                         loading.setVisibility(View.INVISIBLE);
+                        String textToShow;
+                        if (!TextUtils.isEmpty(errorMessage)) {
+                            textToShow = errorMessage;
+                        } else {
+                            textToShow = "No fue posible crear un canal. Intente más tarde.";
+                        }
+                        Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
+                        finish();
                     }
 
                     @Override
                     public Context getContext() {
-                        return null;
+                        return CreateChannelActivity.this;
                     }
                 });
 
             }
         });
+    }
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CreateChannelActivity.this, ChannelChatActivity.class);
-                startActivity(intent);
-            }
-        });
+    private boolean isValidForm(TextInputEditText channelName, EditText description, EditText welcome) {
+        if (TextUtils.isEmpty(channelName.getText().toString())) {
+            channelName.setError(getString(R.string.input_channel_name_error));
+            return false;
+        }
+
+        if (TextUtils.isEmpty(description.getText().toString())) {
+            description.setError(getString(R.string.input_channel_description_error));
+            return false;
+        }
+
+        if (TextUtils.isEmpty(welcome.getText().toString())) {
+            welcome.setError(getString(R.string.input_channel_welcome_error));
+            return false;
+        }
+
+        return true;
+
     }
 
     private ChannelRequest createRequest() {
         ChannelRequest channelRequest = new ChannelRequest();
         channelRequest.name = channelName.getText().toString();
         channelRequest.description = description.getText().toString();
-        channelRequest.visibility = channelPrivacy.isChecked() ? "Visible" : "Privado";
+        channelRequest.isPublic = channelPrivacy.isChecked();
         channelRequest.welcome = welcome.getText().toString();
-        channelRequest.organizationId = 1;
-        channelRequest.creatorId = 1;
+        channelRequest.organizationId = 1; //TODO change this
 
         return channelRequest;
     }

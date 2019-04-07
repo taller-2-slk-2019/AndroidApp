@@ -5,6 +5,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="action_log_out">Cerrar Sesión</string>
     <string name="title_activity_channel_chat">Hypechat</string>
     <string name="app_name">Hypechat</string>
     <string name="new_organization_title">Nueva Organización</string>
@@ -17,6 +18,8 @@
     <string name="new_organization_end_text">FINALIZAR</string>
     <string name="title_activity_create_channel">CreateChannelActivity</string>
 
+    <string name="image_picker_error">Debe seleccionar una imágen!</string>
+
     <string name="channel_privacy_open">Abierto</string>
     <string name="channel_privacy_closed">Cerrado</string>
 
@@ -25,24 +28,49 @@
 
     <!-- channel creation view -->
     <string name="channel_description">Los canales son el lugar donde se comunican los miembros de la organización</string>
-    <string name="btn_create_channel">Crear un canal</string>
+    <string name="new_channel_title">Nuevo Canal</string>
     <string name="example_channel_name">Ej clientes</string>
     <string name="channel_label_description">Descripción</string>
     <string name="channel_hint_purpose">¿De qué trata este canal?</string>
     <string name="btn_channel_create">Crear canal</string>
     <string name="btn_channel_cancel">Cancelar</string>
     <string name="channel_label_welcome">Mensaje de bienvenida</string>
+    <string name="input_channel_name_error">Ingrese el nombre del canal</string>
+    <string name="input_channel_description_error">Ingrese la descripción del canal</string>
+    <string name="input_channel_welcome_error">Ingrese el mensaje de bienvenida</string>
+    <string name="channel_name_hint">Nombre</string>
+    <string name="channel_description_hint">Descripción</string>
+    <string name="channel_welcome_hint">Mensaje de bienvenida</string>
+    <string name="hint_regards_channel">Saluda a los invitados! ┌( ಠ_ಠ )┘</string>
+    <string name="hint_about_channel">¿De qué trata este canal?</string>
+    <string name="hint_example_channel_name">Ej: #clientes</string>
 
     <!-- user profile view -->
     <string name="user_profile_title">Perfil de usuario</string>
     <string name="update_user_profile_button">Actualizar\nPerfil</string>
-    <string name="name_user_profile"><b><i>Nombre: </i></b></string>
-    <string name="surname_user_profile"><b><i>Apellido: </i></b></string>
-    <string name="email_user_profile"><b><i>Email: </i></b></string>
+    <string name="name_user_profile">Nombre: </string>
+    <string name="username_user_profile">Usuario: </string>
+    <string name="email_user_profile">Email: </string>
     <string name="organization_profile_title">Perfil de la organización</string>
-    <string name="description_organization_profile"><b><i>Descripción: </i></b></string>
-    <string name="name_organization_profile"><b><i>Nombre de la organización: </i></b></string>
-    <string name="welcome_organization_profile"><b><i>Mensaje de bienvenida: </i></b></string>
+    <string name="description_organization_profile">Descripción: </string>
+    <string name="name_organization_profile">Nombre de la organización: </string>
+    <string name="welcome_organization_profile">Mensaje de bienvenida: </string>
     <string name="update_organization_information_button">ACTUALIZAR\nINFORMACIÓN</string>
+
+    <!-- login and register view -->
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="facebook_app_id">318283042209713</string>
+    <string name="fb_login_protocol_scheme">fb318283042209713</string>
+    <string name="login_button_message">Ingresar</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Contraseña</string>
+    <string name="register_name">Nombre y Apellido</string>
+    <string name="no_account_text"><u>No tienes cuenta? Registrate</u></string>
+    <string name="fb_log_in_error">No se pudo iniciar sesión</string>
+    <string name="log_in_error">Email o contraseña incorrectos</string>
+    <string name="register_button_text">Registrarse</string>
+    <string name="error_register">El nombre de usuario ya existe</string>
+    <string name="error_register_firebase">El email ya existe o es inválido</string>
+    <string name="register_username">Usuario</string>
 
 </resources>

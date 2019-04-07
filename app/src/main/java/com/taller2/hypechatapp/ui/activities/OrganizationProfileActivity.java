@@ -5,9 +5,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
+import com.taller2.hypechatapp.components.PicassoLoader;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.OrganizationService;
@@ -19,6 +23,7 @@ public class OrganizationProfileActivity extends AppCompatActivity {
     OrganizationService organizationService;
     TextView name, description, welcomeMessage;
     ProgressDialog dialog;
+    ImageView profilePicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,7 @@ public class OrganizationProfileActivity extends AppCompatActivity {
         name = findViewById(R.id.organization_name);
         description = findViewById(R.id.organization_description);
         welcomeMessage = findViewById(R.id.organization_welcome_message);
+        profilePicture = findViewById(R.id.organization_picture);
 
         organizationService = new OrganizationService();
 
@@ -51,13 +57,23 @@ public class OrganizationProfileActivity extends AppCompatActivity {
                 name.setText(responseBody.getName());
                 description.setText(responseBody.getDescription());
                 welcomeMessage.setText(responseBody.getWelcome());
+                String url = responseBody.getPicture();
+                PicassoLoader.load(getApplicationContext(), url, profilePicture);
                 dialog.dismiss();
             }
 
             @Override
             public void onResponseError(String errorMessage) {
-                dialog.dismiss();
-                setAlertDialog();
+                //dialog.dismiss();
+                //setAlertDialog();
+                String textToShow;
+                if(!TextUtils.isEmpty(errorMessage)){
+                    textToShow=errorMessage;
+                } else {
+                    textToShow="No fue posible obtener el perfil de la organización. Intente más tarde.";
+                }
+                Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
+                finish();
             }
 
             @Override

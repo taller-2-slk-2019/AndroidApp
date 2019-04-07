@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Channel implements Serializable {
+public class Channel implements Serializable, NavigationDrawerShowable {
 
     @SerializedName("id")
     @Expose
@@ -13,9 +13,9 @@ public class Channel implements Serializable {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("visibility")
+    @SerializedName("isPublic")
     @Expose
-    private String visibility;
+    private Boolean isPublic;
     @SerializedName("description")
     @Expose
     private String description;
@@ -45,12 +45,12 @@ public class Channel implements Serializable {
         this.name = name;
     }
 
-    public String getVisibility() {
-        return visibility;
+    public Boolean getIsPublic() {
+        return isPublic;
     }
 
-    public void setVisibility(String visibility) {
-        this.visibility = visibility;
+    public void setIsPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
     }
 
     public String getDescription() {
@@ -85,4 +85,18 @@ public class Channel implements Serializable {
         this.createdAt = createdAt;
     }
 
+    @Override
+    public int compareTo(NavigationDrawerShowable that) {
+        if (this == that) return 0;
+        if (that.getType().equals(NavigationDrawerItemType.ORGANIZATIONS)) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    @Override
+    public NavigationDrawerItemType getType() {
+        return NavigationDrawerItemType.CHANNELS;
+    }
 }

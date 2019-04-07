@@ -25,12 +25,12 @@ public class ChannelApiTest {
     @Test
     public void createChannel() {
         ChannelRequest channelRequest=new ChannelRequest();
-        channelRequest.setName("Nuevo Canal");
-        channelRequest.setCreatorId(1);
-        channelRequest.setDescription("Descripcion Canal");
-        channelRequest.setOrganizationId(1);
-        channelRequest.setVisibility("public");
-        channelRequest.setWelcome("Mensaje Bienvenida");
+        channelRequest.name = "Nuevo Canal";
+        channelRequest.creatorId = 1;
+        channelRequest.description = "Descripcion Canal";
+        channelRequest.organizationId = 1;
+        channelRequest.visibility = "public";
+        channelRequest.welcome = "Mensaje Bienvenida";
         try {
             Response<Channel> response=channelApi.createChannel(channelRequest).execute();
             Assert.assertEquals("Nuevo Canal",response.body().getName());

@@ -1,0 +1,91 @@
+package com.taller2.hypechatapp.components;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.android.material.button.MaterialButton;
+import com.taller2.hypechatapp.R;
+
+import java.io.IOException;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class ImagePicker {
+
+    public static final int PICK_IMAGE_REQUEST = 71;
+
+    private ImageView profileImageView;
+    private MaterialButton pickImageButton;
+    private Uri filePath;
+    private TextView errorText;
+
+    public ImagePicker(final AppCompatActivity activity){
+        errorText = activity.findViewById(R.id.profile_image_error);
+
+        pickImageButton = activity.findViewById(R.id.pick_profile_image_button);
+        pickImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage(activity);
+            }
+        });
+
+        profileImageView = activity.findViewById(R.id.profile_image_view);
+        profileImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage(activity);
+            }
+        });
+    }
+
+    private void chooseImage(AppCompatActivity activity) {
+        activity.startActivityForResult(getImagePickerIntent(), PICK_IMAGE_REQUEST);
+    }
+
+    private Intent getImagePickerIntent(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        return Intent.createChooser(intent, "Seleccionar Imagen");
+    }
+
+
+    public Uri analyzeResult(AppCompatActivity activity, Intent data) {
+        filePath = data.getData();
+        try {
+            Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), filePath);
+
+            profileImageView.setImageBitmap(profileImageBitmap);
+            profileImageView.setVisibility(View.VISIBLE);
+            pickImageButton.setVisibility(View.INVISIBLE);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        return filePath;
+    }
+
+    public void disable() {
+        profileImageView.setClickable(false);
+        pickImageButton.setClickable(false);
+    }
+
+    public void enable() {
+        profileImageView.setClickable(true);
+        pickImageButton.setClickable(true);
+    }
+
+    public boolean validate(){
+        boolean valid = filePath != null;
+        errorText.setVisibility(valid ? View.INVISIBLE : View.VISIBLE);
+        return valid;
+    }
+}

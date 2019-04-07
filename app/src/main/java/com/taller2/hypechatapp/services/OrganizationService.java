@@ -1,5 +1,6 @@
 package com.taller2.hypechatapp.services;
 
+import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.Client;
@@ -7,8 +8,6 @@ import com.taller2.hypechatapp.network.OrganizationApi;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
 import com.taller2.hypechatapp.network.model.TokenResponse;
 import com.taller2.hypechatapp.network.model.UserInvitationRequest;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,22 +37,8 @@ public class OrganizationService extends RestService {
         });
     }
 
-    public void getOrganizationsByUser(Integer userId, final Client client){
-        organizationApi.getOrganizationsByUser(userId).enqueue(new Callback<List<Organization>>() {
-            @Override
-            public void onResponse(Call<List<Organization>> call, Response<List<Organization>> response) {
-                manageSuccessResponse(response,SERVICE_TAG,client);
-            }
-
-            @Override
-            public void onFailure(Call<List<Organization>> call, Throwable t) {
-                manageFailure(SERVICE_TAG,t,client);
-            }
-        });
-    }
-
     public void createOrganization(OrganizationRequest organizationRequest, final Client client){
-        organizationApi.createOrganization(organizationRequest).enqueue(new Callback<Organization>(){
+        organizationApi.createOrganization(FirebaseAuthService.getCurrentUserToken(), organizationRequest).enqueue(new Callback<Organization>(){
 
             @Override
             public void onResponse(Call<Organization> call, Response<Organization> response) {
