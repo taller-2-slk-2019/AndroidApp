@@ -47,7 +47,8 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/username_register"
-            style="@style/CreationForm.TextInputLayout.Text" />
+            style="@style/CreationForm.TextInputLayout.Text"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -58,6 +59,7 @@
         android:ems="10"
         android:hint="@string/login_password_hint"
         android:inputType="textPassword"
+        android:colorControlActivated="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +67,6 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password_register"
-            android:textColorHint="@color/colorPrimary"
             style="@style/CreationForm.TextInputLayout.Text"
             android:inputType="textPassword" />
 

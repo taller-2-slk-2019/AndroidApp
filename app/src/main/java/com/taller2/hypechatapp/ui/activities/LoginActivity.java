@@ -135,10 +135,11 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setClickable(false);
         fbLoginButton.setClickable(false);
         noAccountText.setClickable(false);
-        errorText.setText("");
+        errorText.setVisibility(View.INVISIBLE);
     }
 
     private void showError(boolean fb){
+        errorText.setVisibility(View.VISIBLE);
         if (fb){
             errorText.setText(R.string.fb_log_in_error);
         } else {

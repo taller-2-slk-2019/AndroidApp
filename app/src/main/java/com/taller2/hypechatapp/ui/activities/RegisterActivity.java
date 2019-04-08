@@ -134,11 +134,12 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
     private void loading() {
         loading.setVisibility(View.VISIBLE);
         registerButton.setClickable(false);
-        errorText.setText("");
+        errorText.setVisibility(View.INVISIBLE);
         imagePicker.disable();
     }
 
     private void showError(boolean firebase) {
+        errorText.setVisibility(View.VISIBLE);
         if (firebase){
             errorText.setText(R.string.error_register_firebase);
         } else {
