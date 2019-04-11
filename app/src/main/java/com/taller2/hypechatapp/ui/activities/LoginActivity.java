@@ -154,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void userLoggedIn(){
         Log.i("LoginActivity","User is logged in with token: " + FirebaseAuthService.getCurrentUserToken());
-        Intent intent = new Intent(this, ChannelChatActivity.class);
+        Intent intent = new Intent(this, ChatActivity.class);
         startActivity(intent);
         finish();
     }
