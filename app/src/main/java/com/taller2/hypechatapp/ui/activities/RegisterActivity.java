@@ -8,12 +8,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,6 +27,8 @@ import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
+
+import org.w3c.dom.Text;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,12 +43,15 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
     private String imageUrl;
     private ImagePicker imagePicker;
     private Button registerButton;
+    private MaterialButton pickImageButton;
+    private ImageView profileImageView;
 
     private TextView errorText;
     private ProgressBar loading;
 
     private FirebaseAuth mAuth;
     private UserService userService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +69,12 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
         password = findViewById(R.id.password_register);
         name = findViewById(R.id.name_register);
         username = findViewById(R.id.username_register);
-        imagePicker = new ImagePicker(this);
+        pickImageButton = findViewById(R.id.pick_profile_image_button);
+        profileImageView = findViewById(R.id.profile_image_view);
+        errorText = findViewById(R.id.error_text);
+        imagePicker = new ImagePicker(this, pickImageButton, profileImageView, errorText);
 
         loading = findViewById(R.id.loading);
-        errorText = findViewById(R.id.error_text);
 
         registerButton = findViewById(R.id.register_button);
         registerButton.setOnClickListener(new View.OnClickListener() {

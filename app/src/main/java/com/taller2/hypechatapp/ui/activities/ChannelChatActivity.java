@@ -139,7 +139,7 @@ public class ChannelChatActivity extends AppCompatActivity implements INavigatio
     }
 
     private void createNewOrganization() {
-        Intent intent = new Intent(this, CreateOrganizationActivityStepOne.class);
+        Intent intent = new Intent(this, CreateOrganizationActivity.class);
         startActivity(intent);
     }
 
