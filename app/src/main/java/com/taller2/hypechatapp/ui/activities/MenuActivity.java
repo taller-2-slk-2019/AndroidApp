@@ -32,7 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import static com.taller2.hypechatapp.ui.model.NavigationActionItem.ActionType.CREATE_ORGANIZATION;
 
-public class ChannelChatActivity extends AppCompatActivity implements INavigation {
+public abstract class MenuActivity extends AppCompatActivity implements INavigation {
 
     private static final int CREATE_ORG_REQUEST_CODE = 1;
     private static final int RESULT_CODE = 300;
@@ -48,8 +48,6 @@ public class ChannelChatActivity extends AppCompatActivity implements INavigatio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         navigationMenuService = new NavigationMenuService();
-
-        setContentView(R.layout.activity_main);
 
         setupUI();
         setUpRecyclerView();
@@ -111,7 +109,7 @@ public class ChannelChatActivity extends AppCompatActivity implements INavigatio
 
             @Override
             public Context getContext() {
-                return ChannelChatActivity.this;
+                return MenuActivity.this;
             }
         });
     }

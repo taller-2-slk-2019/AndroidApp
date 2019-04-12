@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.ChannelChatActivity"
+            android:name=".ui.activities.ChatActivity"
             android:label="@string/title_activity_channel_chat" />
         <activity
             android:name=".ui.activities.CreateOrganizationActivity"

@@ -184,7 +184,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
                 ProgressBar loadingView = findViewById(R.id.loading_create_orga);
                 loadingView.setVisibility(View.INVISIBLE);
                 Toast.makeText(getContext(), "Woow! Organización creada con el id: " + organization.getId(), Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(CreateOrganizationActivity.this, ChannelChatActivity.class);
+                Intent intent = new Intent(CreateOrganizationActivity.this, ChatActivity.class);
                 startActivity(intent);
                 finish();
             }
