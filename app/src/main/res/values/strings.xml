@@ -64,7 +64,7 @@
     <string name="login_button_message">Ingresar</string>
     <string name="login_email_hint">Email</string>
     <string name="login_password_hint">Contraseña</string>
-    <string name="register_name">Nombre y Apellido</string>
+    <string name="register_name">Nombre completo</string>
     <string name="no_account_text"><u>No tienes cuenta? Registrate</u></string>
     <string name="fb_log_in_error">No se pudo iniciar sesión</string>
     <string name="log_in_error">Email o contraseña incorrectos</string>
