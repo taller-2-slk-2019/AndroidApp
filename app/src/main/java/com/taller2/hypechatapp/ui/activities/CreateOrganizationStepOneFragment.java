@@ -1,7 +1,6 @@
 package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,10 +23,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import static android.app.Activity.RESULT_OK;
+
 
 public class CreateOrganizationStepOneFragment extends Fragment {
-
-    public static final int PICK_IMAGE_REQUEST = 71;
 
     private OnNextButtonClickListener callback;
 
@@ -35,6 +34,8 @@ public class CreateOrganizationStepOneFragment extends Fragment {
     private MaterialButton pickImageButton;
     private TextView errorText;
     private ImagePicker imagePicker;
+    private Uri filePath;
+    private View returnView;
 
     private OrganizationRequest organizationRequest;
 
@@ -42,12 +43,12 @@ public class CreateOrganizationStepOneFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View returnView=inflater.inflate(R.layout.create_organization_step1, container, false);
+        returnView=inflater.inflate(R.layout.create_organization_step1, container, false);
 
         organizationRequest=(OrganizationRequest)getArguments().getSerializable("organizationRequest");
-        setUpImagePicker(returnView);
+        setUpImagePicker();
 
-        setUpUI(returnView);
+        setUpUI();
 
         return returnView;
 
@@ -63,12 +64,12 @@ public class CreateOrganizationStepOneFragment extends Fragment {
     }
 
     public interface OnNextButtonClickListener{
-        void onNextButtonClick(OrganizationRequest organizationRequest);
+        void onNextButtonClick(OrganizationRequest organizationRequest, Uri filePath);
 
     }
 
 
-    private void setUpUI(final View returnView) {
+    private void setUpUI() {
         Toolbar toolbar = returnView.findViewById(R.id.toolbar_create_organization);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -86,7 +87,7 @@ public class CreateOrganizationStepOneFragment extends Fragment {
             organizationRequest.name=nameInputText.getText().toString();
             organizationRequest.description=descriptionInputText.getText().toString();
 
-            callback.onNextButtonClick(organizationRequest);
+            callback.onNextButtonClick(organizationRequest, filePath);
 
             }
         });
@@ -102,11 +103,11 @@ public class CreateOrganizationStepOneFragment extends Fragment {
             descriptionInputText.setError("Ingrese una descripción para la organización");
             return false;
         }
-        return true;
+        return imagePicker.validate();
     }
 
 
-    private void setUpImagePicker(View returnView) {
+    private void setUpImagePicker() {
         pickImageButton = returnView.findViewById(R.id.pick_profile_image_button);
         profileImageView = returnView.findViewById(R.id.profile_image_view);
         errorText = returnView.findViewById(R.id.profile_image_error);
@@ -116,9 +117,13 @@ public class CreateOrganizationStepOneFragment extends Fragment {
 
     }
 
-    public void setImageBitmap(Bitmap profileImageBitmap){
-        profileImageView.setImageBitmap(profileImageBitmap);
-        profileImageView.setVisibility(View.VISIBLE);
-        pickImageButton.setVisibility(View.INVISIBLE);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == ImagePicker.PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null ) {
+            filePath = imagePicker.analyzeResult((AppCompatActivity) getActivity(), data);
+        }
     }
 }

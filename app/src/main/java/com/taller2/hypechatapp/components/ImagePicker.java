@@ -64,6 +64,7 @@ public class ImagePicker {
             profileImageView.setImageBitmap(profileImageBitmap);
             profileImageView.setVisibility(View.VISIBLE);
             pickImageButton.setVisibility(View.INVISIBLE);
+            errorText.setVisibility(View.INVISIBLE);
         }
         catch (IOException e)
         {

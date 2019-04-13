@@ -2,10 +2,8 @@ package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -19,9 +17,6 @@ import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
 import com.taller2.hypechatapp.services.OrganizationService;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -33,20 +28,24 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
         CreateOrganizationStepOneFragment.OnNextButtonClickListener,
         CreateOrganizationStepTwoFragment.OnFinishButtonClickListener, FirebaseStorageUploadInterface {
 
-    public static final int PICK_IMAGE_REQUEST = 71;
     private OrganizationRequest organizationRequest;
     private OrganizationService organizationService;
     private Uri filePath = null;
     private CreateOrganizationStepOneFragment createOrganizationStepOneFragment;
     private CreateOrganizationStepTwoFragment createOrganizationStepTwoFragment;
+    private ProgressBar loadingView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_organization);
         setUpFragment(savedInstanceState);
-
+        setUpUI();
         setUpInitials();
+    }
+
+    private void setUpUI() {
+        loadingView = findViewById(R.id.loading_create_orga);
     }
 
     private void setUpInitials() {
@@ -82,19 +81,8 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
 
 
     @Override
-    public void onNextButtonClick(OrganizationRequest organizationRequest) {
-        if(filePath==null){
-            List<Fragment> fragments = getSupportFragmentManager().getFragments();
-            for(Fragment fragment:fragments){
-                if(fragment instanceof CreateOrganizationStepOneFragment){
-                    CreateOrganizationStepOneFragment createOrganizationStepOneFragment =
-                            (CreateOrganizationStepOneFragment) fragment;
-
-                    createOrganizationStepOneFragment.setImageNotSelectedError();
-                    return;
-                }
-            }
-        }
+    public void onNextButtonClick(OrganizationRequest organizationRequest, Uri filePath) {
+        this.filePath=filePath;
         this.organizationRequest=organizationRequest;
         // Create fragment and give it an argument for the selected article
         createOrganizationStepTwoFragment = new CreateOrganizationStepTwoFragment();
@@ -131,41 +119,20 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null ) {
-            filePath = analyzeResult(data);
-        }
-
-    }
-
-    public Uri analyzeResult(Intent data) {
-        Uri filePath = data.getData();
-        try {
-            Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-
-            List<Fragment> fragments = getSupportFragmentManager().getFragments();
-            for(Fragment fragment:fragments){
-                if(fragment instanceof CreateOrganizationStepOneFragment){
-                    CreateOrganizationStepOneFragment createOrganizationStepOneFragment =
-                            (CreateOrganizationStepOneFragment) fragment;
-
-                    createOrganizationStepOneFragment.setImageBitmap(profileImageBitmap);
+        //Fix to call the fragment on the activity result of picking an image
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        if (fragments != null) {
+            for (Fragment f : fragments) {
+                if(f instanceof CreateOrganizationStepOneFragment){
+                    f.onActivityResult(requestCode, resultCode, data);
                 }
             }
-
         }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-
-        return filePath;
     }
 
     @Override
     public void onFinishButtonClick(OrganizationRequest organizationRequest) {
 
-        ProgressBar loadingView = findViewById(R.id.loading_create_orga);
         loadingView.setVisibility(View.VISIBLE);
 
         this.organizationRequest=organizationRequest;
@@ -181,7 +148,6 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
 
             @Override
             public void onResponseSuccess(Organization organization) {
-                ProgressBar loadingView = findViewById(R.id.loading_create_orga);
                 loadingView.setVisibility(View.INVISIBLE);
                 Toast.makeText(getContext(), "Woow! Organización creada con el id: " + organization.getId(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(CreateOrganizationActivity.this, ChatActivity.class);
@@ -191,7 +157,6 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
 
             @Override
             public void onResponseError(String errorMessage) {
-                ProgressBar loadingView = findViewById(R.id.loading_create_orga);
                 loadingView.setVisibility(View.INVISIBLE);
                 String textToShow;
                 if(!TextUtils.isEmpty(errorMessage)){
