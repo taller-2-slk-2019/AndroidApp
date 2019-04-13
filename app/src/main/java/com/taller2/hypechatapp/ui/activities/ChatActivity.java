@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.MessageListAdapter;
 import com.taller2.hypechatapp.model.Message;
@@ -42,6 +43,14 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         setUpMessagesListUI();
         setUpNewMessageUI();
         onRefresh();//TODO change when selecting org and chanel is implemented
+
+        FirebaseMessaging.getInstance().subscribeToTopic("channel_1"); //TODO hardcoded id and allow conversations
+    }
+
+    @Override
+    protected void onDestroy(){
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("channel_1"); //TODO hardcoded id and allow conversations
+        super.onDestroy();
     }
 
     private void setUpMessagesListUI() {
