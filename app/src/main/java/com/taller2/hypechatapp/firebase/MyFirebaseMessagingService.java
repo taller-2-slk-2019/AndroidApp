@@ -8,6 +8,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.taller2.hypechatapp.model.Message;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -41,6 +43,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void handleNewMessage(String data) {
         Message message = new Gson().fromJson(data, Message.class);
-        Log.d(TAG, Integer.toString(message.getId()));
+        EventBus.getDefault().post(message);
     }
 }

@@ -25,10 +25,14 @@ tools:showIn="@layout/app_bar_main">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/newMessageContainer"
-        android:layout_width="395dp"
-        android:layout_height="160dp"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/profile_border"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

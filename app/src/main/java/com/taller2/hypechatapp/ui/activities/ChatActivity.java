@@ -2,6 +2,7 @@ package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +15,10 @@ import com.taller2.hypechatapp.model.Message;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.SuccessResponse;
 import com.taller2.hypechatapp.services.MessageService;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -45,11 +50,13 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         onRefresh();//TODO change when selecting org and chanel is implemented
 
         FirebaseMessaging.getInstance().subscribeToTopic("channel_1"); //TODO hardcoded id and allow conversations
+        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onDestroy(){
         FirebaseMessaging.getInstance().unsubscribeFromTopic("channel_1"); //TODO hardcoded id and allow conversations
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
@@ -90,7 +97,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
             public void onResponseSuccess(List<Message> messages) {
                 messagesListContainer.setRefreshing(false);
                 if (messages.size() > 0){
-                    messagesAdapter.addMessages(messages);
+                    messagesAdapter.addOlderMessages(messages);
                     messagesList.scrollToPosition(messages.size() - 1);
                 } else {
                     String textToShow = "No hay más mensajes";
@@ -141,6 +148,13 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
                 return ChatActivity.this;
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(Message message) {
+        Log.d("Chat Activity", "Message received: " + Integer.toString(message.getId()));
+        messagesAdapter.addLastMessage(message);
+        messagesList.scrollToPosition(messagesAdapter.getItemCount() - 1);
     }
 
 }

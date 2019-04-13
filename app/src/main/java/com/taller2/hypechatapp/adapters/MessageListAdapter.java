@@ -36,10 +36,15 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageViewHolder> 
         return messages.size();
     }
 
-    public void addMessages(List<Message> messages) {
+    public void addOlderMessages(List<Message> messages) {
         for (Message message: messages) {
             this.messages.add(0, message);
         }
+        this.notifyDataSetChanged();
+    }
+
+    public void addLastMessage(Message message) {
+        this.messages.add(message);
         this.notifyDataSetChanged();
     }
 }
