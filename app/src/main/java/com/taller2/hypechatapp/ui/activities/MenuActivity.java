@@ -137,7 +137,7 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
     }
 
     private void createNewOrganization() {
-        Intent intent = new Intent(this, CreateOrganizationActivityStepOne.class);
+        Intent intent = new Intent(this, CreateOrganizationActivity.class);
         startActivity(intent);
     }
 

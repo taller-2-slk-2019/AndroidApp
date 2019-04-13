@@ -24,10 +24,11 @@ public class ImagePicker {
     private Uri filePath;
     private TextView errorText;
 
-    public ImagePicker(final AppCompatActivity activity){
-        errorText = activity.findViewById(R.id.profile_image_error);
-
-        pickImageButton = activity.findViewById(R.id.pick_profile_image_button);
+    public ImagePicker(final AppCompatActivity activity, MaterialButton pickImageButton,
+                       ImageView profileImageView, TextView errorText){
+        this.errorText=errorText;
+        this.pickImageButton=pickImageButton;
+        this.profileImageView=profileImageView;
         pickImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,7 +36,6 @@ public class ImagePicker {
             }
         });
 
-        profileImageView = activity.findViewById(R.id.profile_image_view);
         profileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +64,7 @@ public class ImagePicker {
             profileImageView.setImageBitmap(profileImageBitmap);
             profileImageView.setVisibility(View.VISIBLE);
             pickImageButton.setVisibility(View.INVISIBLE);
+            errorText.setVisibility(View.INVISIBLE);
         }
         catch (IOException e)
         {

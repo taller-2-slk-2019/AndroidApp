@@ -56,7 +56,7 @@ public class ChooseLocationActivity extends FragmentActivity
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ChooseLocationActivity.this, CreateOrganizationActivityStepTwo.class);
+                Intent intent = new Intent(ChooseLocationActivity.this, CreateOrganizationActivity.class);
                 intent.putExtra("selectedLocation",marker.getPosition());
                 setResult(STEP_CODE, intent);
                 finish();
