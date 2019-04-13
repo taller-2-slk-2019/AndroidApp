@@ -113,7 +113,7 @@ public class CreateChannelActivity extends AppCompatActivity {
                     public void onResponseSuccess(Channel responseBody) {
                         loading.setVisibility(View.INVISIBLE);
                         Toast.makeText(getContext(), "Woow! Canal creado con el id: " + responseBody.getId(), Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(CreateChannelActivity.this, ChannelChatActivity.class);
+                        Intent intent = new Intent(CreateChannelActivity.this, ChatActivity.class);
                         startActivity(intent);
                         finish();
                     }

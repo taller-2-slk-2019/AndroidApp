@@ -160,6 +160,10 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
             username.setError("Ingrese un nombre de usuario");
             return false;
         }
+        if(username.getText().toString().contains(" ")){
+            username.setError("El nombre de usuario no puede tener espacios");
+            return false;
+        }
         if(TextUtils.isEmpty(password.getText().toString())){
             password.setError("Ingrese una contraseña");
             return false;
