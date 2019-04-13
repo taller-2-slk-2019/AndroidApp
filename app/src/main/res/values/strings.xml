@@ -18,7 +18,7 @@
     <string name="new_organization_end_text">FINALIZAR</string>
     <string name="title_activity_create_channel">CreateChannelActivity</string>
 
-    <string name="image_picker_error">Debe seleccionar una imágen!</string>
+    <string name="image_picker_error">Debe seleccionar una imagen!</string>
 
     <string name="channel_privacy_open">Abierto</string>
     <string name="channel_privacy_closed">Cerrado</string>

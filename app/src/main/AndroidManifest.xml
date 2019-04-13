@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+         
         <service
             android:name=".firebase.MyFirebaseMessagingService"
             android:enabled="true"
@@ -23,14 +24,15 @@
             </intent-filter>
         </service>
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA_oWLv-IusRmW1x8iCh6Nqe3CkcpvT8DU" />
 
-        <activity
-            android:name=".ui.activities.CreateChannelActivity"
-            android:label="@string/new_channel_title"></activity>
-        <activity android:name=".ui.activities.RegisterActivity"></activity>
+        <meta-data
+             android:name="com.google.android.geo.API_KEY"
+             android:value="@string/google_maps_key" />
+        <activity android:name=".ui.activities.CreateChannelActivity"
+            android:label="@string/new_channel_title">
+        </activity>
+        <activity android:name=".ui.activities.RegisterActivity">
+        </activity>
         <activity
             android:name=".ui.activities.LoginActivity"
             android:label="@string/app_name">
@@ -44,11 +46,7 @@
             android:name=".ui.activities.ChatActivity"
             android:label="@string/title_activity_channel_chat" />
         <activity
-            android:name=".ui.activities.CreateOrganizationActivityStepOne"
-            android:label="@string/new_organization_title"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activities.CreateOrganizationActivityStepTwo"
+            android:name=".ui.activities.CreateOrganizationActivity"
             android:label="@string/new_organization_title"
             android:screenOrientation="portrait" />
         <activity
