@@ -2,12 +2,16 @@ package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.MessageListAdapter;
 import com.taller2.hypechatapp.model.Message;
 import com.taller2.hypechatapp.network.Client;
+import com.taller2.hypechatapp.network.model.SuccessResponse;
 import com.taller2.hypechatapp.services.MessageService;
 
 import java.util.List;
@@ -23,6 +27,9 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     private MessageListAdapter messagesAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
+    private TextView newMessageText;
+    private ImageView sendMessageButton;
+
     private MessageService messageService;
 
     @Override
@@ -32,11 +39,12 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
 
         messageService = new MessageService();
 
-        setUpUI();
+        setUpMessagesListUI();
+        setUpNewMessageUI();
         onRefresh();//TODO change when selecting org and chanel is implemented
     }
 
-    private void setUpUI() {
+    private void setUpMessagesListUI() {
         messagesListContainer = findViewById(R.id.chatMessagesListContainer);
         messagesListContainer.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         messagesList = findViewById(R.id.chatMessagesList);
@@ -48,6 +56,17 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         messagesList.setAdapter(messagesAdapter);
 
         messagesListContainer.setOnRefreshListener(this);
+    }
+
+    private void setUpNewMessageUI(){
+        newMessageText = findViewById(R.id.newMessageText);
+        sendMessageButton = findViewById(R.id.sendMessageButton);
+        sendMessageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendMessage();
+            }
+        });
     }
 
     @Override
@@ -75,6 +94,36 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
             public void onResponseError(String errorMessage) {
                 messagesListContainer.setRefreshing(false);
                 String textToShow = "Ha ocurrido un error al cargar los mensajes";
+                Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public Context getContext() {
+                return ChatActivity.this;
+            }
+        });
+    }
+
+    private void sendMessage() {
+        String messageText = newMessageText.getText().toString();
+        if (messageText.equals("")){
+            return;
+        }
+
+        Message message = new Message();
+        message.setData(messageText);
+        message.setType(Message.TYPE_TEXT); //TODO harcoded type
+        message.setChannel(1); //TODO harcoded channel id
+
+        messageService.createMessage(message, new Client<SuccessResponse>() {
+            @Override
+            public void onResponseSuccess(SuccessResponse responseBody) {
+                newMessageText.setText("");
+            }
+
+            @Override
+            public void onResponseError(String errorMessage) {
+                String textToShow = "No se pudo enviar el mensaje";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
             }
 

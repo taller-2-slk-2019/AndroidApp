@@ -11,24 +11,59 @@ tools:showIn="@layout/app_bar_main">
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/chatMessagesListContainer"
         android:layout_width="match_parent"
-        android:layout_height="539dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/newMessageContainer"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chatMessagesList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/newMessageContainer"
         android:layout_width="395dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="160dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/profile_border"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chatMessagesListContainer">
+        app:layout_constraintStart_toStartOf="parent">
+
+        <EditText
+            android:id="@+id/newMessageText"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:ems="10"
+            android:hint="@string/new_message_hint"
+            android:inputType="textMultiLine"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/sendMessageButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/sendMessageButton"
+            android:layout_width="56dp"
+            android:layout_height="61dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            android:src="@drawable/send_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -3,6 +3,7 @@ package com.taller2.hypechatapp.components;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class DateHelper {
 
@@ -21,6 +22,7 @@ public class DateHelper {
 
     public static String dateToLocalString(Date date){
         SimpleDateFormat myFormat = new SimpleDateFormat(localPattern);
+        myFormat.setTimeZone(TimeZone.getTimeZone("GMT-3"));
         return myFormat.format(date);
     }
 

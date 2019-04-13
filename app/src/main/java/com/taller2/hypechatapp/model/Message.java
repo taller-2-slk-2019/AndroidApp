@@ -61,4 +61,8 @@ public class Message implements Serializable {
     public User getSender() {
         return sender;
     }
+
+    public void setChannel(int channelId) {
+        this.channelId = channelId;
+    }
 }
