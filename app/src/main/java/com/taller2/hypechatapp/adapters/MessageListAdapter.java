@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.Message;
+import com.taller2.hypechatapp.ui.model.MessageTextViewHolder;
 import com.taller2.hypechatapp.ui.model.MessageViewHolder;
 
 import java.util.ArrayList;
@@ -21,9 +22,9 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageViewHolder> 
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.message_text, parent, false);
+                .inflate(R.layout.message, parent, false);
 
-        return new MessageViewHolder(view);
+        return new MessageTextViewHolder(view);
     }
 
     @Override

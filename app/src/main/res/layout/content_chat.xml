@@ -50,6 +50,7 @@ tools:showIn="@layout/app_bar_main">
             android:ems="10"
             android:hint="@string/new_message_hint"
             android:inputType="textMultiLine"
+            android:maxLength="254"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/sendMessageButton"
             app:layout_constraintStart_toStartOf="parent"
