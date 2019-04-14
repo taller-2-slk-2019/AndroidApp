@@ -206,7 +206,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     public void onFileUploaded(String downloadUrl, String type) {
         Message message = new Message();
         message.data = downloadUrl;
-        message.type = type.equals(FirebaseStorageService.TYPE_IMAGE) ? Message.TYPE_IMAGE : Message.TYPE_FILE;
+        message.type = type;
         message.channelId = 1; //TODO harcoded channel id
 
         sendMessage(message);

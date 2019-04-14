@@ -14,6 +14,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.taller2.hypechatapp.model.Message;
 
 import java.io.File;
 import java.util.UUID;
@@ -22,8 +23,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
 public class FirebaseStorageService {
-    public static final String TYPE_FILE = "file";
-    public static final String TYPE_IMAGE = "image";
 
     private FirebaseStorage firebaseStorage;
 
@@ -34,11 +33,11 @@ public class FirebaseStorageService {
     // Upload files or images
 
     public void uploadLocalImage(final FirebaseStorageUploadInterface caller, Uri filePath){
-        this.upload(caller, filePath, TYPE_IMAGE);
+        this.upload(caller, filePath, Message.TYPE_IMAGE);
     }
 
     public void uploadLocalFile(final FirebaseStorageUploadInterface caller, Uri filePath){
-        this.upload(caller, filePath, TYPE_FILE);
+        this.upload(caller, filePath, Message.TYPE_FILE);
     }
 
     private void upload(final FirebaseStorageUploadInterface caller, Uri file, final String type){
