@@ -1,6 +1,8 @@
 package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +13,9 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.MessageListAdapter;
+import com.taller2.hypechatapp.components.ImagePicker;
+import com.taller2.hypechatapp.firebase.FirebaseStorageService;
+import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.Message;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.SuccessResponse;
@@ -26,15 +31,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnRefreshListener, FirebaseStorageUploadInterface {
 
     private SwipeRefreshLayout messagesListContainer;
     private RecyclerView messagesList;
     private MessageListAdapter messagesAdapter;
-    private RecyclerView.LayoutManager layoutManager;
 
     private TextView newMessageText;
-    private ImageView sendMessageButton;
 
     private MessageService messageService;
 
@@ -65,7 +68,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         messagesListContainer.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         messagesList = findViewById(R.id.chatMessagesList);
 
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         messagesList.setLayoutManager(layoutManager);
 
         messagesAdapter = new MessageListAdapter();
@@ -76,11 +79,20 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
 
     private void setUpNewMessageUI(){
         newMessageText = findViewById(R.id.newMessageText);
-        sendMessageButton = findViewById(R.id.sendMessageButton);
+
+        ImageView sendMessageButton = findViewById(R.id.sendMessageButton);
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendMessage();
+                sendTextMessage();
+            }
+        });
+
+        ImageView pickImageButton = findViewById(R.id.pickImageButton);
+        pickImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ImagePicker.chooseImage(ChatActivity.this);
             }
         });
     }
@@ -120,17 +132,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         });
     }
 
-    private void sendMessage() {
-        String messageText = newMessageText.getText().toString();
-        if (messageText.equals("")){
-            return;
-        }
-
-        Message message = new Message();
-        message.data = messageText;
-        message.type = Message.TYPE_TEXT; //TODO harcoded type
-        message.channelId = 1; //TODO harcoded channel id
-
+    private void sendMessage(Message message){
         messageService.createMessage(message, new Client<SuccessResponse>() {
             @Override
             public void onResponseSuccess(SuccessResponse responseBody) {
@@ -150,6 +152,20 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         });
     }
 
+    private void sendTextMessage() {
+        String messageText = newMessageText.getText().toString();
+        if (messageText.equals("")){
+            return;
+        }
+
+        Message message = new Message();
+        message.data = messageText;
+        message.type = Message.TYPE_TEXT;
+        message.channelId = 1; //TODO harcoded channel id
+
+        sendMessage(message);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Message message) {
         Log.d("Chat Activity", "Message received: " + Integer.toString(message.id));
@@ -157,4 +173,30 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         messagesList.scrollToPosition(messagesAdapter.getItemCount() - 1);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == ImagePicker.PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null ) {
+            Uri imagePath = ImagePicker.getFilePath(data);
+            new FirebaseStorageService().uploadLocalFile(this, imagePath);
+        }
+    }
+
+    @Override
+    public void onFileUploaded(String downloadUrl) {
+        Message message = new Message();
+        message.data = downloadUrl;
+        message.type = Message.TYPE_IMAGE;
+        message.channelId = 1; //TODO harcoded channel id
+
+        sendMessage(message);
+    }
+
+    @Override
+    public void onFileUploadError(Exception exception) {
+        String textToShow = "No se pudo enviar el archivo";
+        Toast.makeText(this, textToShow, Toast.LENGTH_LONG).show();
+    }
 }

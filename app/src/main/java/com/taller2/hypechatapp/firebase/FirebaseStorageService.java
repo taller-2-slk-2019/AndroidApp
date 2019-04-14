@@ -14,7 +14,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.UUID;
 
 import androidx.annotation.NonNull;
@@ -70,7 +69,8 @@ public class FirebaseStorageService {
     }
 
     private void upload(final FirebaseStorageUploadInterface caller, Uri file){
-        final StorageReference storage = firebaseStorage.getReference().child(UUID.randomUUID().toString() + file.getLastPathSegment());
+        String fileName = UUID.randomUUID().toString() + file.getLastPathSegment();
+        final StorageReference storage = firebaseStorage.getReference().child(fileName.replace("/", "a"));
         UploadTask uploadTask = storage.putFile(file);
         uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
