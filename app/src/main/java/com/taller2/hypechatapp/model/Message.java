@@ -14,55 +14,23 @@ public class Message implements Serializable {
 
     @SerializedName("id")
     @Expose
-    private Integer id;
+    public Integer id;
     @SerializedName("channelId")
     @Expose
-    private Integer channelId;
+    public Integer channelId;
     @SerializedName("conversationId")
     @Expose
-    private Integer conversationId;
+    public Integer conversationId;
     @SerializedName("type")
     @Expose
-    private String type;
+    public String type;
     @SerializedName("data")
     @Expose
-    private String data;
+    public String data;
     @SerializedName("createdAt")
     @Expose
-    private String createdAt;
+    public String createdAt;
     @SerializedName("sender")
     @Expose
-    private User sender;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public User getSender() {
-        return sender;
-    }
-
-    public void setChannel(int channelId) {
-        this.channelId = channelId;
-    }
+    public User sender;
 }

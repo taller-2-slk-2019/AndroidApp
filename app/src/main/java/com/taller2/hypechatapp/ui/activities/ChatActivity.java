@@ -127,9 +127,9 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         }
 
         Message message = new Message();
-        message.setData(messageText);
-        message.setType(Message.TYPE_TEXT); //TODO harcoded type
-        message.setChannel(1); //TODO harcoded channel id
+        message.data = messageText;
+        message.type = Message.TYPE_TEXT; //TODO harcoded type
+        message.channelId = 1; //TODO harcoded channel id
 
         messageService.createMessage(message, new Client<SuccessResponse>() {
             @Override
@@ -152,7 +152,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Message message) {
-        Log.d("Chat Activity", "Message received: " + Integer.toString(message.getId()));
+        Log.d("Chat Activity", "Message received: " + Integer.toString(message.id));
         messagesAdapter.addLastMessage(message);
         messagesList.scrollToPosition(messagesAdapter.getItemCount() - 1);
     }
