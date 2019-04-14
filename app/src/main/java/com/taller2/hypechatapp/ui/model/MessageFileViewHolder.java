@@ -1,6 +1,8 @@
 package com.taller2.hypechatapp.ui.model;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,9 +50,14 @@ public class MessageFileViewHolder extends MessageViewHolder implements Firebase
     }
 
     @Override
-    public void onFileDownloaded(String filePath) {
+    public void onFileDownloaded(Uri filePath, String contentType) {
         messageFile.setClickable(true);
-        Toast.makeText(getContext(), filePath, Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent();
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        intent.setDataAndType(filePath, contentType);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        context.startActivity(intent);
     }
 
     @Override

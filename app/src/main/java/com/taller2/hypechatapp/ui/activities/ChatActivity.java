@@ -192,8 +192,13 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
             new FirebaseStorageService().uploadLocalImage(this, imagePath);
         } else if(requestCode == FilePicker.PICK_FILE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null ) {
-            Uri filePath = FilePicker.getFilePath(data);
-            new FirebaseStorageService().uploadLocalFile(this, filePath);
+            try {
+                Uri filePath = FilePicker.getFilePath(data);
+                new FirebaseStorageService().uploadLocalFile(this, filePath);
+            } catch (Exception ex){
+                ex.printStackTrace();
+                onFileUploadError(ex);
+            }
         }
     }
 
