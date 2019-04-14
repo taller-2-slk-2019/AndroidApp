@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.MessageListAdapter;
+import com.taller2.hypechatapp.components.FilePicker;
 import com.taller2.hypechatapp.components.ImagePicker;
 import com.taller2.hypechatapp.firebase.FirebaseStorageService;
 import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
@@ -93,6 +94,14 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
             @Override
             public void onClick(View view) {
                 ImagePicker.chooseImage(ChatActivity.this);
+            }
+        });
+
+        ImageView pickFileButton = findViewById(R.id.pickFileButton);
+        pickFileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FilePicker.chooseFile(ChatActivity.this);
             }
         });
     }
@@ -180,15 +189,19 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         if(requestCode == ImagePicker.PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null ) {
             Uri imagePath = ImagePicker.getFilePath(data);
-            new FirebaseStorageService().uploadLocalFile(this, imagePath);
+            new FirebaseStorageService().uploadLocalImage(this, imagePath);
+        } else if(requestCode == FilePicker.PICK_FILE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null ) {
+            Uri filePath = FilePicker.getFilePath(data);
+            new FirebaseStorageService().uploadLocalFile(this, filePath);
         }
     }
 
     @Override
-    public void onFileUploaded(String downloadUrl) {
+    public void onFileUploaded(String downloadUrl, String type) {
         Message message = new Message();
         message.data = downloadUrl;
-        message.type = Message.TYPE_IMAGE;
+        message.type = type.equals(FirebaseStorageService.TYPE_IMAGE) ? Message.TYPE_IMAGE : Message.TYPE_FILE;
         message.channelId = 1; //TODO harcoded channel id
 
         sendMessage(message);

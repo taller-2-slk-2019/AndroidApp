@@ -176,7 +176,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onFileUploaded(String downloadUrl) {
+    public void onFileUploaded(String downloadUrl, String type) {
         organizationRequest.picture = downloadUrl;
 
         //Once we have the picture uploaded we can call the organization creation service
@@ -191,7 +191,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
 
     private void uploadProfileImage(){
         FirebaseStorageService storage = new FirebaseStorageService();
-        storage.uploadLocalFile(this, filePath);
+        storage.uploadLocalImage(this, filePath);
     }
 
     @Override

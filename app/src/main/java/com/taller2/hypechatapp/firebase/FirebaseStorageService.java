@@ -19,6 +19,8 @@ import java.util.UUID;
 import androidx.annotation.NonNull;
 
 public class FirebaseStorageService {
+    public static final String TYPE_FILE = "file";
+    public static final String TYPE_IMAGE = "image";
 
     private FirebaseStorage firebaseStorage;
 
@@ -26,8 +28,12 @@ public class FirebaseStorageService {
         firebaseStorage = FirebaseStorage.getInstance();
     }
 
+    public void uploadLocalImage(final FirebaseStorageUploadInterface caller, Uri filePath){
+        this.upload(caller, filePath, TYPE_IMAGE);
+    }
+
     public void uploadLocalFile(final FirebaseStorageUploadInterface caller, Uri filePath){
-        this.upload(caller, filePath);
+        this.upload(caller, filePath, TYPE_FILE);
     }
 
     public void downloadFile(final FirebaseStorageDownloadInterface caller, String url){
@@ -68,7 +74,7 @@ public class FirebaseStorageService {
         });
     }
 
-    private void upload(final FirebaseStorageUploadInterface caller, Uri file){
+    private void upload(final FirebaseStorageUploadInterface caller, Uri file, final String type){
         String fileName = UUID.randomUUID().toString() + file.getLastPathSegment();
         final StorageReference storage = firebaseStorage.getReference().child(fileName.replace("/", "a"));
         UploadTask uploadTask = storage.putFile(file);
@@ -90,7 +96,7 @@ public class FirebaseStorageService {
                     Log.i("Firebase file uploaded", downloadUrl.toString());
 
                     if (caller != null){
-                        caller.onFileUploaded(downloadUrl.toString());
+                        caller.onFileUploaded(downloadUrl.toString(), type);
                     }
                 }
             })
