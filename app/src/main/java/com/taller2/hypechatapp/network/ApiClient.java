@@ -71,6 +71,10 @@ public class ApiClient {
         return retrofit.create(UserApi.class);
     }
 
+    public MessageApi getMessageClient() {
+        return retrofit.create(MessageApi.class);
+    }
+
     public ChannelApi getChannelClient() {
         return getChannelClient(false);
     }

@@ -45,6 +45,10 @@
     <string name="hint_about_channel">¿De qué trata este canal?</string>
     <string name="hint_example_channel_name">Ej: #clientes</string>
 
+    <!-- chat view -->
+    <string name="new_message_hint">Enviá algo bueno al chat!</string>
+    <string name="download_message_file">Ver archivo enviado</string>
+
     <!-- user profile view -->
     <string name="user_profile_title">Perfil de usuario</string>
     <string name="update_user_profile_button">Actualizar\nPerfil</string>
