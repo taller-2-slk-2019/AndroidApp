@@ -28,8 +28,6 @@ import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
 
-import org.w3c.dom.Text;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -194,7 +192,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
     }
 
     @Override
-    public void onFileUploaded(String downloadUrl) {
+    public void onFileUploaded(String downloadUrl, String type) {
         imageUrl = downloadUrl;
         userRegistered();
     }
@@ -206,6 +204,6 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
 
     private void uploadProfileImage(){
         FirebaseStorageService storage = new FirebaseStorageService();
-        storage.uploadLocalFile(this, filePath);
+        storage.uploadLocalImage(this, filePath);
     }
 }

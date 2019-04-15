@@ -1,5 +1,6 @@
 package com.taller2.hypechatapp.firebase;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
@@ -10,14 +11,16 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.taller2.hypechatapp.model.Message;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.UUID;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 
 public class FirebaseStorageService {
 
@@ -27,9 +30,56 @@ public class FirebaseStorageService {
         firebaseStorage = FirebaseStorage.getInstance();
     }
 
-    public void uploadLocalFile(final FirebaseStorageUploadInterface caller, Uri filePath){
-        this.upload(caller, filePath);
+    // Upload files or images
+
+    public void uploadLocalImage(final FirebaseStorageUploadInterface caller, Uri filePath){
+        this.upload(caller, filePath, Message.TYPE_IMAGE);
     }
+
+    public void uploadLocalFile(final FirebaseStorageUploadInterface caller, Uri filePath){
+        this.upload(caller, filePath, Message.TYPE_FILE);
+    }
+
+    private void upload(final FirebaseStorageUploadInterface caller, Uri file, final String type){
+        String fileName = UUID.randomUUID().toString() + file.getLastPathSegment();
+        final StorageReference storage = firebaseStorage.getReference().child(fileName.replace("/", "a"));
+        UploadTask uploadTask = storage.putFile(file);
+        uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return storage.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                // Get a URL to the uploaded content
+                Uri downloadUrl = task.getResult();
+                Log.i("Firebase file uploaded", downloadUrl.toString());
+
+                if (caller != null){
+                    caller.onFileUploaded(downloadUrl.toString(), type);
+                }
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        Log.e("Firebase file upload", exception.getMessage());
+
+                        if (caller != null){
+                            caller.onFileUploadError(exception);
+                        }
+                    }
+                });
+    }
+
+    // Download files
 
     public void downloadFile(final FirebaseStorageDownloadInterface caller, String url){
         this.download(caller, url);
@@ -43,9 +93,8 @@ public class FirebaseStorageService {
 
         if (localFile.isFile() && localFile.length() > 0){
             // File already exists, do not download again
-            if (caller != null){
-                caller.onFileDownloaded(localFile.getAbsolutePath());
-            }
+            onFileDownloaded(storage, caller, localFile);
+            return;
         }
 
         storage.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -53,9 +102,7 @@ public class FirebaseStorageService {
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 // Local temp file has been created
                 Log.i("Firebase file download", localFile.getAbsolutePath());
-                if (caller != null){
-                    caller.onFileDownloaded(localFile.getAbsolutePath());
-                }
+                onFileDownloaded(storage, caller, localFile);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -69,42 +116,27 @@ public class FirebaseStorageService {
         });
     }
 
-    private void upload(final FirebaseStorageUploadInterface caller, Uri file){
-        final StorageReference storage = firebaseStorage.getReference().child(UUID.randomUUID().toString() + file.getLastPathSegment());
-        UploadTask uploadTask = storage.putFile(file);
-        uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+    private Uri getLocalFileUri(Context context, File localFile){
+        return FileProvider.getUriForFile(context, "com.taller2.hypechatapp.fileProvider", localFile);
+    }
+
+    private void onFileDownloaded(StorageReference storage, final FirebaseStorageDownloadInterface caller, final File localFile){
+        storage.getMetadata().addOnSuccessListener(
+                new OnSuccessListener<StorageMetadata>() {
+                    @Override
+                    public void onSuccess(StorageMetadata storageMetadata) {
+                        String contentType = storageMetadata.getContentType();
+                        caller.onFileDownloaded(getLocalFileUri(caller.getContext(), localFile), contentType);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    throw task.getException();
+            public void onFailure(@NonNull Exception exception) {
+                Log.e("Firebase download error", exception.toString());
+                if (caller != null){
+                    caller.onFileDownloadError(exception);
                 }
-
-                // Continue with the task to get the download URL
-                return storage.getDownloadUrl();
             }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    // Get a URL to the uploaded content
-                    Uri downloadUrl = task.getResult();
-                    Log.i("Firebase file uploaded", downloadUrl.toString());
-
-                    if (caller != null){
-                        caller.onFileUploaded(downloadUrl.toString());
-                    }
-                }
-            })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                    Log.e("Firebase file upload", exception.getMessage());
-
-                    if (caller != null){
-                        caller.onFileUploadError(exception);
-                    }
-                }
-            });
+        });
     }
 
 

@@ -7,16 +7,21 @@
     android:paddingBottom="8dp">
 
     <TextView
-        android:id="@+id/message_text"
-        android:layout_width="0dp"
+        android:id="@+id/message_file"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:text="@string/download_message_file"
+        android:textColor="@color/Blue700"
+        android:textSize="18sp"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_marginBottom="16dp"
-        tools:text="El texto del mensaje que quiero mostrar, teniendo en cuenta que puede ser un poco largo, deberia adaptarse la altura como corresponde, y que cada mensaje tenga su tamanio correcto" />
+        app:layout_constraintVertical_bias="0.333"
+        tools:layout_marginBottom="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

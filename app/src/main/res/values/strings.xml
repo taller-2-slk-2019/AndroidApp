@@ -47,6 +47,7 @@
 
     <!-- chat view -->
     <string name="new_message_hint">Enviá algo bueno al chat!</string>
+    <string name="download_message_file">Ver archivo enviado</string>
 
     <!-- user profile view -->
     <string name="user_profile_title">Perfil de usuario</string>
