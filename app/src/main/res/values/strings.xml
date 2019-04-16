@@ -18,7 +18,7 @@
     <string name="new_organization_end_text">FINALIZAR</string>
     <string name="title_activity_create_channel">CreateChannelActivity</string>
 
-    <string name="image_picker_error">Debe seleccionar una imágen!</string>
+    <string name="image_picker_error">Debe seleccionar una imagen!</string>
 
     <string name="channel_privacy_open">Abierto</string>
     <string name="channel_privacy_closed">Cerrado</string>
@@ -44,6 +44,10 @@
     <string name="hint_regards_channel">Saluda a los invitados! ┌( ಠ_ಠ )┘</string>
     <string name="hint_about_channel">¿De qué trata este canal?</string>
     <string name="hint_example_channel_name">Ej: #clientes</string>
+
+    <!-- chat view -->
+    <string name="new_message_hint">Enviá algo bueno al chat!</string>
+    <string name="download_message_file">Ver archivo enviado</string>
 
     <!-- user profile view -->
     <string name="user_profile_title">Perfil de usuario</string>
@@ -71,6 +75,8 @@
     <string name="register_button_text">Registrarse</string>
     <string name="error_register">El nombre de usuario ya existe</string>
     <string name="error_register_firebase">El email ya existe o es inválido</string>
+    <string name="error_weak_password">Contraseña muy corta [mínimo 6 caracteres]</string>
+    <string name="error_user_exists">Email ya utilizado en otra cuenta</string>
     <string name="register_username">Usuario</string>
     <string name="title_activity_login2">Sign in</string>
     <!-- Strings related to login -->

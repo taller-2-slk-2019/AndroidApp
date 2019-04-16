@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
@@ -48,6 +49,7 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ImageView userImage;
+    private TextView userName;
     private ImageButton addOrganizationButton;
     private Spinner organizationsSpinner;
     private NavigationAdapter navigationAdapter;
@@ -77,16 +79,23 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
             @Override
             public void onResponseSuccess(List<Organization> organizations) {
 
-                OrganizationSpinnerAdapter dataAdapter = new OrganizationSpinnerAdapter(getContext(),
-                        android.R.layout.simple_spinner_item, organizations);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                organizationsSpinner.setAdapter(dataAdapter);
+                if (organizations.isEmpty()) { //first time
+                    createNewOrganization();
+                    finish();
 
-                Integer selectedOrganizationPosition = getSelectedOrganizationPosition(organizations);
-                organizationsSpinner.setSelection(selectedOrganizationPosition);
-                userManagerPreferences.saveSelectedOrganization(organizations.get(selectedOrganizationPosition).getId());
+                } else {
 
-                showOrganizationUserInfo();
+                    OrganizationSpinnerAdapter dataAdapter = new OrganizationSpinnerAdapter(getContext(),
+                            android.R.layout.simple_spinner_item, organizations);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    organizationsSpinner.setAdapter(dataAdapter);
+
+                    Integer selectedOrganizationPosition = getSelectedOrganizationPosition(organizations);
+                    organizationsSpinner.setSelection(selectedOrganizationPosition);
+                    userManagerPreferences.saveSelectedOrganization(organizations.get(selectedOrganizationPosition).getId());
+
+                    showOrganizationUserInfo();
+                }
             }
 
             @Override
@@ -131,6 +140,15 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
         toggle.syncState();
 
         userImage = findViewById(R.id.profile_image_view);
+        userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewUserProfile();
+            }
+        });
+
+        userName = findViewById(R.id.txt_username);
+
         organizationsSpinner = findViewById(R.id.organizations_spinner);
 
         addOrganizationButton = findViewById(R.id.ib_add_organization);
@@ -139,6 +157,7 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
 
             @Override
             public void onResponseSuccess(User responseBody) {
+                userName.setText(responseBody.getUsername());
                 String url = responseBody.getPicture();
                 PicassoLoader.load(getApplicationContext(), String.format("%s?type=large", url), userImage);
             }
@@ -234,7 +253,7 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
     }
 
     private void createNewOrganization() {
-        Intent intent = new Intent(this, CreateOrganizationActivityStepOne.class);
+        Intent intent = new Intent(this, CreateOrganizationActivity.class);
         startActivity(intent);
     }
 
@@ -285,10 +304,6 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
                 logOut();
                 return true;
 
-            case R.id.user_profile:
-                viewUserProfile();
-                return true;
-
             case R.id.organization_profile:
                 viewOrganizationProfile();
                 return true;
@@ -297,9 +312,15 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        Integer organizationId = ((Organization) parent.getSelectedItem()).getId();
-        userManagerPreferences.saveSelectedOrganization(organizationId);
+        Integer selectedOrganization = ((Organization) parent.getSelectedItem()).getId();
+        Integer preferenceOrganization = userManagerPreferences.getSelectedOrganization();
+        if (selectedOrganization != preferenceOrganization) {
+            userManagerPreferences.saveSelectedOrganization(selectedOrganization);
+            finish();
+            startActivity(getIntent());
+        }
     }
 
     @Override

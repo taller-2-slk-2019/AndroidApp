@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
-import com.taller2.hypechatapp.R;
 
 import java.io.IOException;
 
@@ -24,10 +23,11 @@ public class ImagePicker {
     private Uri filePath;
     private TextView errorText;
 
-    public ImagePicker(final AppCompatActivity activity){
-        errorText = activity.findViewById(R.id.profile_image_error);
-
-        pickImageButton = activity.findViewById(R.id.pick_profile_image_button);
+    public ImagePicker(final AppCompatActivity activity, MaterialButton pickImageButton,
+                       ImageView profileImageView, TextView errorText){
+        this.errorText=errorText;
+        this.pickImageButton=pickImageButton;
+        this.profileImageView=profileImageView;
         pickImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,7 +35,6 @@ public class ImagePicker {
             }
         });
 
-        profileImageView = activity.findViewById(R.id.profile_image_view);
         profileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,11 +43,11 @@ public class ImagePicker {
         });
     }
 
-    private void chooseImage(AppCompatActivity activity) {
+    public static void chooseImage(AppCompatActivity activity) {
         activity.startActivityForResult(getImagePickerIntent(), PICK_IMAGE_REQUEST);
     }
 
-    private Intent getImagePickerIntent(){
+    private static Intent getImagePickerIntent(){
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -57,13 +56,14 @@ public class ImagePicker {
 
 
     public Uri analyzeResult(AppCompatActivity activity, Intent data) {
-        filePath = data.getData();
+        filePath = getFilePath(data);
         try {
             Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), filePath);
 
             profileImageView.setImageBitmap(profileImageBitmap);
             profileImageView.setVisibility(View.VISIBLE);
             pickImageButton.setVisibility(View.INVISIBLE);
+            errorText.setVisibility(View.INVISIBLE);
         }
         catch (IOException e)
         {
@@ -71,6 +71,10 @@ public class ImagePicker {
         }
 
         return filePath;
+    }
+
+    public static Uri getFilePath(Intent data){
+        return data.getData();
     }
 
     public void disable() {

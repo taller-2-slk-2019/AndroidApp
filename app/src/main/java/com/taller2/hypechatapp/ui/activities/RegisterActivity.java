@@ -8,14 +8,19 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.components.ImagePicker;
@@ -39,12 +44,15 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
     private String imageUrl;
     private ImagePicker imagePicker;
     private Button registerButton;
+    private MaterialButton pickImageButton;
+    private ImageView profileImageView;
 
     private TextView errorText;
     private ProgressBar loading;
 
     private FirebaseAuth mAuth;
     private UserService userService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,16 +70,18 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
         password = findViewById(R.id.password_register);
         name = findViewById(R.id.name_register);
         username = findViewById(R.id.username_register);
-        imagePicker = new ImagePicker(this);
+        pickImageButton = findViewById(R.id.pick_profile_image_button);
+        profileImageView = findViewById(R.id.profile_image_view);
+        errorText = findViewById(R.id.error_text);
+        imagePicker = new ImagePicker(this, pickImageButton, profileImageView, errorText);
 
         loading = findViewById(R.id.loading);
-        errorText = findViewById(R.id.error_text);
 
         registerButton = findViewById(R.id.register_button);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!validateUserInput())
+                if (!validateUserInput())
                     return;
 
                 loading();
@@ -91,11 +101,29 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
                             Log.i("Firebase register", "Register succesfull");
                             uploadProfileImage();
                         } else {
+                            handleFirebaseException(task.getException());
                             Log.w("Firebase register", "register failed", task.getException());
-                            showError(true);
                         }
                     }
                 });
+    }
+
+    private void handleFirebaseException(Exception exception) {
+
+        if (exception instanceof FirebaseAuthWeakPasswordException) {
+            password.setError(getString(R.string.error_weak_password));
+            password.requestFocus();
+        } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
+            email.setError(getString(R.string.error_invalid_email));
+            email.requestFocus();
+        } else if (exception instanceof FirebaseAuthUserCollisionException) {
+            email.setError(getString(R.string.error_user_exists));
+            email.requestFocus();
+        } else {
+            Log.e(getPackageName(), exception.getMessage());
+        }
+
+        enableRegisterEdition();
     }
 
     private void userRegistered() {
@@ -106,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
         userRequest.setToken(FirebaseAuthService.getCurrentUserToken());
         userRequest.setPicture(imageUrl);
 
-        userService.registerUser(userRequest, new Client<User>(){
+        userService.registerUser(userRequest, new Client<User>() {
             @Override
             public void onResponseSuccess(User responseUser) {
                 endRegister();
@@ -140,11 +168,17 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
 
     private void showError(boolean firebase) {
         errorText.setVisibility(View.VISIBLE);
-        if (firebase){
+        if (firebase) {
             errorText.setText(R.string.error_register_firebase);
         } else {
             errorText.setText(R.string.error_register);
         }
+
+
+        enableRegisterEdition();
+    }
+
+    private void enableRegisterEdition() {
         loading.setVisibility(View.INVISIBLE);
         registerButton.setClickable(true);
         imagePicker.enable();
@@ -152,23 +186,23 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
     }
 
     private boolean validateUserInput() {
-        if(TextUtils.isEmpty(email.getText().toString())){
+        if (TextUtils.isEmpty(email.getText().toString())) {
             email.setError("Ingrese un email");
             return false;
         }
-        if(TextUtils.isEmpty(username.getText().toString())){
+        if (TextUtils.isEmpty(username.getText().toString())) {
             username.setError("Ingrese un nombre de usuario");
             return false;
         }
-        if(username.getText().toString().contains(" ")){
+        if (username.getText().toString().contains(" ")) {
             username.setError("El nombre de usuario no puede tener espacios");
             return false;
         }
-        if(TextUtils.isEmpty(password.getText().toString())){
+        if (TextUtils.isEmpty(password.getText().toString())) {
             password.setError("Ingrese una contraseña");
             return false;
         }
-        if(TextUtils.isEmpty(name.getText().toString())){
+        if (TextUtils.isEmpty(name.getText().toString())) {
             name.setError("Ingrese un nombre");
             return false;
         }
@@ -179,14 +213,14 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == ImagePicker.PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null ) {
+        if (requestCode == ImagePicker.PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
             filePath = imagePicker.analyzeResult(this, data);
         }
     }
 
     @Override
-    public void onFileUploaded(String downloadUrl) {
+    public void onFileUploaded(String downloadUrl, String type) {
         imageUrl = downloadUrl;
         userRegistered();
     }
@@ -196,8 +230,8 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
         showError(false);
     }
 
-    private void uploadProfileImage(){
+    private void uploadProfileImage() {
         FirebaseStorageService storage = new FirebaseStorageService();
-        storage.uploadLocalFile(this, filePath);
+        storage.uploadLocalImage(this, filePath);
     }
 }

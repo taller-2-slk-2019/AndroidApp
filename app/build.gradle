@@ -1,18 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-
-    android {
-        signingConfigs {
-            release {
-                storeFile file("~/.android/debug.keystore")
-                storePassword "android"
-                keyAlias "androiddebugkey"
-                keyPassword "android"
-            }
-        }
-    }
-
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.taller2.hypechatapp"
@@ -29,31 +17,42 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.annotation:annotation:1.0.0-beta01'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
     //Facebook
     implementation 'com.facebook.android:facebook-android-sdk:4.41.0'
+
     // Retrofit & OkHttp
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+
     implementation 'com.squareup.retrofit2:retrofit-mock:2.0.0'
-    implementation 'com.squareup.okhttp:mockwebserver:2.7.0'
+    implementation('com.squareup.okhttp:mockwebserver:2.7.0')
+
     //Map Services
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
+
     //Firebase
     implementation 'com.google.firebase:firebase-storage:16.1.0'
     implementation 'com.google.firebase:firebase-auth:16.2.0'
     implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-messaging:17.6.0'
+
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
