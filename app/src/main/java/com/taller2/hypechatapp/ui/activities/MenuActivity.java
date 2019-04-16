@@ -73,13 +73,65 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
         setUpRecyclerView();
     }
 
+    private void setupUI() {
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        userImage = findViewById(R.id.profile_image_view);
+        userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewUserProfile();
+            }
+        });
+
+        userName = findViewById(R.id.txt_username);
+        organizationsSpinner = findViewById(R.id.organizations_spinner);
+        addOrganizationButton = findViewById(R.id.ib_add_organization);
+
+        userService.getUser(new Client<User>() {
+
+            @Override
+            public void onResponseSuccess(User responseBody) {
+                userName.setText(responseBody.getUsername());
+                String url = responseBody.getPicture();
+                PicassoLoader.load(getApplicationContext(), String.format("%s?type=large", url), userImage);
+            }
+
+            @Override
+            public void onResponseError(String errorMessage) {
+
+            }
+
+            @Override
+            public Context getContext() {
+                return null;
+            }
+        });
+
+        addOrganizationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNewOrganization();
+            }
+        });
+
+    }
+
     // add items into spinner dynamically
     public void addOrganizationsInSpinner() {
         organizationService.getOrganizationsByUser(new Client<List<Organization>>() {
             @Override
             public void onResponseSuccess(List<Organization> organizations) {
 
-                if (organizations.isEmpty()) { //first time
+                //first time, the user does not have organization.
+                if (organizations.isEmpty()) {
                     createNewOrganization();
                     finish();
 
@@ -127,59 +179,6 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
     public void addListenerOnSpinnerOrganizationSelection() {
         organizationsSpinner = findViewById(R.id.organizations_spinner);
         organizationsSpinner.setOnItemSelectedListener(this);
-    }
-
-    private void setupUI() {
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        drawerLayout = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        userImage = findViewById(R.id.profile_image_view);
-        userImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewUserProfile();
-            }
-        });
-
-        userName = findViewById(R.id.txt_username);
-
-        organizationsSpinner = findViewById(R.id.organizations_spinner);
-
-        addOrganizationButton = findViewById(R.id.ib_add_organization);
-
-        userService.getUser(new Client<User>() {
-
-            @Override
-            public void onResponseSuccess(User responseBody) {
-                userName.setText(responseBody.getUsername());
-                String url = responseBody.getPicture();
-                PicassoLoader.load(getApplicationContext(), String.format("%s?type=large", url), userImage);
-            }
-
-            @Override
-            public void onResponseError(String errorMessage) {
-
-            }
-
-            @Override
-            public Context getContext() {
-                return null;
-            }
-        });
-
-        addOrganizationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createNewOrganization();
-            }
-        });
-
     }
 
     private void setUpRecyclerView() {
