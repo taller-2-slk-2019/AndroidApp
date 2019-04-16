@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.taller2.hypechatapp.network.Client;
 
+import java.io.IOException;
+
 import retrofit2.Response;
 
 public class RestService {
@@ -19,7 +21,11 @@ public class RestService {
             if (response.body() != null) {
                 Log.e(serviceTag, response.body().toString());
             } else {
-                Log.e(serviceTag, "NO RESPONSE");
+                try {
+                    Log.e(serviceTag, response.message() + ": " + response.errorBody().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             client.onResponseError(null);
         }

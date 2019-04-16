@@ -2,7 +2,7 @@ package com.taller2.hypechatapp.model;
 
 public enum NavigationDrawerItemType {
     CHANNELS("CHN"),
-    ORGANIZATIONS("ORG"),
+    MESSAGES("MESSAGES"),
     ITEM_ACTION("ACT");
 
     private String code;

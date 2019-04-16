@@ -86,16 +86,6 @@ public class Channel implements Serializable, NavigationDrawerShowable {
     }
 
     @Override
-    public int compareTo(NavigationDrawerShowable that) {
-        if (this == that) return 0;
-        if (that.getType().equals(NavigationDrawerItemType.ORGANIZATIONS)) {
-            return 1;
-        }
-
-        return 0;
-    }
-
-    @Override
     public NavigationDrawerItemType getType() {
         return NavigationDrawerItemType.CHANNELS;
     }

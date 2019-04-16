@@ -1,5 +1,7 @@
 package com.taller2.hypechatapp.services;
 
+import android.content.Context;
+
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.model.Organization;
@@ -19,21 +21,17 @@ import retrofit2.Response;
 
 public class NavigationMenuService extends RestService {
 
-    private OrganizationApi organizationApi;
     private ChannelApi channelApi;
 
     public NavigationMenuService() {
-        this.organizationApi = ApiClient.getInstance().getOrganizationClient(true);
         this.channelApi = ApiClient.getInstance().getChannelClient(true);
     }
 
     public void getNavigationMenuData(Integer organizationId, final Client client) {
         String userToken = FirebaseAuthService.getCurrentUserToken();
-        Call<List<Organization>> organizations = organizationApi.getOrganizationsByUser(userToken);
         Call<List<Channel>> channels = channelApi.getChannels(organizationId, userToken);
 
         List<Call> apiCalls = new ArrayList<>();
-        apiCalls.add(organizations);
         apiCalls.add(channels);
 
         executeAndWaitAll(apiCalls, client);
@@ -46,8 +44,23 @@ public class NavigationMenuService extends RestService {
             call.enqueue(new Callback<List<Comparable>>() {
                 @Override
                 public void onResponse(Call<List<Comparable>> call, Response<List<Comparable>> response) {
-                    apiCalls.countDown();
-                    result.addAll(response.body());
+                    manageSuccessResponse(response, this.getClass().getSimpleName(), new Client<List<Comparable>>() {
+                        @Override
+                        public void onResponseSuccess(List<Comparable> responseBody) {
+                            result.addAll(responseBody);
+                            apiCalls.countDown();
+                        }
+
+                        @Override
+                        public void onResponseError(String errorMessage) {
+                            apiCalls.countDown();
+                        }
+
+                        @Override
+                        public Context getContext() {
+                            return null;
+                        }
+                    });
                 }
 
                 @Override

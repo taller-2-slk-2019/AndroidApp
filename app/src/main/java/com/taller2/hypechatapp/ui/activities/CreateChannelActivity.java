@@ -29,10 +29,13 @@ public class CreateChannelActivity extends AppCompatActivity {
     private Switch channelPrivacy;
     private Button btnCreate;
     private ProgressBar loading;
+    private Integer organizationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        organizationId = getIntent().getIntExtra("ORGANIZATION_ID", -1);
         setContentView(R.layout.activity_create_channel);
 
         channelService = new ChannelService();
@@ -167,7 +170,7 @@ public class CreateChannelActivity extends AppCompatActivity {
         channelRequest.description = description.getText().toString();
         channelRequest.isPublic = channelPrivacy.isChecked();
         channelRequest.welcome = welcome.getText().toString();
-        channelRequest.organizationId = 1; //TODO change this
+        channelRequest.organizationId = this.organizationId;
 
         return channelRequest;
     }
