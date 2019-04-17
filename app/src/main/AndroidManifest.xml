@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-         
+
         <service
             android:name=".firebase.MyFirebaseMessagingService"
             android:enabled="true"
@@ -26,8 +26,8 @@
 
 
         <meta-data
-             android:name="com.google.android.geo.API_KEY"
-             android:value="@string/google_maps_key" />
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
         <activity android:name=".ui.activities.CreateChannelActivity"
             android:label="@string/new_channel_title">
         </activity>

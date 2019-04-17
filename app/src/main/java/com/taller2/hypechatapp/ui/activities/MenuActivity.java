@@ -7,16 +7,28 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.INavigation;
 import com.taller2.hypechatapp.adapters.NavigationAdapter;
+import com.taller2.hypechatapp.adapters.OrganizationSpinnerAdapter;
+import com.taller2.hypechatapp.components.PicassoLoader;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.NavigationDrawerShowable;
+import com.taller2.hypechatapp.model.Organization;
+import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
+import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.NavigationMenuService;
+import com.taller2.hypechatapp.services.OrganizationService;
+import com.taller2.hypechatapp.services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,41 +42,144 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.taller2.hypechatapp.ui.model.NavigationActionItem.ActionType.CREATE_ORGANIZATION;
+import static com.taller2.hypechatapp.ui.model.NavigationActionItem.ActionType.CREATE_DIRECT_MESSAGE;
 
-public abstract class MenuActivity extends AppCompatActivity implements INavigation {
-
-    private static final int CREATE_ORG_REQUEST_CODE = 1;
-    private static final int RESULT_CODE = 300;
-
-    private static final Integer ORG_ID = 1; //TODO: harcoded values, change me!
+public abstract class MenuActivity extends AppCompatActivity implements INavigation, AdapterView.OnItemSelectedListener {
 
     private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private ImageView userImage;
+    private TextView userName;
+    private ImageButton addOrganizationButton;
+    private Spinner organizationsSpinner;
     private NavigationAdapter navigationAdapter;
 
+    private OrganizationService organizationService;
     private NavigationMenuService navigationMenuService;
+    private UserService userService;
+    private UserManagerPreferences userManagerPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         navigationMenuService = new NavigationMenuService();
+        organizationService = new OrganizationService();
+        userService = new UserService();
+        userManagerPreferences = new UserManagerPreferences(this);
 
         setupUI();
+        addOrganizationsInSpinner();
+        addListenerOnSpinnerOrganizationSelection();
         setUpRecyclerView();
-        showOrganizationUserInfo();
     }
 
     private void setupUI() {
-        //setTitle("LALALA");
-
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        userImage = findViewById(R.id.profile_image_view);
+        userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewUserProfile();
+            }
+        });
+
+        userName = findViewById(R.id.txt_username);
+        organizationsSpinner = findViewById(R.id.organizations_spinner);
+        addOrganizationButton = findViewById(R.id.ib_add_organization);
+
+        userService.getUser(new Client<User>() {
+
+            @Override
+            public void onResponseSuccess(User responseBody) {
+                userName.setText(responseBody.getUsername());
+                String url = responseBody.getPicture();
+                PicassoLoader.load(getApplicationContext(), String.format("%s?type=large", url), userImage);
+            }
+
+            @Override
+            public void onResponseError(String errorMessage) {
+                Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public Context getContext() {
+                return MenuActivity.this;
+            }
+        });
+
+        addOrganizationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNewOrganization();
+            }
+        });
+
+    }
+
+    // add items into spinner dynamically
+    public void addOrganizationsInSpinner() {
+        organizationService.getOrganizationsByUser(new Client<List<Organization>>() {
+            @Override
+            public void onResponseSuccess(List<Organization> organizations) {
+
+                //first time, the user does not have organization.
+                if (organizations.isEmpty()) {
+                    createNewOrganization();
+                    finish();
+
+                } else {
+
+                    OrganizationSpinnerAdapter dataAdapter = new OrganizationSpinnerAdapter(getContext(),
+                            android.R.layout.simple_spinner_item, organizations);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    organizationsSpinner.setAdapter(dataAdapter);
+
+                    Integer selectedOrganizationPosition = getSelectedOrganizationPosition(organizations);
+                    organizationsSpinner.setSelection(selectedOrganizationPosition);
+                    userManagerPreferences.saveSelectedOrganization(organizations.get(selectedOrganizationPosition).getId());
+
+                    showOrganizationUserInfo();
+                }
+            }
+
+            @Override
+            public void onResponseError(String errorMessage) {
+                Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public Context getContext() {
+                return MenuActivity.this;
+            }
+        });
+    }
+
+    private Integer getSelectedOrganizationPosition(List<Organization> organizations) {
+        Integer position = 0;
+        Integer selectedOrganizationId = userManagerPreferences.getSelectedOrganization();
+        if (selectedOrganizationId > -1) {
+            for (int idx = 0; idx < organizations.size(); idx ++) {
+                if (organizations.get(idx).getId() == selectedOrganizationId) {
+                    return idx;
+                }
+            }
+        }
+
+        return position;
+    }
+
+    public void addListenerOnSpinnerOrganizationSelection() {
+        organizationsSpinner = findViewById(R.id.organizations_spinner);
+        organizationsSpinner.setOnItemSelectedListener(this);
     }
 
     private void setUpRecyclerView() {
@@ -84,7 +199,7 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
         ProgressBar loadingView = findViewById(R.id.loading_main);
         loadingView.setVisibility(View.VISIBLE);
 
-        navigationMenuService.getNavigationMenuData(ORG_ID, new Client<List<Comparable>>() {
+        navigationMenuService.getNavigationMenuData(userManagerPreferences.getSelectedOrganization(), new Client<List<Comparable>>() {
             @Override
             public void onResponseSuccess(List<Comparable> navigationUserInfo) {
                 ProgressBar loadingView = findViewById(R.id.loading_main);
@@ -121,6 +236,7 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
 
     private void viewOrganizationProfile() {
         Intent intent = new Intent(this, OrganizationProfileActivity.class);
+        intent.putExtra("ORGANIZATION_ID", userManagerPreferences.getSelectedOrganization());
         startActivity(intent);
     }
 
@@ -133,6 +249,7 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
 
     private void createNewChannel() {
         Intent intent = new Intent(this, CreateChannelActivity.class);
+        intent.putExtra("ORGANIZATION_ID", userManagerPreferences.getSelectedOrganization());
         startActivity(intent);
     }
 
@@ -148,8 +265,8 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
 
     @Override
     public void onIconClick(String type) {
-        if (CREATE_ORGANIZATION.toString().equals(type)) {
-            createNewOrganization();
+        if (CREATE_DIRECT_MESSAGE.toString().equals(type)) {
+            //createNewOrganization();
         } else {
             createNewChannel();
         }
@@ -188,15 +305,27 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
                 logOut();
                 return true;
 
-            case R.id.user_profile:
-                viewUserProfile();
-                return true;
-
             case R.id.organization_profile:
                 viewOrganizationProfile();
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        Integer selectedOrganization = ((Organization) parent.getSelectedItem()).getId();
+        Integer preferenceOrganization = userManagerPreferences.getSelectedOrganization();
+        if (selectedOrganization != preferenceOrganization) {
+            userManagerPreferences.saveSelectedOrganization(selectedOrganization);
+            finish();
+            startActivity(getIntent());
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
     }
 }

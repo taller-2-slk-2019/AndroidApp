@@ -33,13 +33,8 @@ public class NavigationActionItem implements NavigationDrawerShowable {
         return NavigationDrawerItemType.ITEM_ACTION;
     }
 
-    @Override
-    public int compareTo(NavigationDrawerShowable o) {
-        return 0;
-    }
-
     public enum ActionType {
         CREATE_CHANNEL,
-        CREATE_ORGANIZATION
+        CREATE_DIRECT_MESSAGE
     }
 }
