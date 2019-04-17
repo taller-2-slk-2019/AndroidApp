@@ -48,7 +48,7 @@ public class OrganizationProfileActivity extends AppCompatActivity {
 
         organizationService = new OrganizationService();
 
-        int organizationId = 1; // TODO Reemplzar por el Id correspondiente a la organizacion
+        int organizationId = getIntent().getIntExtra("ORGANIZATION_ID", -1);
 
         organizationService.getOrganizationProfile(organizationId, new Client<Organization>() {
 

@@ -106,12 +106,13 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
 
             @Override
             public void onResponseError(String errorMessage) {
+                Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_SHORT).show();
 
             }
 
             @Override
             public Context getContext() {
-                return null;
+                return MenuActivity.this;
             }
         });
 
@@ -152,7 +153,7 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
 
             @Override
             public void onResponseError(String errorMessage) {
-
+                Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -235,6 +236,7 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
 
     private void viewOrganizationProfile() {
         Intent intent = new Intent(this, OrganizationProfileActivity.class);
+        intent.putExtra("ORGANIZATION_ID", userManagerPreferences.getSelectedOrganization());
         startActivity(intent);
     }
 

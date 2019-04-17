@@ -91,5 +91,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="fail_getting_info">No se pudo obtener toda la información</string>
 
 </resources>
