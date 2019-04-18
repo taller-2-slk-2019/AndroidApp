@@ -37,5 +37,6 @@ public class MenuConversationItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void onHolderClick() {
+        listener.onConversationClick(conversation);
     }
 }

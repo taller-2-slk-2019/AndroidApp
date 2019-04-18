@@ -18,6 +18,7 @@ public class UserManagerPreferences {
     // All Shared Preferences Keys
     private static final String KEY_ORGANIZATION_SELECTED = "organizationSelected";
     private static final String KEY_CHANNEL_SELECTED = "channelSelected";
+    private static final String KEY_CONVERSATION_SELECTED = "conversationSelected";
 
     public UserManagerPreferences(Context context) {
         pref = context.getSharedPreferences(PREFER_NAME, Context.MODE_PRIVATE);
@@ -30,7 +31,14 @@ public class UserManagerPreferences {
     }
 
     public void saveSelectedChannel(Integer channelId) {
+        clearSelectedConversation();
         editor.putInt(KEY_CHANNEL_SELECTED + getSelectedOrganization(), channelId);
+        editor.commit();
+    }
+
+    public void saveSelectedConversation(Integer conversationId) {
+        clearSelectedChannel();
+        editor.putInt(KEY_CONVERSATION_SELECTED + getSelectedOrganization(), conversationId);
         editor.commit();
     }
 
@@ -42,8 +50,17 @@ public class UserManagerPreferences {
         return pref.getInt(KEY_CHANNEL_SELECTED + getSelectedOrganization(), DEFAULT_ID);
     }
 
+    public Integer getSelectedConversation() {
+        return pref.getInt(KEY_CONVERSATION_SELECTED + getSelectedOrganization(), DEFAULT_ID);
+    }
+
     public void clearSelectedChannel() {
         editor.remove(KEY_CHANNEL_SELECTED + getSelectedOrganization());
+        editor.commit();
+    }
+
+    public void clearSelectedConversation() {
+        editor.remove(KEY_CONVERSATION_SELECTED + getSelectedOrganization());
         editor.commit();
     }
 }

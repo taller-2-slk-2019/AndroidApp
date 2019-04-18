@@ -224,7 +224,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             @Override
             public void onResponseSuccess(List<Channel> channels) {
                 channelsAdapter.setChannels(channels);
-                selectChannel(channels);
+                selectChannel();
             }
 
             @Override
@@ -243,7 +243,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             @Override
             public void onResponseSuccess(List<Conversation> conversations) {
                 conversationsAdapter.setConversations(conversations);
-                //selectConversation(conversations);
+                selectConversation();
             }
 
             @Override
@@ -259,7 +259,12 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         });
     }
 
-    private void selectChannel(List<Channel> channels) {
+    private void selectChannel() {
+        if (userManagerPreferences.getSelectedConversation() > 0){
+            return;
+        }
+
+        List<Channel> channels = channelsAdapter.getChannels();
         if (channels.size() == 0){
             userManagerPreferences.clearSelectedChannel();
             this.onChatSelected();
@@ -276,6 +281,30 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         userManagerPreferences.saveSelectedChannel(channels.get(0).getId());
         toolbar.setTitle(channels.get(0).getName());
         this.onChatSelected();
+    }
+
+    private void selectConversation() {
+        if (userManagerPreferences.getSelectedChannel() > 0){
+            return;
+        }
+
+        List<Conversation> conversations = conversationsAdapter.getConversations();
+        if (conversations.size() == 0){
+            userManagerPreferences.clearSelectedConversation();
+            this.selectChannel();
+            return;
+        }
+        Integer selectedConversationId = userManagerPreferences.getSelectedConversation();
+        for (Conversation conversation: conversations) {
+            if (conversation.id.equals(selectedConversationId)) {
+                toolbar.setTitle(conversation.getName());
+                this.onChatSelected();
+                return;
+            }
+        }
+
+        userManagerPreferences.clearSelectedConversation();
+        this.selectChannel();
     }
 
     private void viewUserProfile() {
@@ -371,6 +400,14 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     public void onChannelClick(Channel channel){
         toolbar.setTitle(channel.getName());
         userManagerPreferences.saveSelectedChannel(channel.getId());
+        drawerLayout.closeDrawer(GravityCompat.START);
+        onChatSelected();
+    }
+
+    @Override
+    public void onConversationClick(Conversation conversation){
+        toolbar.setTitle(conversation.getName());
+        userManagerPreferences.saveSelectedConversation(conversation.id);
         drawerLayout.closeDrawer(GravityCompat.START);
         onChatSelected();
     }

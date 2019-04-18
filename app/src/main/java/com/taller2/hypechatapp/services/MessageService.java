@@ -23,8 +23,8 @@ public class MessageService extends RestService {
         this.messagesApi = ApiClient.getInstance().getMessageClient();
     }
 
-    public void getChannelMessages(Integer channelId, Integer offset, final Client client) {
-        messagesApi.getChannelMessages(channelId, offset).enqueue(new Callback<List<Message>>() {
+    public void getChatMessages(Integer channelId, Integer conversationId, Integer offset, final Client client) {
+        messagesApi.getChannelMessages(channelId, conversationId, offset).enqueue(new Callback<List<Message>>() {
             @Override
             public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
                 manageSuccessResponse(response, SERVICE_TAG, client);
