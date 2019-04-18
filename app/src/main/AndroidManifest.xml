@@ -50,6 +50,9 @@
             android:label="@string/new_organization_title"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activities.CreateConversationActivity"
+            android:label="@string/new_conversation_title" />
+        <activity
             android:name=".ui.activities.UserProfileActivity"
             android:label="@string/user_profile_title"
             android:screenOrientation="portrait" />

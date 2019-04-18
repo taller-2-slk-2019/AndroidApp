@@ -214,7 +214,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         conversationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //createNewChannel();
+                createNewConversation();
             }
         });
     }
@@ -229,8 +229,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
             @Override
             public void onResponseError(String errorMessage) {
-                String textToShow = "Ha ocurrido un error al intentar obtener los datos del usuario";
-                Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -248,8 +247,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
             @Override
             public void onResponseError(String errorMessage) {
-                String textToShow = "Ha ocurrido un error al intentar obtener los datos del usuario";
-                Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -267,7 +265,11 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         List<Channel> channels = channelsAdapter.getChannels();
         if (channels.size() == 0){
             userManagerPreferences.clearSelectedChannel();
-            this.onChatSelected();
+            if (conversationsAdapter.getItemCount() > 0){
+                this.selectConversation();
+            } else {
+                this.onChatSelected();
+            }
             return;
         }
         Integer selectedChannelId = userManagerPreferences.getSelectedChannel();
@@ -327,6 +329,12 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
     private void createNewChannel() {
         Intent intent = new Intent(this, CreateChannelActivity.class);
+        intent.putExtra("ORGANIZATION_ID", userManagerPreferences.getSelectedOrganization());
+        startActivity(intent);
+    }
+
+    private void createNewConversation() {
+        Intent intent = new Intent(this, CreateConversationActivity.class);
         intent.putExtra("ORGANIZATION_ID", userManagerPreferences.getSelectedOrganization());
         startActivity(intent);
     }

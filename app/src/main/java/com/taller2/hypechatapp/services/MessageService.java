@@ -17,7 +17,7 @@ public class MessageService extends RestService {
 
     private MessageApi messagesApi;
 
-    static final String SERVICE_TAG = "MESSAGESERVICE";
+    private static final String SERVICE_TAG = "MESSAGESERVICE";
 
     public MessageService() {
         this.messagesApi = ApiClient.getInstance().getMessageClient();
