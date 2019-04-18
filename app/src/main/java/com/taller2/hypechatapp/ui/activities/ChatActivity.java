@@ -136,7 +136,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         pickImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            ImagePicker.chooseImage(ChatActivity.this);
+                ImagePicker.chooseImage(ChatActivity.this);
             }
         });
 
@@ -144,7 +144,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         pickFileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            FilePicker.chooseFile(ChatActivity.this);
+                FilePicker.chooseFile(ChatActivity.this);
             }
         });
     }

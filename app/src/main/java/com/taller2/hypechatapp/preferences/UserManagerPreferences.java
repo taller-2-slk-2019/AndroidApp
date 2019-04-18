@@ -43,7 +43,7 @@ public class UserManagerPreferences {
     }
 
     public void clearSelectedChannel() {
-        editor.putInt(KEY_CHANNEL_SELECTED + getSelectedOrganization(), DEFAULT_ID);
+        editor.remove(KEY_CHANNEL_SELECTED + getSelectedOrganization());
         editor.commit();
     }
 }
