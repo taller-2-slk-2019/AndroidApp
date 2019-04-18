@@ -2,7 +2,6 @@ package com.taller2.hypechatapp.network;
 
 import com.taller2.hypechatapp.model.Conversation;
 import com.taller2.hypechatapp.network.model.ConversationRequest;
-import com.taller2.hypechatapp.network.model.SuccessResponse;
 
 import java.util.List;
 
@@ -19,5 +18,5 @@ public interface ConversationApi {
                                          @Query("userToken") String userToken);
 
     @POST("/conversations")
-    Call<SuccessResponse> createConversation(@Query("userToken") String userToken, @Body ConversationRequest conversation);
+    Call<Conversation> createConversation(@Query("userToken") String userToken, @Body ConversationRequest conversation);
 }

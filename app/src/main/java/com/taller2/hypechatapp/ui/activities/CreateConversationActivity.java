@@ -11,10 +11,11 @@ import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.IUserClick;
 import com.taller2.hypechatapp.adapters.NewConversationUsersAdapter;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
+import com.taller2.hypechatapp.model.Conversation;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.ConversationRequest;
-import com.taller2.hypechatapp.network.model.SuccessResponse;
+import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ConversationService;
 import com.taller2.hypechatapp.services.UserService;
 
@@ -32,17 +33,17 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
     private UserService userService;
     private ConversationService conversationService;
     private ProgressBar loading;
-    private Integer organizationId;
+    private UserManagerPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        organizationId = getIntent().getIntExtra("ORGANIZATION_ID", -1);
         setContentView(R.layout.activity_create_conversation);
 
         conversationService = new ConversationService();
         userService = new UserService();
+        preferences = new UserManagerPreferences(this);
 
         setUpView();
     }
@@ -66,7 +67,7 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
     private void getUsers(){
         loading.setVisibility(View.VISIBLE);
 
-        userService.getUsersByOrganization(organizationId, new Client<List<User>>() {
+        userService.getUsersByOrganization(preferences.getSelectedOrganization(), new Client<List<User>>() {
             @Override
             public void onResponseSuccess(List<User> users) {
                 List<User> filteredUsers = new ArrayList<>();
@@ -99,15 +100,17 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
         loading.setVisibility(View.VISIBLE);
 
         ConversationRequest conversation = new ConversationRequest();
-        conversation.organizationId = organizationId;
+        conversation.organizationId = preferences.getSelectedOrganization();
         conversation.userId = user.getId();
 
-        conversationService.createConversation(conversation, new Client<SuccessResponse>() {
+        conversationService.createConversation(conversation, new Client<Conversation>() {
             @Override
-            public void onResponseSuccess(SuccessResponse response) {
+            public void onResponseSuccess(Conversation response) {
                 loading.setVisibility(View.INVISIBLE);
                 Toast.makeText(getContext(), "Woow! Conversación iniciada con " + user.getName(), Toast.LENGTH_LONG).show();
+                preferences.saveSelectedConversation(response.id);
                 Intent intent = new Intent(CreateConversationActivity.this, ChatActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
             }

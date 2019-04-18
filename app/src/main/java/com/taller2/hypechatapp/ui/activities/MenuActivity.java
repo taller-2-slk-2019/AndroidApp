@@ -329,13 +329,11 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
     private void createNewChannel() {
         Intent intent = new Intent(this, CreateChannelActivity.class);
-        intent.putExtra("ORGANIZATION_ID", userManagerPreferences.getSelectedOrganization());
         startActivity(intent);
     }
 
     private void createNewConversation() {
         Intent intent = new Intent(this, CreateConversationActivity.class);
-        intent.putExtra("ORGANIZATION_ID", userManagerPreferences.getSelectedOrganization());
         startActivity(intent);
     }
 
@@ -370,9 +368,6 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
         //noinspection SimplifiableIfStatement
         switch (id) {
-            case R.id.action_settings:
-                return true;
-
             case R.id.action_log_out:
                 logOut();
                 return true;
