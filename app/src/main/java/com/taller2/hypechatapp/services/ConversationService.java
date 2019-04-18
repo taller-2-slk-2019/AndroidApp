@@ -5,6 +5,8 @@ import com.taller2.hypechatapp.model.Conversation;
 import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.ConversationApi;
+import com.taller2.hypechatapp.network.model.ConversationRequest;
+import com.taller2.hypechatapp.network.model.SuccessResponse;
 
 import java.util.List;
 
@@ -31,6 +33,20 @@ public class ConversationService extends RestService {
 
             @Override
             public void onFailure(Call<List<Conversation>> call, Throwable t) {
+                manageFailure(SERVICE_TAG, t, client);
+            }
+        });
+    }
+
+    public void createConversation(ConversationRequest conversation, final Client client) {
+        conversationApi.createConversation(FirebaseAuthService.getCurrentUserToken(), conversation).enqueue(new Callback<SuccessResponse>() {
+            @Override
+            public void onResponse(Call<SuccessResponse> call, Response<SuccessResponse> response) {
+                manageSuccessResponse(response, SERVICE_TAG, client);
+            }
+
+            @Override
+            public void onFailure(Call<SuccessResponse> call, Throwable t) {
                 manageFailure(SERVICE_TAG, t, client);
             }
         });

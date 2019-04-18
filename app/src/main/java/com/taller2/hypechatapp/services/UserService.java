@@ -8,6 +8,8 @@ import com.taller2.hypechatapp.network.UserApi;
 import com.taller2.hypechatapp.network.model.ConfirmationResponse;
 import com.taller2.hypechatapp.network.model.UserLocationRequest;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,6 +33,21 @@ public class UserService extends RestService {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
+                manageFailure(SERVICE_TAG,t,client);
+            }
+        });
+    }
+
+    public void getUsersByOrganization(int organizationId, final Client client){
+        userApi.getUsersByOrganization(organizationId).enqueue(new Callback<List<User>>() {
+
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                manageSuccessResponse(response,SERVICE_TAG,client);
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
                 manageFailure(SERVICE_TAG,t,client);
             }
         });
