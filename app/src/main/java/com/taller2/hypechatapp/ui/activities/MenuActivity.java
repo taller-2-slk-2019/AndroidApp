@@ -21,11 +21,13 @@ import com.taller2.hypechatapp.adapters.OrganizationSpinnerAdapter;
 import com.taller2.hypechatapp.components.PicassoLoader;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.Channel;
+import com.taller2.hypechatapp.model.Conversation;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
+import com.taller2.hypechatapp.services.ConversationService;
 import com.taller2.hypechatapp.services.OrganizationService;
 import com.taller2.hypechatapp.services.UserService;
 
@@ -53,6 +55,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     private OrganizationService organizationService;
     private UserService userService;
     private ChannelService channelsService;
+    private ConversationService conversationsService;
     protected UserManagerPreferences userManagerPreferences;
 
     @Override
@@ -61,6 +64,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         organizationService = new OrganizationService();
         userService = new UserService();
         channelsService = new ChannelService();
+        conversationsService = new ConversationService();
         userManagerPreferences = new UserManagerPreferences(this);
 
         setupUI();
@@ -195,7 +199,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
     private void setUpConversations() {
         RecyclerView rvConversations = findViewById(R.id.rvConversations);
-        conversationsAdapter = new MenuConversationsAdapter();
+        conversationsAdapter = new MenuConversationsAdapter(this);
         rvConversations.setAdapter(conversationsAdapter);
 
         LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(this);
@@ -221,6 +225,25 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             public void onResponseSuccess(List<Channel> channels) {
                 channelsAdapter.setChannels(channels);
                 selectChannel(channels);
+            }
+
+            @Override
+            public void onResponseError(String errorMessage) {
+                String textToShow = "Ha ocurrido un error al intentar obtener los datos del usuario";
+                Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public Context getContext() {
+                return MenuActivity.this;
+            }
+        });
+
+        conversationsService.getConversationsByOrganizationAndUser(userManagerPreferences.getSelectedOrganization(), new Client<List<Conversation>>() {
+            @Override
+            public void onResponseSuccess(List<Conversation> conversations) {
+                conversationsAdapter.setConversations(conversations);
+                //selectConversation(conversations);
             }
 
             @Override
