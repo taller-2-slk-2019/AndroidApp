@@ -77,4 +77,12 @@
     <string name="error_register_firebase">El email ya existe o es inválido</string>
     <string name="register_username">Usuario</string>
 
+    <!-- Invitations -->
+    <string name="send_invitations_button">Enviar</string>
+    <string name="email_invitation_text_hint">Añadir otro email</string>
+    <string name="send_invitations_label">Invitar usuarios</string>
+    <string name="send_invitations">Enviar invitaciones</string>
+    <string name="received_invitations">Invitaciones recibidas</string>
+
+
 </resources>

@@ -9,6 +9,8 @@ import com.taller2.hypechatapp.network.model.OrganizationRequest;
 import com.taller2.hypechatapp.network.model.TokenResponse;
 import com.taller2.hypechatapp.network.model.UserInvitationRequest;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,8 +54,8 @@ public class OrganizationService extends RestService {
         });
     }
 
-    public void inviteUser(Integer organizationId, UserInvitationRequest userInvitationRequest, final Client client){
-        organizationApi.inviteUser(organizationId,userInvitationRequest).enqueue(new Callback<TokenResponse>(){
+    public void inviteUsers(Integer organizationId, List<UserInvitationRequest> userInvitationsList, final Client client){
+        organizationApi.inviteUsers(organizationId,userInvitationsList).enqueue(new Callback<TokenResponse>(){
 
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
