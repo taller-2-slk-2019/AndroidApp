@@ -15,7 +15,7 @@ public class MenuChannelItemViewHolder extends RecyclerView.ViewHolder {
     private final IMenuItemsClick listener;
     private TextView displayName;
     private ImageView iconPrivacy;
-    private int channelId;
+    private Channel channel;
 
     public MenuChannelItemViewHolder(View itemView, IMenuItemsClick listener) {
         super(itemView);
@@ -33,10 +33,10 @@ public class MenuChannelItemViewHolder extends RecyclerView.ViewHolder {
     public void setChannel(Channel channel) {
         displayName.setText(channel.getName());
         iconPrivacy.setImageResource(channel.getIsPublic() ? R.drawable.ic_hashtag : R.drawable.ic_private_channel);
-        channelId = channel.getId();
+        this.channel = channel;
     }
 
     private void onHolderClick(){
-        listener.onChannelClick(channelId);
+        listener.onChannelClick(channel);
     }
 }

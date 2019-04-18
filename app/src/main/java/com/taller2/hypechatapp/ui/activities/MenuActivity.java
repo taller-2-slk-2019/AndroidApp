@@ -42,6 +42,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class MenuActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, IMenuItemsClick {
 
+    private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ImageView userImage;
     private TextView userName;
@@ -70,7 +71,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     }
 
     private void setupUI() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -244,11 +245,13 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         Integer selectedChannelId = userManagerPreferences.getSelectedChannel();
         for (Channel channel: channels) {
             if (channel.getId().equals(selectedChannelId)) {
+                toolbar.setTitle(channel.getName());
                 this.onChatSelected();
                 return;
             }
         }
         userManagerPreferences.saveSelectedChannel(channels.get(0).getId());
+        toolbar.setTitle(channels.get(0).getName());
         this.onChatSelected();
     }
 
@@ -342,8 +345,9 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     protected abstract void onChatSelected();
 
     @Override
-    public void onChannelClick(int channelId){
-        userManagerPreferences.saveSelectedChannel(channelId);
+    public void onChannelClick(Channel channel){
+        toolbar.setTitle(channel.getName());
+        userManagerPreferences.saveSelectedChannel(channel.getId());
         drawerLayout.closeDrawer(GravityCompat.START);
         onChatSelected();
     }
