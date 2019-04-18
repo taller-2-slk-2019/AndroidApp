@@ -35,6 +35,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnRefreshListener, FirebaseStorageUploadInterface {
 
     private SwipeRefreshLayout messagesListContainer;
+    private View newMessageContainer;
+    private View noChannelContainer;
     private RecyclerView messagesList;
     private MessageListAdapter messagesAdapter;
 
@@ -42,7 +44,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
 
     private MessageService messageService;
 
-    private int selectedChannel = -1;
+    private int selectedChannel = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +53,11 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
 
         messageService = new MessageService();
 
-        setUpMessagesListUI();
-        setUpNewMessageUI();
+        setUpUI();
+    }
+
+    private boolean hasChatSelected(){
+        return selectedChannel > 0;
     }
 
     @Override
@@ -61,6 +66,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         unsubscribe();
         selectedChannel = userManagerPreferences.getSelectedChannel();
         subscribe();
+        updateUI();
         onRefresh();
     }
 
@@ -76,14 +82,33 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     }
 
     private void unsubscribe(){
-        if (selectedChannel > 0){
+        if (hasChatSelected()){
             FirebaseMessaging.getInstance().unsubscribeFromTopic("channel_" + selectedChannel); //TODO allow conversations
             EventBus.getDefault().unregister(this);
         }
     }
 
-    private void setUpMessagesListUI() {
+    private void setUpUI(){
         messagesListContainer = findViewById(R.id.chatMessagesListContainer);
+        newMessageContainer = findViewById(R.id.newMessageContainer);
+        noChannelContainer = findViewById(R.id.noChannelContainer);
+        setUpMessagesListUI();
+        setUpNewMessageUI();
+    }
+
+    private void updateUI(){
+        if (hasChatSelected()){
+            messagesListContainer.setVisibility(View.VISIBLE);
+            newMessageContainer.setVisibility(View.VISIBLE);
+            noChannelContainer.setVisibility(View.INVISIBLE);
+        } else {
+            messagesListContainer.setVisibility(View.INVISIBLE);
+            newMessageContainer.setVisibility(View.INVISIBLE);
+            noChannelContainer.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setUpMessagesListUI() {
         messagesListContainer.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         messagesList = findViewById(R.id.chatMessagesList);
 
@@ -111,7 +136,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         pickImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ImagePicker.chooseImage(ChatActivity.this);
+            ImagePicker.chooseImage(ChatActivity.this);
             }
         });
 
@@ -119,17 +144,20 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         pickFileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FilePicker.chooseFile(ChatActivity.this);
+            FilePicker.chooseFile(ChatActivity.this);
             }
         });
     }
 
     @Override
     public void onRefresh(){
+        if (!hasChatSelected()){
+            return;
+        }
+
         int offset = messagesAdapter.getItemCount();
         messagesListContainer.setRefreshing(true);
 
-        //TODO harcoded channel id
         //TODO refactor to allow conversation messages as well
         messageService.getChannelMessages(selectedChannel, offset, new Client<List<Message>>() {
             @Override

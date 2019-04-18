@@ -237,6 +237,8 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
     private void selectChannel(List<Channel> channels) {
         if (channels.size() == 0){
+            userManagerPreferences.clearSelectedChannel();
+            this.onChatSelected();
             return;
         }
         Integer selectedChannelId = userManagerPreferences.getSelectedChannel();

@@ -13,6 +13,7 @@ public class UserManagerPreferences {
 
     // Shared preferences file name
     private static final String PREFER_NAME = "Reg";
+    private static final int DEFAULT_ID = 0;
 
     // All Shared Preferences Keys
     private static final String KEY_ORGANIZATION_SELECTED = "organizationSelected";
@@ -34,11 +35,15 @@ public class UserManagerPreferences {
     }
 
     public Integer getSelectedOrganization() {
-        return pref.getInt(KEY_ORGANIZATION_SELECTED, -1);
+        return pref.getInt(KEY_ORGANIZATION_SELECTED, DEFAULT_ID);
     }
 
     public Integer getSelectedChannel() {
-        return pref.getInt(KEY_CHANNEL_SELECTED + getSelectedOrganization(), -1);
+        return pref.getInt(KEY_CHANNEL_SELECTED + getSelectedOrganization(), DEFAULT_ID);
     }
 
+    public void clearSelectedChannel() {
+        editor.putInt(KEY_CHANNEL_SELECTED + getSelectedOrganization(), DEFAULT_ID);
+        editor.commit();
+    }
 }
