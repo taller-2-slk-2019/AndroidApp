@@ -42,6 +42,8 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
 
     private MessageService messageService;
 
+    private int selectedChannel = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_chat);
@@ -51,17 +53,33 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
 
         setUpMessagesListUI();
         setUpNewMessageUI();
-        onRefresh();//TODO change when selecting org and chanel is implemented
+    }
 
-        FirebaseMessaging.getInstance().subscribeToTopic("channel_1"); //TODO hardcoded id and allow conversations
-        EventBus.getDefault().register(this);
+    @Override
+    protected void onChatSelected() {
+        messagesAdapter.clear();
+        unsubscribe();
+        selectedChannel = userManagerPreferences.getSelectedChannel();
+        subscribe();
+        onRefresh();
     }
 
     @Override
     protected void onDestroy(){
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("channel_1"); //TODO hardcoded id and allow conversations
-        EventBus.getDefault().unregister(this);
+        unsubscribe();
         super.onDestroy();
+    }
+
+    private void subscribe(){
+        FirebaseMessaging.getInstance().subscribeToTopic("channel_" + selectedChannel); //TODO allow conversations
+        EventBus.getDefault().register(this);
+    }
+
+    private void unsubscribe(){
+        if (selectedChannel > 0){
+            FirebaseMessaging.getInstance().unsubscribeFromTopic("channel_" + selectedChannel); //TODO allow conversations
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     private void setUpMessagesListUI() {
@@ -113,7 +131,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
 
         //TODO harcoded channel id
         //TODO refactor to allow conversation messages as well
-        messageService.getChannelMessages(1, offset, new Client<List<Message>>() {
+        messageService.getChannelMessages(selectedChannel, offset, new Client<List<Message>>() {
             @Override
             public void onResponseSuccess(List<Message> messages) {
                 messagesListContainer.setRefreshing(false);
@@ -142,6 +160,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     }
 
     private void sendMessage(Message message){
+        message.channelId = selectedChannel; //TODO allow conversations
         messageService.createMessage(message, new Client<SuccessResponse>() {
             @Override
             public void onResponseSuccess(SuccessResponse responseBody) {
@@ -170,7 +189,6 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         Message message = new Message();
         message.data = messageText;
         message.type = Message.TYPE_TEXT;
-        message.channelId = 1; //TODO harcoded channel id
 
         sendMessage(message);
     }
@@ -207,7 +225,6 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         Message message = new Message();
         message.data = downloadUrl;
         message.type = type;
-        message.channelId = 1; //TODO harcoded channel id
 
         sendMessage(message);
     }

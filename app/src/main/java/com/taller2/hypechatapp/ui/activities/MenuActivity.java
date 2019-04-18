@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
+import com.taller2.hypechatapp.adapters.IMenuItemsClick;
 import com.taller2.hypechatapp.adapters.MenuChannelsAdapter;
 import com.taller2.hypechatapp.adapters.MenuConversationsAdapter;
 import com.taller2.hypechatapp.adapters.OrganizationSpinnerAdapter;
@@ -39,7 +40,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public abstract class MenuActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public abstract class MenuActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, IMenuItemsClick {
 
     private DrawerLayout drawerLayout;
     private ImageView userImage;
@@ -51,7 +52,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     private OrganizationService organizationService;
     private UserService userService;
     private ChannelService channelsService;
-    private UserManagerPreferences userManagerPreferences;
+    protected UserManagerPreferences userManagerPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,17 +156,14 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     }
 
     private Integer getSelectedOrganizationPosition(List<Organization> organizations) {
-        Integer position = 0;
         Integer selectedOrganizationId = userManagerPreferences.getSelectedOrganization();
-        if (selectedOrganizationId > -1) {
-            for (int idx = 0; idx < organizations.size(); idx ++) {
-                if (organizations.get(idx).getId().equals(selectedOrganizationId)) {
-                    return idx;
-                }
+        for (int idx = 0; idx < organizations.size(); idx ++) {
+            if (organizations.get(idx).getId().equals(selectedOrganizationId)) {
+                return idx;
             }
         }
 
-        return position;
+        return 0;
     }
 
     public void addListenerOnSpinnerOrganizationSelection() {
@@ -174,14 +172,13 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
     private void setUpChannels() {
         RecyclerView rvChannels = findViewById(R.id.rvChannels);
-        channelsAdapter = new MenuChannelsAdapter();
+        channelsAdapter = new MenuChannelsAdapter(this);
         rvChannels.setAdapter(channelsAdapter);
 
         LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(this);
         mLinearLayoutManagerVertical.setOrientation(RecyclerView.VERTICAL);
         rvChannels.setLayoutManager(mLinearLayoutManagerVertical);
         rvChannels.setItemAnimator(new DefaultItemAnimator());
-        //rvChannels.setNestedScrollingEnabled(false);
 
         View newChannel = findViewById(R.id.new_channel_layout);
         TextView channelTitle = newChannel.findViewById(R.id.item_title);
@@ -222,6 +219,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             @Override
             public void onResponseSuccess(List<Channel> channels) {
                 channelsAdapter.setChannels(channels);
+                selectChannel(channels);
             }
 
             @Override
@@ -235,6 +233,21 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
                 return MenuActivity.this;
             }
         });
+    }
+
+    private void selectChannel(List<Channel> channels) {
+        if (channels.size() == 0){
+            return;
+        }
+        Integer selectedChannelId = userManagerPreferences.getSelectedChannel();
+        for (Channel channel: channels) {
+            if (channel.getId().equals(selectedChannelId)) {
+                this.onChatSelected();
+                return;
+            }
+        }
+        userManagerPreferences.saveSelectedChannel(channels.get(0).getId());
+        this.onChatSelected();
     }
 
     private void viewUserProfile() {
@@ -266,19 +279,6 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         startActivity(intent);
     }
 
-
-    /*public void onViewClick(int position) {
-        Toast.makeText(this, "position: " + position, Toast.LENGTH_SHORT).show();
-    }
-
-
-    public void onIconClick(String type) {
-        /*if (CREATE_DIRECT_MESSAGE.toString().equals(type)) {
-            //createNewOrganization();
-        } else {
-            createNewChannel();
-        }
-    }*/
 
     @Override
     public void onBackPressed() {
@@ -335,5 +335,14 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
+    }
+
+    protected abstract void onChatSelected();
+
+    @Override
+    public void onChannelClick(int channelId){
+        userManagerPreferences.saveSelectedChannel(channelId);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        onChatSelected();
     }
 }

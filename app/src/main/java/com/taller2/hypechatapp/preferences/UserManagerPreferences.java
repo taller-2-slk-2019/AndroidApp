@@ -11,31 +11,34 @@ public class UserManagerPreferences {
     // Editor reference for Shared preferences
     SharedPreferences.Editor editor;
 
-    private Context context;
-
-    // Shared preferences mode
-    int PRIVATE_MODE = 0;
-
     // Shared preferences file name
-    public static final String PREFER_NAME = "Reg";
+    private static final String PREFER_NAME = "Reg";
 
     // All Shared Preferences Keys
-    public static final String KEY_ORGANIZATION_SELECTED = "organizationSelected";
+    private static final String KEY_ORGANIZATION_SELECTED = "organizationSelected";
+    private static final String KEY_CHANNEL_SELECTED = "channelSelected";
 
     public UserManagerPreferences(Context context) {
-        this.context = context;
-        pref = context.getSharedPreferences(PREFER_NAME, PRIVATE_MODE);
+        pref = context.getSharedPreferences(PREFER_NAME, Context.MODE_PRIVATE);
         editor = pref.edit();
     }
 
     public void saveSelectedOrganization(Integer organizationId) {
         editor.putInt(KEY_ORGANIZATION_SELECTED, organizationId);
-        // commit changes
+        editor.commit();
+    }
+
+    public void saveSelectedChannel(Integer channelId) {
+        editor.putInt(KEY_CHANNEL_SELECTED + getSelectedOrganization(), channelId);
         editor.commit();
     }
 
     public Integer getSelectedOrganization() {
         return pref.getInt(KEY_ORGANIZATION_SELECTED, -1);
+    }
+
+    public Integer getSelectedChannel() {
+        return pref.getInt(KEY_CHANNEL_SELECTED + getSelectedOrganization(), -1);
     }
 
 }
