@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Channel implements Serializable, NavigationDrawerShowable {
+public class Channel implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -85,8 +85,4 @@ public class Channel implements Serializable, NavigationDrawerShowable {
         this.createdAt = createdAt;
     }
 
-    @Override
-    public NavigationDrawerItemType getType() {
-        return NavigationDrawerItemType.CHANNELS;
-    }
 }

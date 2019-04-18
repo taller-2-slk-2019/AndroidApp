@@ -20,22 +20,53 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#ad5389">
 
             <include
                 android:id="@+id/navigation_drawer_header_include"
                 layout="@layout/nav_header_main" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvDrawerList"
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#ad5389"
-                android:layout_below="@id/navigation_drawer_header_include"/>
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="130dp">
 
-        </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include
+                        android:id="@+id/new_channel_layout"
+                        layout="@layout/item_action_navigation" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvChannels"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/new_conversation_layout"
+                        layout="@layout/item_action_navigation" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvConversations"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
 
     </com.google.android.material.navigation.NavigationView>
 
