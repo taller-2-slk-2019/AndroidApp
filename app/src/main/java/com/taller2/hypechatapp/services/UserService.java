@@ -6,7 +6,10 @@ import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.UserApi;
 import com.taller2.hypechatapp.network.model.ConfirmationResponse;
+import com.taller2.hypechatapp.network.model.ReceivedInvitation;
 import com.taller2.hypechatapp.network.model.UserLocationRequest;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -74,6 +77,20 @@ public class UserService extends RestService {
 
             @Override
             public void onFailure(Call<ConfirmationResponse> call, Throwable t) {
+                manageFailure(SERVICE_TAG,t,client);
+            }
+        });
+    }
+
+    public void getReceivedInvitations(final Client client){
+        userApi.getReceivedInvitations(FirebaseAuthService.getCurrentUserToken()).enqueue(new Callback<List<ReceivedInvitation>>() {
+            @Override
+            public void onResponse(Call<List<ReceivedInvitation>> call, Response<List<ReceivedInvitation>> response) {
+                manageSuccessResponse(response,SERVICE_TAG,client);
+            }
+
+            @Override
+            public void onFailure(Call<List<ReceivedInvitation>> call, Throwable t) {
                 manageFailure(SERVICE_TAG,t,client);
             }
         });

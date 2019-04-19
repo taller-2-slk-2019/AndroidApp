@@ -7,32 +7,37 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.taller2.hypechatapp.R;
-import com.taller2.hypechatapp.adapters.InvitationsAdapter;
+import com.taller2.hypechatapp.adapters.SendInvitationsAdapter;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.UserInvitationRequest;
 import com.taller2.hypechatapp.services.OrganizationService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SendInvitationsActivity extends AppCompatActivity {
 
     RecyclerView emailsRecyclerView;
-    InvitationsAdapter invitationsAdapter;
+    SendInvitationsAdapter sendInvitationsAdapter;
     List<String> emailsList=new ArrayList<>();
     private MaterialButton sendInvitationsButton;
     private OrganizationService organizationService;
+    private ProgressBar loadingView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_invitations);
+        setContentView(R.layout.activity_send_invitations);
 
         //Add first line to the list
         emailsList.add("");
@@ -47,8 +52,8 @@ public class SendInvitationsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         emailsRecyclerView = findViewById(R.id.invitations_email_list);
-        invitationsAdapter = new InvitationsAdapter(emailsList);
-        emailsRecyclerView.setAdapter(invitationsAdapter);
+        sendInvitationsAdapter = new SendInvitationsAdapter(emailsList);
+        emailsRecyclerView.setAdapter(sendInvitationsAdapter);
 
         emailsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         emailsRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -57,24 +62,40 @@ public class SendInvitationsActivity extends AppCompatActivity {
         sendInvitationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<UserInvitationRequest> userInvitationsList = buildUserInvitationsList();
-                sendInvitations(userInvitationsList);
+                UserInvitationRequest userInvitationRequest = buildUserInvitationsRequest();
+                sendInvitations(userInvitationRequest);
             }
         });
 
+        loadingView = findViewById(R.id.progress_bar);
+
     }
 
-    private void sendInvitations(List<UserInvitationRequest> userInvitationsList) {
-        //TODO reemplazar con el id correcto de la organizacion
-        organizationService.inviteUsers(1, userInvitationsList, new Client() {
+    private void sendInvitations(UserInvitationRequest userInvitationRequest) {
+
+        loadingView.setVisibility(View.VISIBLE);
+
+        organizationService.inviteUsers(1, userInvitationRequest, new Client() {
             @Override
             public void onResponseSuccess(Object responseBody) {
-
+                loadingView.setVisibility(View.INVISIBLE);
+                Toast.makeText(getContext(), "Invitaciones Enviadas!!!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(SendInvitationsActivity.this, ChatActivity.class);
+                startActivity(intent);
+                finish();
             }
 
             @Override
             public void onResponseError(String errorMessage) {
-
+                loadingView.setVisibility(View.INVISIBLE);
+                String textToShow;
+                if(!TextUtils.isEmpty(errorMessage)){
+                    textToShow=errorMessage;
+                } else {
+                    textToShow="No fue posible enviar las invitaciones a los usuarios indicados. Intente más tarde.";
+                }
+                Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
+                finish();
             }
 
             @Override
@@ -84,16 +105,14 @@ public class SendInvitationsActivity extends AppCompatActivity {
         });
     }
 
-    private List<UserInvitationRequest> buildUserInvitationsList() {
-        List<UserInvitationRequest> userInvitations=new ArrayList<>();
-        for (String email:emailsList) {
-            if(!TextUtils.isEmpty(email)){
-                UserInvitationRequest userInvitationRequest = new UserInvitationRequest();
-                userInvitationRequest.setUserEmail(email);
-                userInvitations.add(userInvitationRequest);
-            }
+    private UserInvitationRequest buildUserInvitationsRequest() {
+        UserInvitationRequest userInvitationRequest = new UserInvitationRequest();
+        List<String> userEmails=new ArrayList<>();
+        Collections.copy(userEmails,emailsList);
+        userEmails.removeAll(Collections.singleton(""));
+        userEmails.removeAll(Collections.singleton(null));
 
-        }
-        return userInvitations;
+        userInvitationRequest.userEmails=userEmails;
+        return userInvitationRequest;
     }
 }

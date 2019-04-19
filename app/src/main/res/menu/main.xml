@@ -26,6 +26,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/received_invitations"
+        android:orderInCategory="100"
+        android:title="@string/received_invitations_menu_label"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_log_out"
         android:orderInCategory="101"
         android:title="@string/action_log_out"

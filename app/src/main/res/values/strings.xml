@@ -83,6 +83,8 @@
     <string name="send_invitations_label">Invitar usuarios</string>
     <string name="send_invitations">Enviar invitaciones</string>
     <string name="received_invitations">Invitaciones recibidas</string>
+    <string name="received_invitations_label">Invitaciones Recibidas</string>
+    <string name="received_invitations_menu_label">Invitaciones Recibidas</string>
 
 
 </resources>

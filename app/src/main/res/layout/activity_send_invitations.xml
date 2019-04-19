@@ -7,7 +7,7 @@
     tools:context=".ui.activities.SendInvitationsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/organization_app_bar_layout"
+        android:id="@+id/send_invitations_app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
@@ -37,7 +37,7 @@
         android:text="Ingrese los correos electronicos de los usuarios que desea invitar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/organization_app_bar_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/send_invitations_app_bar_layout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/invitations_email_list"
@@ -65,6 +65,12 @@
         android:text="@string/send_invitations_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
+    <include layout="@layout/progress_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 

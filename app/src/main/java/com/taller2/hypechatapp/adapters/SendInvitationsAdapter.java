@@ -16,11 +16,11 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class InvitationsAdapter extends RecyclerView.Adapter<EmailInvitationViewHolder> {
+public class SendInvitationsAdapter extends RecyclerView.Adapter<EmailInvitationViewHolder> {
 
     private List<String> emailList;
 
-    public InvitationsAdapter(List<String> emailList) {
+    public SendInvitationsAdapter(List<String> emailList) {
         this.emailList = emailList;
     }
 

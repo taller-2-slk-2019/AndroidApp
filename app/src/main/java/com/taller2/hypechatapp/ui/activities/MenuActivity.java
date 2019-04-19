@@ -146,6 +146,11 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
         startActivity(intent);
     }
 
+    private void viewReceivedInvitations() {
+        Intent intent = new Intent(this,ReceivedInvitationsActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onViewClick(int position) {
         Toast.makeText(this, "position: " + position, Toast.LENGTH_SHORT).show();
@@ -204,9 +209,15 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
             case R.id.send_invitations:
                 viewSendInvitations();
                 return true;
+
+            case R.id.received_invitations:
+                viewReceivedInvitations();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }

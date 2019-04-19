@@ -2,7 +2,7 @@ package com.taller2.hypechatapp.network;
 
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
-import com.taller2.hypechatapp.network.model.TokenResponse;
+import com.taller2.hypechatapp.network.model.SuccessResponse;
 import com.taller2.hypechatapp.network.model.UserInvitationRequest;
 
 import java.util.List;
@@ -26,5 +26,5 @@ public interface OrganizationApi {
     Call<Organization> createOrganization(@Query("userToken")String userToken, @Body OrganizationRequest organization);
 
     @POST("/organizations/{organizationId}/invitations")
-    Call<TokenResponse> inviteUsers(@Path("organizationId") Integer organizationId, @Body List<UserInvitationRequest> userInvitationList);
+    Call<SuccessResponse> inviteUsers(@Path("organizationId") Integer organizationId, @Body UserInvitationRequest userInvitationRequest);
 }

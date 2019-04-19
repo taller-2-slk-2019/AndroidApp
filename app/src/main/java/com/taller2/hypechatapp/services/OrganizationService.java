@@ -6,6 +6,7 @@ import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.OrganizationApi;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
+import com.taller2.hypechatapp.network.model.SuccessResponse;
 import com.taller2.hypechatapp.network.model.TokenResponse;
 import com.taller2.hypechatapp.network.model.UserInvitationRequest;
 
@@ -54,16 +55,16 @@ public class OrganizationService extends RestService {
         });
     }
 
-    public void inviteUsers(Integer organizationId, List<UserInvitationRequest> userInvitationsList, final Client client){
-        organizationApi.inviteUsers(organizationId,userInvitationsList).enqueue(new Callback<TokenResponse>(){
+    public void inviteUsers(Integer organizationId, UserInvitationRequest userInvitationRequest, final Client client){
+        organizationApi.inviteUsers(organizationId,userInvitationRequest).enqueue(new Callback<SuccessResponse>(){
 
             @Override
-            public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
+            public void onResponse(Call<SuccessResponse> call, Response<SuccessResponse> response) {
                 manageSuccessResponse(response,SERVICE_TAG,client);
             }
 
             @Override
-            public void onFailure(Call<TokenResponse> call, Throwable t) {
+            public void onFailure(Call<SuccessResponse> call, Throwable t) {
                 manageFailure(SERVICE_TAG,t,client);
             }
         });

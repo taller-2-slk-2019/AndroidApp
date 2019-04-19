@@ -6,5 +6,5 @@ import com.google.gson.annotations.SerializedName;
 public class SuccessResponse {
     @SerializedName("success")
     @Expose
-    private Boolean success;
+    public Boolean success;
 }

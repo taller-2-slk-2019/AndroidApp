@@ -2,7 +2,10 @@ package com.taller2.hypechatapp.network;
 
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.model.ConfirmationResponse;
+import com.taller2.hypechatapp.network.model.ReceivedInvitation;
 import com.taller2.hypechatapp.network.model.UserLocationRequest;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -24,4 +27,7 @@ public interface UserApi {
 
     @PUT("/users/location")
     Call<ConfirmationResponse> updateUserLocation(@Query("userToken") String userToken, @Body UserLocationRequest userLocationRequest);
+
+    @GET("/users/invitations")
+    Call<List<ReceivedInvitation>> getReceivedInvitations(@Query("userToken") String userToken);
 }
