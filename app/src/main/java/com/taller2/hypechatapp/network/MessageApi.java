@@ -15,6 +15,7 @@ public interface MessageApi {
 
     @GET("/messages")
     Call<List<Message>> getChannelMessages(@Query("channelId") Integer channelId,
+                                    @Query("conversationId") Integer conversationId,
                                     @Query("offset") Integer offset);
 
     @POST("/messages")

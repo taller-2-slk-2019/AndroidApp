@@ -20,7 +20,7 @@ public class MenuChannelItemViewHolder extends RecyclerView.ViewHolder {
     public MenuChannelItemViewHolder(View itemView, IMenuItemsClick listener) {
         super(itemView);
         displayName = itemView.findViewById(R.id.channel_name);
-        iconPrivacy= itemView.findViewById(R.id.img_channel_privacy);
+        iconPrivacy = itemView.findViewById(R.id.img_channel_privacy);
         this.listener = listener;
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override

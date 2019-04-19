@@ -21,11 +21,13 @@ import com.taller2.hypechatapp.adapters.OrganizationSpinnerAdapter;
 import com.taller2.hypechatapp.components.PicassoLoader;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.Channel;
+import com.taller2.hypechatapp.model.Conversation;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
+import com.taller2.hypechatapp.services.ConversationService;
 import com.taller2.hypechatapp.services.OrganizationService;
 import com.taller2.hypechatapp.services.UserService;
 
@@ -53,6 +55,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     private OrganizationService organizationService;
     private UserService userService;
     private ChannelService channelsService;
+    private ConversationService conversationsService;
     protected UserManagerPreferences userManagerPreferences;
 
     @Override
@@ -61,6 +64,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         organizationService = new OrganizationService();
         userService = new UserService();
         channelsService = new ChannelService();
+        conversationsService = new ConversationService();
         userManagerPreferences = new UserManagerPreferences(this);
 
         setupUI();
@@ -195,7 +199,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
     private void setUpConversations() {
         RecyclerView rvConversations = findViewById(R.id.rvConversations);
-        conversationsAdapter = new MenuConversationsAdapter();
+        conversationsAdapter = new MenuConversationsAdapter(this);
         rvConversations.setAdapter(conversationsAdapter);
 
         LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(this);
@@ -210,7 +214,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         conversationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //createNewChannel();
+                createNewConversation();
             }
         });
     }
@@ -220,13 +224,30 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             @Override
             public void onResponseSuccess(List<Channel> channels) {
                 channelsAdapter.setChannels(channels);
-                selectChannel(channels);
+                selectChannel();
             }
 
             @Override
             public void onResponseError(String errorMessage) {
-                String textToShow = "Ha ocurrido un error al intentar obtener los datos del usuario";
-                Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public Context getContext() {
+                return MenuActivity.this;
+            }
+        });
+
+        conversationsService.getConversationsByOrganizationAndUser(userManagerPreferences.getSelectedOrganization(), new Client<List<Conversation>>() {
+            @Override
+            public void onResponseSuccess(List<Conversation> conversations) {
+                conversationsAdapter.setConversations(conversations);
+                selectConversation();
+            }
+
+            @Override
+            public void onResponseError(String errorMessage) {
+                Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -236,10 +257,19 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         });
     }
 
-    private void selectChannel(List<Channel> channels) {
+    private void selectChannel() {
+        if (userManagerPreferences.getSelectedConversation() > 0){
+            return;
+        }
+
+        List<Channel> channels = channelsAdapter.getChannels();
         if (channels.size() == 0){
             userManagerPreferences.clearSelectedChannel();
-            this.onChatSelected();
+            if (conversationsAdapter.getItemCount() > 0){
+                this.selectConversation();
+            } else {
+                this.onChatSelected();
+            }
             return;
         }
         Integer selectedChannelId = userManagerPreferences.getSelectedChannel();
@@ -253,6 +283,30 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         userManagerPreferences.saveSelectedChannel(channels.get(0).getId());
         toolbar.setTitle(channels.get(0).getName());
         this.onChatSelected();
+    }
+
+    private void selectConversation() {
+        if (userManagerPreferences.getSelectedChannel() > 0){
+            return;
+        }
+
+        List<Conversation> conversations = conversationsAdapter.getConversations();
+        if (conversations.size() == 0){
+            userManagerPreferences.clearSelectedConversation();
+            this.selectChannel();
+            return;
+        }
+        Integer selectedConversationId = userManagerPreferences.getSelectedConversation();
+        for (Conversation conversation: conversations) {
+            if (conversation.id.equals(selectedConversationId)) {
+                toolbar.setTitle(conversation.getName());
+                this.onChatSelected();
+                return;
+            }
+        }
+
+        userManagerPreferences.clearSelectedConversation();
+        this.selectChannel();
     }
 
     private void viewUserProfile() {
@@ -275,7 +329,11 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
     private void createNewChannel() {
         Intent intent = new Intent(this, CreateChannelActivity.class);
-        intent.putExtra("ORGANIZATION_ID", userManagerPreferences.getSelectedOrganization());
+        startActivity(intent);
+    }
+
+    private void createNewConversation() {
+        Intent intent = new Intent(this, CreateConversationActivity.class);
         startActivity(intent);
     }
 
@@ -310,9 +368,6 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
         //noinspection SimplifiableIfStatement
         switch (id) {
-            case R.id.action_settings:
-                return true;
-
             case R.id.action_log_out:
                 logOut();
                 return true;
@@ -348,6 +403,14 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     public void onChannelClick(Channel channel){
         toolbar.setTitle(channel.getName());
         userManagerPreferences.saveSelectedChannel(channel.getId());
+        drawerLayout.closeDrawer(GravityCompat.START);
+        onChatSelected();
+    }
+
+    @Override
+    public void onConversationClick(Conversation conversation){
+        toolbar.setTitle(conversation.getName());
+        userManagerPreferences.saveSelectedConversation(conversation.id);
         drawerLayout.closeDrawer(GravityCompat.START);
         onChatSelected();
     }

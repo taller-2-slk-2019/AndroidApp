@@ -45,6 +45,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     private MessageService messageService;
 
     private int selectedChannel = 0;
+    private int selectedConversation = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     }
 
     private boolean hasChatSelected(){
-        return selectedChannel > 0;
+        return selectedChannel > 0 || selectedConversation > 0;
     }
 
     @Override
@@ -65,9 +66,12 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         messagesAdapter.clear();
         unsubscribe();
         selectedChannel = userManagerPreferences.getSelectedChannel();
-        subscribe();
+        selectedConversation = userManagerPreferences.getSelectedConversation();
         updateUI();
-        onRefresh();
+        if (hasChatSelected()){
+            subscribe();
+            onRefresh();
+        }
     }
 
     @Override
@@ -77,15 +81,27 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     }
 
     private void subscribe(){
-        FirebaseMessaging.getInstance().subscribeToTopic("channel_" + selectedChannel); //TODO allow conversations
+        FirebaseMessaging.getInstance().subscribeToTopic(getTopic());
         EventBus.getDefault().register(this);
     }
 
     private void unsubscribe(){
         if (hasChatSelected()){
-            FirebaseMessaging.getInstance().unsubscribeFromTopic("channel_" + selectedChannel); //TODO allow conversations
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(getTopic());
             EventBus.getDefault().unregister(this);
         }
+    }
+
+    private String getTopic(){
+        if (selectedChannel > 0){
+            return "channel_" + selectedChannel;
+        }
+
+        if (selectedConversation > 0){
+            return "conversation_" + selectedConversation;
+        }
+
+        return "";
     }
 
     private void setUpUI(){
@@ -151,22 +167,17 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh(){
-        if (!hasChatSelected()){
-            return;
-        }
-
         int offset = messagesAdapter.getItemCount();
         messagesListContainer.setRefreshing(true);
 
-        //TODO refactor to allow conversation messages as well
-        messageService.getChannelMessages(selectedChannel, offset, new Client<List<Message>>() {
+        messageService.getChatMessages(selectedChannel, selectedConversation, offset, new Client<List<Message>>() {
             @Override
             public void onResponseSuccess(List<Message> messages) {
                 messagesListContainer.setRefreshing(false);
                 if (messages.size() > 0){
                     messagesAdapter.addOlderMessages(messages);
                     messagesList.scrollToPosition(messages.size() - 1);
-                } else {
+                } else if (messagesAdapter.getItemCount() > 0) {
                     String textToShow = "No hay más mensajes";
                     Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
                     messagesListContainer.setEnabled(false);
@@ -188,7 +199,8 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     }
 
     private void sendMessage(Message message){
-        message.channelId = selectedChannel; //TODO allow conversations
+        message.channelId = selectedChannel;
+        message.conversationId = selectedConversation;
         messageService.createMessage(message, new Client<SuccessResponse>() {
             @Override
             public void onResponseSuccess(SuccessResponse responseBody) {
