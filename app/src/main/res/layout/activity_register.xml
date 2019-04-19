@@ -9,19 +9,18 @@
 
     <include
         android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         layout="@layout/title_logo_small"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_email_register"
         style="@style/CreationForm.TextInputLayout.Inverted"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/login_email_hint"
         android:inputType="textEmailAddress"
-        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title">
@@ -93,8 +92,7 @@
         android:id="@+id/include"
         layout="@layout/profile_image_picker"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/layout_name_register"
         tools:layout_editor_absoluteX="0dp" />
 
@@ -105,11 +103,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
         android:text="Registrarme"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include" />
 
