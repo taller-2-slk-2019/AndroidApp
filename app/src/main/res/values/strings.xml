@@ -1,42 +1,28 @@
 <resources>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_log_out">Cerrar Sesión</string>
-    <string name="title_activity_channel_chat">Hypechat</string>
+    <!-- Activities -->
     <string name="app_name">Hypechat</string>
+    <string name="title_activity_chat">Hypechat</string>
     <string name="new_organization_title">Nueva Organización</string>
+    <string name="new_channel_title">Nuevo Canal</string>
+
+    <!-- Menu -->
+    <string name="navigation_drawer_open">Abrir Menu</string>
+    <string name="navigation_drawer_close">Cerrar Menu</string>
+    <string name="menu_channels">CANALES</string>
+    <string name="menu_conversations">CONVERSACIONES</string>
+    <string name="action_log_out">Cerrar Sesión</string>
+
+    <!-- organization creation view -->
     <string name="hint_organization_name">Nombre de la organización</string>
     <string name="hint_organization_description">Descripción</string>
     <string name="organization_welcome_message_hint">Mensaje de Bienvenida</string>
     <string name="organization_location_label_text">Ubicación:</string>
-    <string name="organization_profile_image_label_text">Imagen de Perfil:</string>
     <string name="new_organization_next_text">SIGUIENTE</string>
     <string name="new_organization_end_text">FINALIZAR</string>
-    <string name="title_activity_create_channel">CreateChannelActivity</string>
-    <string name="menu_channels">CANALES</string>
-    <string name="menu_conversations">CONVERSACIONES</string>
-
-    <string name="image_picker_error">Debe seleccionar una imagen!</string>
-
-    <string name="channel_privacy_open">Abierto</string>
-    <string name="channel_privacy_closed">Cerrado</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- channel creation view -->
     <string name="channel_description">Los canales son el lugar donde se comunican los miembros de la organización</string>
-    <string name="new_channel_title">Nuevo Canal</string>
-    <string name="example_channel_name">Ej clientes</string>
-    <string name="channel_label_description">Descripción</string>
-    <string name="channel_hint_purpose">¿De qué trata este canal?</string>
     <string name="btn_channel_create">Crear canal</string>
-    <string name="btn_channel_cancel">Cancelar</string>
-    <string name="channel_label_welcome">Mensaje de bienvenida</string>
     <string name="input_channel_name_error">Ingrese el nombre del canal</string>
     <string name="input_channel_description_error">Ingrese la descripción del canal</string>
     <string name="input_channel_welcome_error">Ingrese el mensaje de bienvenida</string>
@@ -46,6 +32,8 @@
     <string name="hint_regards_channel">Saluda a los invitados! ┌( ಠ_ಠ )┘</string>
     <string name="hint_about_channel">¿De qué trata este canal?</string>
     <string name="hint_example_channel_name">Ej: #clientes</string>
+    <string name="channel_privacy_open">Abierto</string>
+    <string name="channel_privacy_closed">Cerrado</string>
 
     <!-- conversations creation view -->
     <string name="new_conversation_title">Nueva Conversación</string>
@@ -62,6 +50,8 @@
     <string name="name_user_profile">Nombre: </string>
     <string name="username_user_profile">Usuario: </string>
     <string name="email_user_profile">Email: </string>
+
+    <!-- organization profile view -->
     <string name="organization_profile_title">Perfil de la organización</string>
     <string name="description_organization_profile">Descripción: </string>
     <string name="name_organization_profile">Nombre de la organización: </string>
@@ -69,35 +59,22 @@
     <string name="update_organization_information_button">ACTUALIZAR\nINFORMACIÓN</string>
 
     <!-- login and register view -->
-    <string name="title_activity_login">LoginActivity</string>
     <string name="facebook_app_id">318283042209713</string>
     <string name="fb_login_protocol_scheme">fb318283042209713</string>
-    <string name="login_button_message">Ingresar</string>
     <string name="login_email_hint">Email</string>
     <string name="login_password_hint">Contraseña</string>
     <string name="register_name">Nombre completo</string>
-    <string name="no_account_text"><u>No tienes cuenta? Registrate</u></string>
     <string name="fb_log_in_error">No se pudo iniciar sesión</string>
     <string name="log_in_error">Email o contraseña incorrectos</string>
-    <string name="register_button_text">Registrarse</string>
     <string name="error_register">El nombre de usuario ya existe</string>
     <string name="error_register_firebase">El email ya existe o es inválido</string>
     <string name="error_weak_password">Contraseña muy corta [mínimo 6 caracteres]</string>
     <string name="error_user_exists">Email ya utilizado en otra cuenta</string>
     <string name="register_username">Usuario</string>
-    <string name="title_activity_login2">Sign in</string>
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="error_invalid_email">El mail es inválido</string>
+
+    <!-- Other -->
+    <string name="image_picker_error">Debe seleccionar una imagen!</string>
     <string name="fail_getting_info">No se pudo obtener toda la información</string>
 
 
