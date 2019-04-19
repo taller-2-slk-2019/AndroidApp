@@ -17,6 +17,8 @@
     <string name="new_organization_next_text">SIGUIENTE</string>
     <string name="new_organization_end_text">FINALIZAR</string>
     <string name="title_activity_create_channel">CreateChannelActivity</string>
+    <string name="menu_channels">CANALES</string>
+    <string name="menu_conversations">CONVERSACIONES</string>
 
     <string name="image_picker_error">Debe seleccionar una imagen!</string>
 
@@ -45,9 +47,14 @@
     <string name="hint_about_channel">¿De qué trata este canal?</string>
     <string name="hint_example_channel_name">Ej: #clientes</string>
 
+    <!-- conversations creation view -->
+    <string name="new_conversation_title">Nueva Conversación</string>
+    <string name="conversations_description">Elegí un usuario para chatear</string>
+
     <!-- chat view -->
     <string name="new_message_hint">Enviá algo bueno al chat!</string>
     <string name="download_message_file">Ver archivo enviado</string>
+    <string name="no_channel_msg">Unite a un canal o creá uno nuevo para poder chatear.</string>
 
     <!-- user profile view -->
     <string name="user_profile_title">Perfil de usuario</string>
@@ -92,5 +99,6 @@
         completions."
     </string>
     <string name="fail_getting_info">No se pudo obtener toda la información</string>
+
 
 </resources>
