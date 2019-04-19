@@ -40,6 +40,7 @@ public class CreateOrganizationStepTwoFragment extends Fragment
     private static final int DEFAULT_ZOOM = 14;
     private View returnView;
     private TextView locationError;
+    private MaterialButton endButton;
 
     @Nullable
     @Override
@@ -74,7 +75,7 @@ public class CreateOrganizationStepTwoFragment extends Fragment
             }
         });
 
-        MaterialButton endButton=returnView.findViewById(R.id.new_organization_end_button);
+        endButton=returnView.findViewById(R.id.new_organization_end_button);
         endButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,11 +85,17 @@ public class CreateOrganizationStepTwoFragment extends Fragment
                     return;
 
                 organizationRequest.welcome=welcomeMessageInputText.getText().toString();
+                blockButtons();
 
                 callback.onFinishButtonClick(organizationRequest);
 
             }
         });
+    }
+
+    private void blockButtons(){
+        map.setOnMapClickListener(null);
+        endButton.setClickable(false);
     }
 
     private boolean validateUserInput(TextInputEditText welcomeMessageInputText) {

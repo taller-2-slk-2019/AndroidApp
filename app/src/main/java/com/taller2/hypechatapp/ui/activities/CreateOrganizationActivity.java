@@ -190,7 +190,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
 
     @Override
     public void onFileUploadError(Exception exception) {
-        Toast.makeText(CreateOrganizationActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
+        Toast.makeText(CreateOrganizationActivity.this, "No fue posible crear una organización. Intente más tarde.", Toast.LENGTH_LONG).show();
         finish();
     }
 
