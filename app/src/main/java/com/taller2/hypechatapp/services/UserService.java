@@ -5,7 +5,7 @@ import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.UserApi;
-import com.taller2.hypechatapp.network.model.ConfirmationResponse;
+import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.network.model.UserLocationRequest;
 
 import java.util.List;
@@ -68,29 +68,29 @@ public class UserService extends RestService {
     }
 
     public void updateUser(User user, final Client client){
-        userApi.updateUser(FirebaseAuthService.getCurrentUserToken(), user).enqueue(new Callback<ConfirmationResponse>() {
+        userApi.updateUser(FirebaseAuthService.getCurrentUserToken(), user).enqueue(new Callback<NoResponse>() {
             @Override
-            public void onResponse(Call<ConfirmationResponse> call, Response<ConfirmationResponse> response) {
+            public void onResponse(Call<NoResponse> call, Response<NoResponse> response) {
                 manageSuccessResponse(response,SERVICE_TAG,client);
 
             }
 
             @Override
-            public void onFailure(Call<ConfirmationResponse> call, Throwable t) {
+            public void onFailure(Call<NoResponse> call, Throwable t) {
                 manageFailure(SERVICE_TAG,t,client);
             }
         });
     }
 
     public void updateUserLocation(UserLocationRequest userLocationRequest, final Client client){
-        userApi.updateUserLocation(FirebaseAuthService.getCurrentUserToken(), userLocationRequest).enqueue(new Callback<ConfirmationResponse>() {
+        userApi.updateUserLocation(FirebaseAuthService.getCurrentUserToken(), userLocationRequest).enqueue(new Callback<NoResponse>() {
             @Override
-            public void onResponse(Call<ConfirmationResponse> call, Response<ConfirmationResponse> response) {
+            public void onResponse(Call<NoResponse> call, Response<NoResponse> response) {
                 manageSuccessResponse(response,SERVICE_TAG,client);
             }
 
             @Override
-            public void onFailure(Call<ConfirmationResponse> call, Throwable t) {
+            public void onFailure(Call<NoResponse> call, Throwable t) {
                 manageFailure(SERVICE_TAG,t,client);
             }
         });

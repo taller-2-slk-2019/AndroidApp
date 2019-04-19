@@ -19,7 +19,7 @@ import com.taller2.hypechatapp.firebase.FirebaseStorageService;
 import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.Message;
 import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.network.model.SuccessResponse;
+import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.services.MessageService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -201,9 +201,9 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     private void sendMessage(Message message){
         message.channelId = selectedChannel;
         message.conversationId = selectedConversation;
-        messageService.createMessage(message, new Client<SuccessResponse>() {
+        messageService.createMessage(message, new Client<NoResponse>() {
             @Override
-            public void onResponseSuccess(SuccessResponse responseBody) {
+            public void onResponseSuccess(NoResponse responseBody) {
                 newMessageText.setText("");
             }
 
