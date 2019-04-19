@@ -48,7 +48,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
     }
 
     private void setUpUI() {
-        loadingView = findViewById(R.id.loading_create_orga);
+        loadingView = findViewById(R.id.loading);
     }
 
     private void setUpInitials() {
