@@ -1,9 +1,9 @@
 package com.taller2.hypechatapp.ui.model;
 
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
 import com.taller2.hypechatapp.R;
 
 import androidx.annotation.NonNull;
@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ReceivedInvitationViewHolder extends RecyclerView.ViewHolder {
 
     public TextView invitationTextView;
-    public ImageButton acceptInvitationButton;
-    public ImageButton rejectInvitationButton;
+    public MaterialButton acceptInvitationButton;
+    public MaterialButton rejectInvitationButton;
 
     public ReceivedInvitationViewHolder(@NonNull View itemView) {
         super(itemView);
