@@ -44,7 +44,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class MenuActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, IMenuItemsClick {
 
-    private Toolbar toolbar;
+    protected Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ImageView userImage;
     private TextView userName;
