@@ -20,7 +20,7 @@
         android:layout_alignParentLeft="true"
         android:textColor="@android:color/black"
         android:textStyle="bold"
-        android:textSize="12sp"/>
+        android:textSize="14sp"/>
 
     <ImageView
         android:id="@+id/item_img"

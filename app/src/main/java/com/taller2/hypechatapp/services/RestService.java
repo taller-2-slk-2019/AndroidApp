@@ -13,10 +13,11 @@ public class RestService {
 
     public void manageSuccessResponse(Response response, String serviceTag, Client client) {
         if (response.code() >= 200 && response.code() < 300) {
+            client.onResponseSuccess(response.body());
             if (response.body() != null) {
                 Log.i(serviceTag, response.body().toString());
-                client.onResponseSuccess(response.body());
             }
+
         } else {
             if (response.body() != null) {
                 Log.e(serviceTag, response.body().toString());

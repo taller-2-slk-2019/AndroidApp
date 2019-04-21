@@ -53,6 +53,7 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
     private ImageButton addOrganizationButton;
     private Spinner organizationsSpinner;
     private NavigationAdapter navigationAdapter;
+    private UserProfileUpdate userProfileUpdate;
 
     private OrganizationService organizationService;
     private NavigationMenuService navigationMenuService;
@@ -66,6 +67,7 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
         organizationService = new OrganizationService();
         userService = new UserService();
         userManagerPreferences = new UserManagerPreferences(this);
+        userProfileUpdate = new UserProfileUpdate();
 
         setupUI();
         addOrganizationsInSpinner();
@@ -95,26 +97,7 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
         organizationsSpinner = findViewById(R.id.organizations_spinner);
         addOrganizationButton = findViewById(R.id.ib_add_organization);
 
-        userService.getUser(new Client<User>() {
-
-            @Override
-            public void onResponseSuccess(User responseBody) {
-                userName.setText(responseBody.getUsername());
-                String url = responseBody.getPicture();
-                PicassoLoader.load(getApplicationContext(), String.format("%s?type=large", url), userImage);
-            }
-
-            @Override
-            public void onResponseError(String errorMessage) {
-                Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public Context getContext() {
-                return MenuActivity.this;
-            }
-        });
+        userService.getUser(userProfileUpdate);
 
         addOrganizationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -327,5 +310,33 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        userService.getUser(userProfileUpdate);
+    }
+
+    public class UserProfileUpdate implements Client<User> {
+
+        @Override
+        public void onResponseSuccess(User responseBody) {
+            userName.setText(responseBody.getUsername());
+            String url = responseBody.getPicture();
+            PicassoLoader.load(getApplicationContext(), String.format("%s?type=large", url), R.drawable.default_user, userImage);
+        }
+
+        @Override
+        public void onResponseError(String errorMessage) {
+            Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_SHORT).show();
+
+        }
+
+        @Override
+        public Context getContext() {
+            return MenuActivity.this;
+        }
+
     }
 }

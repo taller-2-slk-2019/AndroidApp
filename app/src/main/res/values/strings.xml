@@ -50,7 +50,7 @@
     <string name="download_message_file">Ver archivo enviado</string>
 
     <!-- user profile view -->
-    <string name="user_profile_title">Perfil de usuario</string>
+    <string name="user_profile_title">Editar usuario</string>
     <string name="update_user_profile_button">Actualizar\nPerfil</string>
     <string name="name_user_profile">Nombre: </string>
     <string name="username_user_profile">Usuario: </string>
@@ -92,5 +92,6 @@
         completions."
     </string>
     <string name="fail_getting_info">No se pudo obtener toda la información</string>
+    <string name="btn_update_user">Actualizar</string>
 
 </resources>

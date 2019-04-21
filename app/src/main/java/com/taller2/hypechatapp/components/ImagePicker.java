@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.material.button.MaterialButton;
-
 import java.io.IOException;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,16 +17,16 @@ public class ImagePicker {
     public static final int PICK_IMAGE_REQUEST = 71;
 
     private ImageView profileImageView;
-    private MaterialButton pickImageButton;
+    private View pickImage;
     private Uri filePath;
     private TextView errorText;
 
-    public ImagePicker(final AppCompatActivity activity, MaterialButton pickImageButton,
-                       ImageView profileImageView, TextView errorText){
-        this.errorText=errorText;
-        this.pickImageButton=pickImageButton;
-        this.profileImageView=profileImageView;
-        pickImageButton.setOnClickListener(new View.OnClickListener() {
+    public ImagePicker(final AppCompatActivity activity, View pickImage,
+                       ImageView profileImageView, TextView errorText) {
+        this.errorText = errorText;
+        this.pickImage = pickImage;
+        this.profileImageView = profileImageView;
+        pickImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chooseImage(activity);
@@ -62,11 +60,11 @@ public class ImagePicker {
 
             profileImageView.setImageBitmap(profileImageBitmap);
             profileImageView.setVisibility(View.VISIBLE);
-            pickImageButton.setVisibility(View.INVISIBLE);
-            errorText.setVisibility(View.INVISIBLE);
-        }
-        catch (IOException e)
-        {
+            pickImage.setVisibility(View.INVISIBLE);
+            if (errorText != null) {
+                errorText.setVisibility(View.INVISIBLE);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -79,12 +77,12 @@ public class ImagePicker {
 
     public void disable() {
         profileImageView.setClickable(false);
-        pickImageButton.setClickable(false);
+        pickImage.setClickable(false);
     }
 
     public void enable() {
         profileImageView.setClickable(true);
-        pickImageButton.setClickable(true);
+        pickImage.setClickable(true);
     }
 
     public boolean validate(){

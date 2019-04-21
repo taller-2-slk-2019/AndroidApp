@@ -5,18 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <!--<TextView-->
-        <!--android:id="@+id/profile_image_label"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="16dp"-->
-        <!--android:layout_marginLeft="16dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:textColor="@color/whiteHype"-->
-        <!--android:text="@string/organization_profile_image_label_text"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent" />-->
-
     <TextView
         android:id="@+id/profile_image_error"
         android:layout_width="wrap_content"
@@ -47,7 +35,7 @@
     <ImageView
         android:id="@+id/profile_image_view"
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="200dp"
         android:layout_marginTop="24dp"
         android:visibility="invisible"
         app:layout_constraintHorizontal_bias="1.0"

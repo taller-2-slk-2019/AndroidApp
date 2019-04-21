@@ -126,7 +126,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
         enableRegisterEdition();
     }
 
-    private void userRegistered() {
+    private void registerUser() {
         User userRequest = new User();
         userRequest.setEmail(email.getText().toString());
         userRequest.setName(name.getText().toString());
@@ -222,7 +222,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
     @Override
     public void onFileUploaded(String downloadUrl, String type) {
         imageUrl = downloadUrl;
-        userRegistered();
+        registerUser();
     }
 
     @Override

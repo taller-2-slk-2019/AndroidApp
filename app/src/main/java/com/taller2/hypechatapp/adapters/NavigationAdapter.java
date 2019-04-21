@@ -150,7 +150,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Ba
         @Override
         public void bind(NavigationActionItem navigationData) {
             displayName.setText(navigationData.getTitle());
-            actionIcon.setImageResource(R.drawable.ic_plus);
+            actionIcon.setImageResource(R.drawable.ic_plus_channel);
             actionIcon.setOnClickListener(this);
         }
 
