@@ -17,6 +17,7 @@ import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.OrganizationService;
+import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
 import java.util.List;
 
@@ -137,6 +138,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
     public void onFinishButtonClick(OrganizationRequest organizationRequest) {
 
         loadingView.setVisibility(View.VISIBLE);
+        ScreenDisablerHelper.disableScreenTouch(getWindow());
 
         this.organizationRequest=organizationRequest;
 
@@ -152,6 +154,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
             @Override
             public void onResponseSuccess(Organization organization) {
                 loadingView.setVisibility(View.INVISIBLE);
+                ScreenDisablerHelper.enableScreenTouch(getWindow());
                 Toast.makeText(getContext(), "Woow! Organización creada", Toast.LENGTH_LONG).show();
                 preferences.saveSelectedOrganization(organization.getId());
                 Intent intent = new Intent(CreateOrganizationActivity.this, ChatActivity.class);
@@ -163,6 +166,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
             @Override
             public void onResponseError(String errorMessage) {
                 loadingView.setVisibility(View.INVISIBLE);
+                ScreenDisablerHelper.enableScreenTouch(getWindow());
                 String textToShow;
                 if(!TextUtils.isEmpty(errorMessage)){
                     textToShow=errorMessage;
@@ -191,6 +195,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
     @Override
     public void onFileUploadError(Exception exception) {
         Toast.makeText(CreateOrganizationActivity.this, "No fue posible crear una organización. Intente más tarde.", Toast.LENGTH_LONG).show();
+        ScreenDisablerHelper.enableScreenTouch(getWindow());
         finish();
     }
 

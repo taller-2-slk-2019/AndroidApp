@@ -30,6 +30,7 @@ import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
+import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,9 +44,6 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
     private Uri filePath;
     private String imageUrl;
     private ImagePicker imagePicker;
-    private Button registerButton;
-    private MaterialButton pickImageButton;
-    private ImageView profileImageView;
 
     private TextView errorText;
     private ProgressBar loading;
@@ -70,14 +68,14 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
         password = findViewById(R.id.password_register);
         name = findViewById(R.id.name_register);
         username = findViewById(R.id.username_register);
-        pickImageButton = findViewById(R.id.pick_profile_image_button);
-        profileImageView = findViewById(R.id.profile_image_view);
+        MaterialButton pickImageButton = findViewById(R.id.pick_profile_image_button);
+        ImageView profileImageView = findViewById(R.id.profile_image_view);
         errorText = findViewById(R.id.error_text);
         imagePicker = new ImagePicker(this, pickImageButton, profileImageView, errorText);
 
         loading = findViewById(R.id.loading);
 
-        registerButton = findViewById(R.id.register_button);
+        Button registerButton = findViewById(R.id.register_button);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,9 +159,8 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
 
     private void loading() {
         loading.setVisibility(View.VISIBLE);
-        registerButton.setClickable(false);
+        ScreenDisablerHelper.disableScreenTouch(getWindow());
         errorText.setVisibility(View.INVISIBLE);
-        imagePicker.disable();
     }
 
     private void showError(boolean firebase) {
@@ -180,8 +177,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
 
     private void enableRegisterEdition() {
         loading.setVisibility(View.INVISIBLE);
-        registerButton.setClickable(true);
-        imagePicker.enable();
+        ScreenDisablerHelper.enableScreenTouch(getWindow());
         FirebaseAuthService.logOut();
     }
 

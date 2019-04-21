@@ -19,6 +19,7 @@ import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.ChannelRequest;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
+import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -111,6 +112,7 @@ public class CreateChannelActivity extends AppCompatActivity {
                 }
 
                 loading.setVisibility(View.VISIBLE);
+                ScreenDisablerHelper.disableScreenTouch(getWindow());
                 ChannelRequest channelRequest = createRequest();
                 channelService.createChannel(channelRequest, new Client<Channel>() {
                     @Override
@@ -127,6 +129,7 @@ public class CreateChannelActivity extends AppCompatActivity {
                     @Override
                     public void onResponseError(String errorMessage) {
                         loading.setVisibility(View.INVISIBLE);
+                        ScreenDisablerHelper.enableScreenTouch(getWindow());
                         String textToShow;
                         if (!TextUtils.isEmpty(errorMessage)) {
                             textToShow = errorMessage;
