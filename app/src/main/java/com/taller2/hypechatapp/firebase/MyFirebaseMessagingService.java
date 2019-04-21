@@ -8,7 +8,9 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.model.Message;
+import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.model.User;
+import com.taller2.hypechatapp.notifications.NewOrganizationInvitationNotification;
 import com.taller2.hypechatapp.notifications.UserMentionedNotification;
 
 import org.greenrobot.eventbus.EventBus;
@@ -39,6 +41,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     Log.d(TAG, "handling mentioned user");
                     handleMentionedUser(data.get("message"), data.get("channel"), data.get("sender"));
                     break;
+                case "invitation":
+                    Log.d(TAG, "handling new invitation");
+                    handleInvitation(data.get("organization"));
+                    break;
             }
         }
 
@@ -58,5 +64,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Channel channel = new Gson().fromJson(channelData, Channel.class);
         User sender = new Gson().fromJson(senderData, User.class);
         new UserMentionedNotification(this, channel, sender).send();
+    }
+
+    private void handleInvitation(String data) {
+        Organization organization = new Gson().fromJson(data, Organization.class);
+        new NewOrganizationInvitationNotification(this, organization).send();
     }
 }
