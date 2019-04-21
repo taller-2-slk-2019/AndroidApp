@@ -10,7 +10,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -24,6 +23,7 @@ import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.network.model.ReceivedInvitation;
 import com.taller2.hypechatapp.services.OrganizationService;
 import com.taller2.hypechatapp.services.UserService;
+import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
 import java.util.List;
 
@@ -95,9 +95,8 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
     @Override
     public void onAcceptClick(String token, final int adapterPosition, final InvitationResponseListener listener) {
         loadingView.setVisibility(View.VISIBLE);
-        //Disable the screen, so no other invitation can be clicked
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+        ScreenDisablerHelper.disableScreenTouch(getWindow());
 
         AcceptInvitationRequest acceptInvitationRequest=new AcceptInvitationRequest();
         acceptInvitationRequest.token=token;
@@ -106,8 +105,8 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
             @Override
             public void onResponseSuccess(NoResponse responseBody) {
                 loadingView.setVisibility(View.INVISIBLE);
-                //Re-enable the screen
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                ScreenDisablerHelper.enableScreenTouch(getWindow());
 
                 Toast.makeText(getContext(), "Invitación aceptada", Toast.LENGTH_LONG).show();
                 listener.onInvitationResponse(adapterPosition);
@@ -116,8 +115,8 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
             @Override
             public void onResponseError(String errorMessage) {
                 loadingView.setVisibility(View.INVISIBLE);
-                //Re-enable the screen
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                ScreenDisablerHelper.enableScreenTouch(getWindow());
 
                 Toast.makeText(getContext(), "Ocurrió un error al intentar aceptar la invitación." +
                         " Intente más tarde.", Toast.LENGTH_LONG).show();
@@ -134,17 +133,16 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
     @Override
     public void onRejectClick(String token, final int adapterPosition, final InvitationResponseListener listener) {
         loadingView.setVisibility(View.VISIBLE);
-        //Disable the screen, so no other invitation can be clicked
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+        ScreenDisablerHelper.disableScreenTouch(getWindow());
 
         userService.rejectInvitation(token, new Client<NoResponse>(){
 
             @Override
             public void onResponseSuccess(NoResponse responseBody) {
                 loadingView.setVisibility(View.INVISIBLE);
-                //Re-enable the screen
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                ScreenDisablerHelper.enableScreenTouch(getWindow());
 
                 Toast.makeText(getContext(), "Invitación rechazada", Toast.LENGTH_LONG).show();
                 listener.onInvitationResponse(adapterPosition);
@@ -153,8 +151,8 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
             @Override
             public void onResponseError(String errorMessage) {
                 loadingView.setVisibility(View.INVISIBLE);
-                //Re-enable the screen
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                ScreenDisablerHelper.enableScreenTouch(getWindow());
 
                 Toast.makeText(getContext(), "Ocurrió un error al intentar rechazar la invitación." +
                         " Intente más tarde.", Toast.LENGTH_LONG).show();

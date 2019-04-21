@@ -88,8 +88,6 @@ public class SendInvitationsActivity extends AppCompatActivity {
                     //TODO Show the rejected invitations to the user
                 } else {
                     Toast.makeText(getContext(), "Invitaciones Enviadas!!!", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(SendInvitationsActivity.this, ChatActivity.class);
-                    startActivity(intent);
                     finish();
                 }
 
