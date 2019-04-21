@@ -6,7 +6,9 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Organization implements Serializable, NavigationDrawerShowable {
+import androidx.annotation.NonNull;
+
+public class Organization implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -142,18 +144,9 @@ public class Organization implements Serializable, NavigationDrawerShowable {
         this.userOrganizations = userOrganizations;
     }
 
+    @NonNull
     @Override
-    public int compareTo(NavigationDrawerShowable that) {
-        if (this == that) return 0;
-        if (that.getType().equals(NavigationDrawerItemType.CHANNELS)) {
-            return -1;
-        }
-
-        return 0;
-    }
-
-    @Override
-    public NavigationDrawerItemType getType() {
-        return NavigationDrawerItemType.ORGANIZATIONS;
+    public String toString() {
+        return name;
     }
 }

@@ -6,14 +6,11 @@
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ProgressBar
-            android:id="@+id/loading_create_orga"
-            style="?android:attr/progressBarStyle"
 
+        <include
+            layout="@layout/progress_bar"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:visibility="invisible"
-            />
+            android:layout_height="379dp" />
 
     </FrameLayout>
+

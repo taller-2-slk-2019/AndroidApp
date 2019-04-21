@@ -19,7 +19,7 @@ import com.taller2.hypechatapp.firebase.FirebaseStorageService;
 import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.Message;
 import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.network.model.SuccessResponse;
+import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.services.MessageService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -35,12 +35,17 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnRefreshListener, FirebaseStorageUploadInterface {
 
     private SwipeRefreshLayout messagesListContainer;
+    private View newMessageContainer;
+    private View noChannelContainer;
     private RecyclerView messagesList;
     private MessageListAdapter messagesAdapter;
 
     private TextView newMessageText;
 
     private MessageService messageService;
+
+    private int selectedChannel = 0;
+    private int selectedConversation = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,23 +54,77 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
 
         messageService = new MessageService();
 
-        setUpMessagesListUI();
-        setUpNewMessageUI();
-        onRefresh();//TODO change when selecting org and chanel is implemented
+        setUpUI();
+    }
 
-        FirebaseMessaging.getInstance().subscribeToTopic("channel_1"); //TODO hardcoded id and allow conversations
-        EventBus.getDefault().register(this);
+    private boolean hasChatSelected(){
+        return selectedChannel > 0 || selectedConversation > 0;
+    }
+
+    @Override
+    protected void onChatSelected() {
+        messagesAdapter.clear();
+        unsubscribe();
+        selectedChannel = userManagerPreferences.getSelectedChannel();
+        selectedConversation = userManagerPreferences.getSelectedConversation();
+        updateUI();
+        if (hasChatSelected()){
+            subscribe();
+            onRefresh();
+        }
     }
 
     @Override
     protected void onDestroy(){
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("channel_1"); //TODO hardcoded id and allow conversations
-        EventBus.getDefault().unregister(this);
+        unsubscribe();
         super.onDestroy();
     }
 
-    private void setUpMessagesListUI() {
+    private void subscribe(){
+        FirebaseMessaging.getInstance().subscribeToTopic(getTopic());
+        EventBus.getDefault().register(this);
+    }
+
+    private void unsubscribe(){
+        if (hasChatSelected()){
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(getTopic());
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    private String getTopic(){
+        if (selectedChannel > 0){
+            return "channel_" + selectedChannel;
+        }
+
+        if (selectedConversation > 0){
+            return "conversation_" + selectedConversation;
+        }
+
+        return "";
+    }
+
+    private void setUpUI(){
         messagesListContainer = findViewById(R.id.chatMessagesListContainer);
+        newMessageContainer = findViewById(R.id.newMessageContainer);
+        noChannelContainer = findViewById(R.id.noChannelContainer);
+        setUpMessagesListUI();
+        setUpNewMessageUI();
+    }
+
+    private void updateUI(){
+        if (hasChatSelected()){
+            messagesListContainer.setVisibility(View.VISIBLE);
+            newMessageContainer.setVisibility(View.VISIBLE);
+            noChannelContainer.setVisibility(View.INVISIBLE);
+        } else {
+            messagesListContainer.setVisibility(View.INVISIBLE);
+            newMessageContainer.setVisibility(View.INVISIBLE);
+            noChannelContainer.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setUpMessagesListUI() {
         messagesListContainer.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         messagesList = findViewById(R.id.chatMessagesList);
 
@@ -111,16 +170,14 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         int offset = messagesAdapter.getItemCount();
         messagesListContainer.setRefreshing(true);
 
-        //TODO harcoded channel id
-        //TODO refactor to allow conversation messages as well
-        messageService.getChannelMessages(1, offset, new Client<List<Message>>() {
+        messageService.getChatMessages(selectedChannel, selectedConversation, offset, new Client<List<Message>>() {
             @Override
             public void onResponseSuccess(List<Message> messages) {
                 messagesListContainer.setRefreshing(false);
                 if (messages.size() > 0){
                     messagesAdapter.addOlderMessages(messages);
                     messagesList.scrollToPosition(messages.size() - 1);
-                } else {
+                } else if (messagesAdapter.getItemCount() > 0) {
                     String textToShow = "No hay más mensajes";
                     Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
                     messagesListContainer.setEnabled(false);
@@ -142,9 +199,11 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     }
 
     private void sendMessage(Message message){
-        messageService.createMessage(message, new Client<SuccessResponse>() {
+        message.channelId = selectedChannel;
+        message.conversationId = selectedConversation;
+        messageService.createMessage(message, new Client<NoResponse>() {
             @Override
-            public void onResponseSuccess(SuccessResponse responseBody) {
+            public void onResponseSuccess(NoResponse responseBody) {
                 newMessageText.setText("");
             }
 
@@ -170,7 +229,6 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         Message message = new Message();
         message.data = messageText;
         message.type = Message.TYPE_TEXT;
-        message.channelId = 1; //TODO harcoded channel id
 
         sendMessage(message);
     }
@@ -207,7 +265,6 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         Message message = new Message();
         message.data = downloadUrl;
         message.type = type;
-        message.channelId = 1; //TODO harcoded channel id
 
         sendMessage(message);
     }

@@ -1,5 +1,7 @@
 package com.taller2.hypechatapp.adapters;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +20,12 @@ public class ReceivedInvitationsAdapter extends RecyclerView.Adapter<ReceivedInv
 
     private List<ReceivedInvitation> invitations;
     private InvitationClickListener invitationClickListener;
+    private Context context;
 
-    public ReceivedInvitationsAdapter(List<ReceivedInvitation> receivedInvitations, InvitationClickListener invitationClickListener) {
+    public ReceivedInvitationsAdapter(List<ReceivedInvitation> receivedInvitations, InvitationClickListener invitationClickListener, Context context) {
         this.invitations=receivedInvitations;
         this.invitationClickListener = invitationClickListener;
+        this.context=context;
     }
 
     @NonNull
@@ -35,24 +39,19 @@ public class ReceivedInvitationsAdapter extends RecyclerView.Adapter<ReceivedInv
 
     @Override
     public void onBindViewHolder(@NonNull final ReceivedInvitationViewHolder holder, int position) {
-        //TODO put this on strings.xml
-        StringBuilder sb=new StringBuilder();
-        sb.append("La organización <b>");
-        sb.append(invitations.get(holder.getAdapterPosition()).organization);
-        sb.append("</b> desea que te unas a su equipo. ¿Aceptas?");
-
-        holder.invitationTextView.setText(Html.fromHtml(sb.toString()));
+        Resources res = context.getResources();
+        String text = String.format(res.getString(R.string.received_invitation_text), invitations.get(holder.getAdapterPosition()).organization);
+        holder.invitationTextView.setText(Html.fromHtml(text));
         holder.acceptInvitationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO Accept Invitation, delete entry from list and notify data change
                 invitationClickListener.onAcceptClick(invitations.get(holder.getAdapterPosition()).token, holder.getAdapterPosition(),ReceivedInvitationsAdapter.this);
             }
         });
         holder.rejectInvitationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO Reject Invitation, delete entry from list and notify data change
+                invitationClickListener.onRejectClick(invitations.get(holder.getAdapterPosition()).token, holder.getAdapterPosition(),ReceivedInvitationsAdapter.this);
 
             }
         });
@@ -65,13 +64,10 @@ public class ReceivedInvitationsAdapter extends RecyclerView.Adapter<ReceivedInv
 
 
     @Override
-    public void onInvitationResponseOK(int adapterPosition) {
+    public void onInvitationResponse(int adapterPosition) {
         invitations.remove(adapterPosition);
         notifyItemRemoved(adapterPosition);
     }
 
-    @Override
-    public void onInvitationResponseError() {
-        //Do nothing
-    }
+
 }

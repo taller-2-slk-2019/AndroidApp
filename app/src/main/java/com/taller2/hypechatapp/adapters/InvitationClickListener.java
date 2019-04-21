@@ -6,7 +6,7 @@ import com.google.android.material.button.MaterialButton;
 import com.taller2.hypechatapp.network.model.ReceivedInvitation;
 
 public interface InvitationClickListener {
-    void onAcceptClick(String token, int adapterPosition,InvitationResponseListener listener);
+    void onAcceptClick(String token, int adapterPosition, InvitationResponseListener listener);
 
-    void onRejectClick(String token);
+    void onRejectClick(String token, int adapterPosition, InvitationResponseListener listener);
 }

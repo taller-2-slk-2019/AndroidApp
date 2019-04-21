@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
         <service
             android:name=".firebase.MyFirebaseMessagingService"
             android:enabled="true"
@@ -23,38 +24,50 @@
             </intent-filter>
         </service>
 
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".ui.activities.CreateChannelActivity"
-            android:label="@string/new_channel_title" />
-        <activity android:name=".ui.activities.RegisterActivity" />
+        <activity android:name=".ui.activities.CreateChannelActivity"
+            android:label="@string/new_channel_title">
+        </activity>
+
+        <activity android:name=".ui.activities.RegisterActivity">
+        </activity>
+
         <activity
             android:name=".ui.activities.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.activities.ChatActivity"
-            android:label="@string/title_activity_channel_chat" />
+            android:label="@string/title_activity_chat" />
+
         <activity
             android:name=".ui.activities.CreateOrganizationActivity"
             android:label="@string/new_organization_title"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activities.CreateConversationActivity"
+            android:label="@string/new_conversation_title" />
+
         <activity
             android:name=".ui.activities.UserProfileActivity"
             android:label="@string/user_profile_title"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.activities.OrganizationProfileActivity"
             android:label="@string/organization_profile_title"
             android:screenOrientation="portrait" />
+
         <activity android:name=".ui.activities.ChooseLocationActivity" />
 
         <meta-data
@@ -65,6 +78,7 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
+
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">

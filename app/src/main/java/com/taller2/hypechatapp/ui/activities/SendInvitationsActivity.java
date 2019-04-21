@@ -19,6 +19,7 @@ import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.SendInvitationsAdapter;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.UserInvitationRequest;
+import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.OrganizationService;
 
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ public class SendInvitationsActivity extends AppCompatActivity {
     private MaterialButton sendInvitationsButton;
     private OrganizationService organizationService;
     private ProgressBar loadingView;
+    private UserManagerPreferences preferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,8 @@ public class SendInvitationsActivity extends AppCompatActivity {
         //Add first line to the list
         emailsList.add("");
         organizationService = new OrganizationService();
+        preferences = new UserManagerPreferences(this);
+
 
 
         setUpUI();
@@ -67,7 +72,7 @@ public class SendInvitationsActivity extends AppCompatActivity {
             }
         });
 
-        loadingView = findViewById(R.id.progress_bar);
+        loadingView = findViewById(R.id.loading);
 
     }
 
@@ -75,14 +80,19 @@ public class SendInvitationsActivity extends AppCompatActivity {
 
         loadingView.setVisibility(View.VISIBLE);
 
-        organizationService.inviteUsers(1, userInvitationRequest, new Client() {
+        organizationService.inviteUsers(preferences.getSelectedOrganization(), userInvitationRequest, new Client<List<String>>() {
             @Override
-            public void onResponseSuccess(Object responseBody) {
+            public void onResponseSuccess(List<String> rejectedInvitations) {
                 loadingView.setVisibility(View.INVISIBLE);
-                Toast.makeText(getContext(), "Invitaciones Enviadas!!!", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(SendInvitationsActivity.this, ChatActivity.class);
-                startActivity(intent);
-                finish();
+                if (rejectedInvitations.size()>0){
+                    //TODO Show the rejected invitations to the user
+                } else {
+                    Toast.makeText(getContext(), "Invitaciones Enviadas!!!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(SendInvitationsActivity.this, ChatActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
             }
 
             @Override
@@ -108,7 +118,7 @@ public class SendInvitationsActivity extends AppCompatActivity {
     private UserInvitationRequest buildUserInvitationsRequest() {
         UserInvitationRequest userInvitationRequest = new UserInvitationRequest();
         List<String> userEmails=new ArrayList<>();
-        Collections.copy(userEmails,emailsList);
+        userEmails.addAll(emailsList);
         userEmails.removeAll(Collections.singleton(""));
         userEmails.removeAll(Collections.singleton(null));
 

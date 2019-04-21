@@ -5,6 +5,8 @@
 # Files for the ART/Dalvik VM
 *.dex
 
+*.DS_Store
+
 # Java class files
 *.class
 
@@ -29,6 +31,7 @@ build/
 .idea/modules.xml
 .idea/scopes/scope_settings.xml
 .idea/vcs.xml
+.idea/render.experimental.xml
 *.iml
 
 # Local configuration file (sdk path, etc)

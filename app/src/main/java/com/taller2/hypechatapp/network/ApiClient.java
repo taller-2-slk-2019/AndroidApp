@@ -89,4 +89,8 @@ public class ApiClient {
     public Retrofit getRetrofit() {
         return retrofit;
     }
+
+    public ConversationApi getConversationClient() {
+        return retrofit.create(ConversationApi.class);
+    }
 }

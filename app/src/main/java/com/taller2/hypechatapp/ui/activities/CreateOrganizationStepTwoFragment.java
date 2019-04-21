@@ -3,10 +3,10 @@ package com.taller2.hypechatapp.ui.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -39,25 +39,22 @@ public class CreateOrganizationStepTwoFragment extends Fragment
     private GoogleMap map;
     private static final int DEFAULT_ZOOM = 14;
     private View returnView;
+    private TextView locationError;
+    private MaterialButton endButton;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         returnView = inflater.inflate(R.layout.create_organization_step2, container, false);
 
         organizationRequest=(OrganizationRequest)getArguments().getSerializable("organizationRequest");
 
         setUpUI();
-
         return returnView;
-
     }
 
 
     private void setUpUI() {
-
-
         Toolbar toolbar = returnView.findViewById(R.id.toolbar_create_organization2);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -65,6 +62,8 @@ public class CreateOrganizationStepTwoFragment extends Fragment
                 .findFragmentById(R.id.lite_map);
         mapFragment.getMapAsync(this);
         mapFragment.getView().setVisibility(View.GONE);
+
+        locationError = returnView.findViewById(R.id.location_error_text);
 
         MaterialButton chooseLocationButton=returnView.findViewById(R.id.pick_location_image_button);
         chooseLocationButton.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +75,7 @@ public class CreateOrganizationStepTwoFragment extends Fragment
             }
         });
 
-        MaterialButton endButton=returnView.findViewById(R.id.new_organization_end_button);
+        endButton=returnView.findViewById(R.id.new_organization_end_button);
         endButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +85,7 @@ public class CreateOrganizationStepTwoFragment extends Fragment
                     return;
 
                 organizationRequest.welcome=welcomeMessageInputText.getText().toString();
+                blockButtons();
 
                 callback.onFinishButtonClick(organizationRequest);
 
@@ -93,10 +93,22 @@ public class CreateOrganizationStepTwoFragment extends Fragment
         });
     }
 
+    private void blockButtons(){
+        map.setOnMapClickListener(null);
+        endButton.setClickable(false);
+    }
+
     private boolean validateUserInput(TextInputEditText welcomeMessageInputText) {
         if(TextUtils.isEmpty(welcomeMessageInputText.getText().toString())){
             welcomeMessageInputText.setError("Ingrese el mensaje de bienvenida");
             return false;
+        }
+
+        if(organizationRequest.latitude == null || organizationRequest.longitude == null){
+            locationError.setVisibility(View.VISIBLE);
+            return false;
+        } else {
+            locationError.setVisibility(View.INVISIBLE);
         }
         return true;
     }

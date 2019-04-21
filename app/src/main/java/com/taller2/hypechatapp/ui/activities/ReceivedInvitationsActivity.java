@@ -20,8 +20,8 @@ import com.taller2.hypechatapp.adapters.InvitationResponseListener;
 import com.taller2.hypechatapp.adapters.ReceivedInvitationsAdapter;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.AcceptInvitationRequest;
+import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.network.model.ReceivedInvitation;
-import com.taller2.hypechatapp.network.model.SuccessResponse;
 import com.taller2.hypechatapp.services.OrganizationService;
 import com.taller2.hypechatapp.services.UserService;
 
@@ -86,7 +86,7 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
 
     private void setUpRecyclerView(){
         invitationsRecyclerView = findViewById(R.id.received_invitations_list);
-        receivedInvitationsAdapter = new ReceivedInvitationsAdapter(receivedInvitations,this);
+        receivedInvitationsAdapter = new ReceivedInvitationsAdapter(receivedInvitations,this, getApplicationContext());
         invitationsRecyclerView.setAdapter(receivedInvitationsAdapter);
         invitationsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         invitationsRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -101,16 +101,16 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
 
         AcceptInvitationRequest acceptInvitationRequest=new AcceptInvitationRequest();
         acceptInvitationRequest.token=token;
-        organizationService.acceptInvitation(acceptInvitationRequest, new Client<SuccessResponse>(){
+        organizationService.acceptInvitation(acceptInvitationRequest, new Client<NoResponse>(){
 
             @Override
-            public void onResponseSuccess(SuccessResponse responseBody) {
+            public void onResponseSuccess(NoResponse responseBody) {
                 loadingView.setVisibility(View.INVISIBLE);
                 //Re-enable the screen
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                 Toast.makeText(getContext(), "Invitación aceptada", Toast.LENGTH_LONG).show();
-                listener.onInvitationResponseOK(adapterPosition);
+                listener.onInvitationResponse(adapterPosition);
             }
 
             @Override
@@ -132,7 +132,39 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
     }
 
     @Override
-    public void onRejectClick(String token) {
+    public void onRejectClick(String token, final int adapterPosition, final InvitationResponseListener listener) {
+        loadingView.setVisibility(View.VISIBLE);
+        //Disable the screen, so no other invitation can be clicked
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
+        userService.rejectInvitation(token, new Client<NoResponse>(){
+
+            @Override
+            public void onResponseSuccess(NoResponse responseBody) {
+                loadingView.setVisibility(View.INVISIBLE);
+                //Re-enable the screen
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                Toast.makeText(getContext(), "Invitación rechazada", Toast.LENGTH_LONG).show();
+                listener.onInvitationResponse(adapterPosition);
+            }
+
+            @Override
+            public void onResponseError(String errorMessage) {
+                loadingView.setVisibility(View.INVISIBLE);
+                //Re-enable the screen
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                Toast.makeText(getContext(), "Ocurrió un error al intentar rechazar la invitación." +
+                        " Intente más tarde.", Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            public Context getContext() {
+                return ReceivedInvitationsActivity.this;
+            }
+        });
     }
 }
