@@ -153,6 +153,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
     }
 
     private void endRegister() {
+        FirebaseAuthService.logIn(this);
         Toast.makeText(this, "Se ha registrado con éxito", Toast.LENGTH_LONG).show();
         finish();
     }
@@ -178,7 +179,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
     private void enableRegisterEdition() {
         loading.setVisibility(View.INVISIBLE);
         ScreenDisablerHelper.enableScreenTouch(getWindow());
-        FirebaseAuthService.logOut();
+        FirebaseAuthService.logOut(this);
     }
 
     private boolean validateUserInput() {

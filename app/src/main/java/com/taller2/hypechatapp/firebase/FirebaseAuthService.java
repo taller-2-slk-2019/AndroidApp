@@ -1,8 +1,20 @@
 package com.taller2.hypechatapp.firebase;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.taller2.hypechatapp.network.Client;
+import com.taller2.hypechatapp.network.model.NoResponse;
+import com.taller2.hypechatapp.services.FirebaseApiService;
+
+import androidx.annotation.NonNull;
 
 public class FirebaseAuthService {
 
@@ -18,8 +30,74 @@ public class FirebaseAuthService {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    public static void logOut(){
+    public static void logOut(final Context context){
+        if (isUserLoggedIn()) {
+            FirebaseInstanceId.getInstance().getInstanceId()
+                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                            if (!task.isSuccessful()) {
+                                return;
+                            }
+
+                            // Get new Instance ID token
+                            String token = task.getResult().getToken();
+
+                            new FirebaseApiService().deleteFCMtoken(token, new Client<NoResponse>() {
+                                @Override
+                                public void onResponseSuccess(NoResponse responseBody) {
+                                    //do nothing
+                                    Log.i("FCM token", "token deleted");
+                                }
+
+                                @Override
+                                public void onResponseError(String errorMessage) {
+                                    //do nothing
+                                }
+
+                                @Override
+                                public Context getContext() {
+                                    return context;
+                                }
+                            });
+                        }
+                    });
+        }
+
         LoginManager.getInstance().logOut();
         FirebaseAuth.getInstance().signOut();
+    }
+
+    public static void logIn(final Context context){
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        new FirebaseApiService().updateFCMtoken(token, new Client<NoResponse>() {
+                            @Override
+                            public void onResponseSuccess(NoResponse responseBody) {
+                                //do nothing
+                                Log.i("FCM token", "token updated");
+                            }
+
+                            @Override
+                            public void onResponseError(String errorMessage) {
+                                //do nothing
+                            }
+
+                            @Override
+                            public Context getContext() {
+                                return context;
+                            }
+                        });
+                    }
+                });
     }
 }

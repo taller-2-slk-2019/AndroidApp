@@ -144,11 +144,12 @@ public class LoginActivity extends AppCompatActivity {
 
         loading.setVisibility(View.INVISIBLE);
         ScreenDisablerHelper.enableScreenTouch(getWindow());
-        FirebaseAuthService.logOut();
+        FirebaseAuthService.logOut(this);
     }
 
     public void userLoggedIn(){
         Log.i("LoginActivity","User is logged in with token: " + FirebaseAuthService.getCurrentUserToken());
+        FirebaseAuthService.logIn(this);
         Intent intent = new Intent(this, ChatActivity.class);
         startActivity(intent);
         finish();
