@@ -3,6 +3,7 @@ package com.taller2.hypechatapp.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,6 +67,12 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         channelsService = new ChannelService();
         conversationsService = new ConversationService();
         userManagerPreferences = new UserManagerPreferences(this);
+        if (getIntent().getExtras() != null){
+            int channelId = getIntent().getExtras().getInt("channelId", 0);
+            if (channelId > 0){
+                userManagerPreferences.saveSelectedChannel(channelId);
+            }
+        }
 
         setupUI();
         addOrganizationsInSpinner();
