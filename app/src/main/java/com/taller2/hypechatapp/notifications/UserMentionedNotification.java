@@ -32,6 +32,7 @@ public class UserMentionedNotification extends HypechatNotification {
     protected Intent getIntent(){
         Intent intent = new Intent(context, ChatActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.putExtra("organizationId", channel.organizationId);
         intent.putExtra("channelId", channel.getId());
         return intent;
     }

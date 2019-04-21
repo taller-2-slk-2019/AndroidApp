@@ -33,7 +33,7 @@ public abstract class HypechatNotification {
         return ((BitmapDrawable)icon).getBitmap();
     }
 
-    private void setOpenActivity() {
+    private void setActivityToOpen() {
         Intent intent = getIntent();
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         notif.setContentIntent(pendingIntent);
@@ -51,7 +51,7 @@ public abstract class HypechatNotification {
         notif.setAutoCancel(true);
         notif.setStyle(new NotificationCompat.BigTextStyle().bigText(content));
         notif.setDefaults(Notification.DEFAULT_ALL);
-        setOpenActivity();
+        setActivityToOpen();
     }
 
     public void send(){
