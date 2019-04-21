@@ -91,7 +91,10 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".ui.activities.SendInvitationsActivity"
+            android:label="@string/send_invitations_label"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -102,6 +105,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name=".ui.activities.ReceivedInvitationsActivity"
+            android:label="@string/received_invitations_label"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>

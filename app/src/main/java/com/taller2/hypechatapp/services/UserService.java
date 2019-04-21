@@ -5,6 +5,7 @@ import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.UserApi;
+import com.taller2.hypechatapp.network.model.ReceivedInvitation;
 import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.network.model.UserLocationRequest;
 
@@ -84,6 +85,34 @@ public class UserService extends RestService {
 
     public void updateUserLocation(UserLocationRequest userLocationRequest, final Client client){
         userApi.updateUserLocation(FirebaseAuthService.getCurrentUserToken(), userLocationRequest).enqueue(new Callback<NoResponse>() {
+            @Override
+            public void onResponse(Call<NoResponse> call, Response<NoResponse> response) {
+                manageSuccessResponse(response,SERVICE_TAG,client);
+            }
+
+            @Override
+            public void onFailure(Call<NoResponse> call, Throwable t) {
+                manageFailure(SERVICE_TAG,t,client);
+            }
+        });
+    }
+
+    public void getReceivedInvitations(final Client client){
+        userApi.getReceivedInvitations(FirebaseAuthService.getCurrentUserToken()).enqueue(new Callback<List<ReceivedInvitation>>() {
+            @Override
+            public void onResponse(Call<List<ReceivedInvitation>> call, Response<List<ReceivedInvitation>> response) {
+                manageSuccessResponse(response,SERVICE_TAG,client);
+            }
+
+            @Override
+            public void onFailure(Call<List<ReceivedInvitation>> call, Throwable t) {
+                manageFailure(SERVICE_TAG,t,client);
+            }
+        });
+    }
+
+    public void rejectInvitation(String invitationToken, final Client client){
+        userApi.rejectInvitation(invitationToken).enqueue(new Callback<NoResponse>() {
             @Override
             public void onResponse(Call<NoResponse> call, Response<NoResponse> response) {
                 manageSuccessResponse(response,SERVICE_TAG,client);

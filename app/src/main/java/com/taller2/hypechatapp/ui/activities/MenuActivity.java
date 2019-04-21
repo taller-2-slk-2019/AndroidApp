@@ -342,6 +342,15 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         startActivity(intent);
     }
 
+    private void viewSendInvitations() {
+        Intent intent = new Intent(this,SendInvitationsActivity.class);
+        startActivity(intent);
+    }
+
+    private void viewReceivedInvitations() {
+        Intent intent = new Intent(this,ReceivedInvitationsActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public void onBackPressed() {
@@ -375,10 +384,21 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             case R.id.organization_profile:
                 viewOrganizationProfile();
                 return true;
+
+            case R.id.send_invitations:
+                viewSendInvitations();
+                return true;
+
+            case R.id.received_invitations:
+                viewReceivedInvitations();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {

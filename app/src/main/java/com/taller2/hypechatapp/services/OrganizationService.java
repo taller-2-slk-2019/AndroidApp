@@ -5,8 +5,9 @@ import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.OrganizationApi;
+import com.taller2.hypechatapp.network.model.AcceptInvitationRequest;
+import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
-import com.taller2.hypechatapp.network.model.TokenResponse;
 import com.taller2.hypechatapp.network.model.UserInvitationRequest;
 
 import java.util.List;
@@ -69,16 +70,31 @@ public class OrganizationService extends RestService {
         });
     }
 
-    public void inviteUser(Integer organizationId, UserInvitationRequest userInvitationRequest, final Client client){
-        organizationApi.inviteUser(organizationId,userInvitationRequest).enqueue(new Callback<TokenResponse>(){
+    public void inviteUsers(Integer organizationId, UserInvitationRequest userInvitationRequest, final Client client){
+        organizationApi.inviteUsers(organizationId,userInvitationRequest).enqueue(new Callback<List<String>>(){
 
             @Override
-            public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                 manageSuccessResponse(response,SERVICE_TAG,client);
             }
 
             @Override
-            public void onFailure(Call<TokenResponse> call, Throwable t) {
+            public void onFailure(Call<List<String>> call, Throwable t) {
+                manageFailure(SERVICE_TAG,t,client);
+            }
+        });
+    }
+
+    public void acceptInvitation(AcceptInvitationRequest acceptInvitationRequest, final Client client){
+        organizationApi.acceptInvitation(acceptInvitationRequest).enqueue(new Callback<NoResponse>(){
+
+            @Override
+            public void onResponse(Call<NoResponse> call, Response<NoResponse> response) {
+                manageSuccessResponse(response,SERVICE_TAG,client);
+            }
+
+            @Override
+            public void onFailure(Call<NoResponse> call, Throwable t) {
                 manageFailure(SERVICE_TAG,t,client);
             }
         });

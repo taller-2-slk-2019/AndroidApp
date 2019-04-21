@@ -78,4 +78,15 @@
     <string name="fail_getting_info">No se pudo obtener toda la información</string>
 
 
+    <!-- Invitations -->
+    <string name="send_invitations_button">Enviar</string>
+    <string name="email_invitation_text_hint">Añadir otro email</string>
+    <string name="send_invitations_label">Invitar usuarios</string>
+    <string name="send_invitations">Enviar invitaciones</string>
+    <string name="received_invitations">Invitaciones recibidas</string>
+    <string name="received_invitations_label">Invitaciones Recibidas</string>
+    <string name="received_invitations_menu_label">Invitaciones Recibidas</string>
+    <string name="received_invitation_text">La organización &lt;b>%1$s&lt;/b> desea que te unas a su equipo. ¿Aceptas?</string>
+
+
 </resources>
