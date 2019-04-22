@@ -72,6 +72,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         updateUI();
         if (hasChatSelected()){
             subscribe();
+            messagesListContainer.setEnabled(true);
             onRefresh();
         }
     }
