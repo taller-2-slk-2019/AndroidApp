@@ -1,7 +1,9 @@
 package com.taller2.hypechatapp.ui.activities;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -389,7 +391,12 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         if (!selectedOrganization.equals(preferenceOrganization)) {
             userManagerPreferences.saveSelectedOrganization(selectedOrganization);
             finish();
-            startActivity(getIntent());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                startActivity(getIntent(),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+            } else {
+                startActivity(getIntent());
+            }
         }
     }
 

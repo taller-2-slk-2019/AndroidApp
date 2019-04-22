@@ -120,31 +120,8 @@ public class UserProfileActivity extends AppCompatActivity implements FirebaseSt
             }
         });
 
-        name.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (currentUserValues != null && !currentUserValues.contains(s.toString())) { updateUserBtn.setEnabled(true); }
-            }
-        });
-
-        username.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (currentUserValues != null && !currentUserValues.contains(s.toString())) { updateUserBtn.setEnabled(true); }
-            }
-        });
+        name.addTextChangedListener(new ChangesDetection());
+        username.addTextChangedListener(new ChangesDetection());
     }
 
     private void updatePreviousValues() {
@@ -217,6 +194,20 @@ public class UserProfileActivity extends AppCompatActivity implements FirebaseSt
             loading.setVisibility(View.INVISIBLE);
             updateUserBtn.setClickable(true);
             imagePicker.enable();
+        }
+    }
+
+
+    public class ChangesDetection implements TextWatcher {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (currentUserValues != null && !currentUserValues.contains(s.toString())) { updateUserBtn.setEnabled(true); }
         }
     }
 }
