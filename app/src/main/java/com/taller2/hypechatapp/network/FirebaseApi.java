@@ -1,6 +1,5 @@
 package com.taller2.hypechatapp.network;
 
-import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.network.model.TokenResponse;
 
 import retrofit2.Call;
@@ -13,8 +12,8 @@ import retrofit2.http.Query;
 public interface FirebaseApi {
 
     @POST("/firebase/fcm/tokens")
-    Call<NoResponse> updateFCMtoken(@Query("userToken") String userToken, @Body TokenResponse token);
+    Call<Void> updateFCMtoken(@Query("userToken") String userToken, @Body TokenResponse token);
 
     @DELETE("/firebase/fcm/tokens/{fcmToken}")
-    Call<NoResponse> deleteFCMtoken(@Path("fcmToken") String fcmToken);
+    Call<Void> deleteFCMtoken(@Path("fcmToken") String fcmToken);
 }

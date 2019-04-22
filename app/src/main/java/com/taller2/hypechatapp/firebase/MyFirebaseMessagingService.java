@@ -20,6 +20,8 @@ import java.util.Map;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "FIREBASECM_SERVICE";
 
+    private Gson gson = new Gson();
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
@@ -55,19 +57,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void handleNewMessage(String data) {
-        Message message = new Gson().fromJson(data, Message.class);
+        Message message = gson.fromJson(data, Message.class);
         EventBus.getDefault().post(message);
     }
 
     private void handleMentionedUser(String messageData, String channelData, String senderData) {
-        Message message = new Gson().fromJson(messageData, Message.class);
-        Channel channel = new Gson().fromJson(channelData, Channel.class);
-        User sender = new Gson().fromJson(senderData, User.class);
+        Message message = gson.fromJson(messageData, Message.class);
+        Channel channel = gson.fromJson(channelData, Channel.class);
+        User sender = gson.fromJson(senderData, User.class);
         new UserMentionedNotification(this, channel, sender).send();
     }
 
     private void handleInvitation(String data) {
-        Organization organization = new Gson().fromJson(data, Organization.class);
+        Organization organization = gson.fromJson(data, Organization.class);
         new NewOrganizationInvitationNotification(this, organization).send();
     }
 }

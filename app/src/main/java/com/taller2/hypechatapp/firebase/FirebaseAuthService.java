@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.services.FirebaseApiService;
 
 import androidx.annotation.NonNull;
@@ -43,23 +42,7 @@ public class FirebaseAuthService {
                             // Get new Instance ID token
                             String token = task.getResult().getToken();
 
-                            new FirebaseApiService().deleteFCMtoken(token, new Client<NoResponse>() {
-                                @Override
-                                public void onResponseSuccess(NoResponse responseBody) {
-                                    //do nothing
-                                    Log.i("FCM token", "token deleted");
-                                }
-
-                                @Override
-                                public void onResponseError(String errorMessage) {
-                                    //do nothing
-                                }
-
-                                @Override
-                                public Context getContext() {
-                                    return context;
-                                }
-                            });
+                            new FirebaseApiService().deleteFCMtoken(token, getFCMTokenClient(context, "deleted"));
                         }
                     });
         }
@@ -80,24 +63,28 @@ public class FirebaseAuthService {
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
 
-                        new FirebaseApiService().updateFCMtoken(token, new Client<NoResponse>() {
-                            @Override
-                            public void onResponseSuccess(NoResponse responseBody) {
-                                //do nothing
-                                Log.i("FCM token", "token updated");
-                            }
-
-                            @Override
-                            public void onResponseError(String errorMessage) {
-                                //do nothing
-                            }
-
-                            @Override
-                            public Context getContext() {
-                                return context;
-                            }
-                        });
+                        new FirebaseApiService().updateFCMtoken(token, getFCMTokenClient(context, "updated"));
                     }
                 });
+    }
+
+    private static Client<Void> getFCMTokenClient(final Context context, final String action){
+        return new Client<Void>() {
+            @Override
+            public void onResponseSuccess(Void responseBody) {
+                //do nothing
+                Log.i("FCM token", "token " + action);
+            }
+
+            @Override
+            public void onResponseError(String errorMessage) {
+                //do nothing
+            }
+
+            @Override
+            public Context getContext() {
+                return context;
+            }
+        };
     }
 }
