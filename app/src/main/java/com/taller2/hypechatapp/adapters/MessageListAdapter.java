@@ -61,11 +61,16 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageViewHolder> 
         for (Message message: messages) {
             this.messages.add(0, message);
         }
-        this.notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     public void addLastMessage(Message message) {
-        this.messages.add(message);
-        this.notifyDataSetChanged();
+        messages.add(message);
+        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        messages.clear();
+        notifyDataSetChanged();
     }
 }

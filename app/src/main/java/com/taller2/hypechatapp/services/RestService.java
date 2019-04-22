@@ -17,7 +17,6 @@ public class RestService {
             if (response.body() != null) {
                 Log.i(serviceTag, response.body().toString());
             }
-
         } else {
             if (response.body() != null) {
                 Log.e(serviceTag, response.body().toString());

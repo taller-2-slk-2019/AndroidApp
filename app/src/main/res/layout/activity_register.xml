@@ -9,19 +9,18 @@
 
     <include
         android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         layout="@layout/title_logo_small"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_email_register"
         style="@style/CreationForm.TextInputLayout.Inverted"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/login_email_hint"
         android:inputType="textEmailAddress"
-        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title">
@@ -93,7 +92,7 @@
         android:id="@+id/include"
         layout="@layout/profile_image_picker"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/layout_name_register"
         tools:layout_editor_absoluteX="0dp" />

@@ -17,7 +17,9 @@ import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.ChannelRequest;
+import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
+import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -29,15 +31,15 @@ public class CreateChannelActivity extends AppCompatActivity {
     private Switch channelPrivacy;
     private Button btnCreate;
     private ProgressBar loading;
-    private Integer organizationId;
+    private UserManagerPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        organizationId = getIntent().getIntExtra("ORGANIZATION_ID", -1);
         setContentView(R.layout.activity_create_channel);
 
+        preferences = new UserManagerPreferences(this);
         channelService = new ChannelService();
 
         setUpView();
@@ -110,13 +112,16 @@ public class CreateChannelActivity extends AppCompatActivity {
                 }
 
                 loading.setVisibility(View.VISIBLE);
+                ScreenDisablerHelper.disableScreenTouch(getWindow());
                 ChannelRequest channelRequest = createRequest();
                 channelService.createChannel(channelRequest, new Client<Channel>() {
                     @Override
                     public void onResponseSuccess(Channel responseBody) {
                         loading.setVisibility(View.INVISIBLE);
-                        Toast.makeText(getContext(), "Woow! Canal creado con el id: " + responseBody.getId(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Woow! Canal creado", Toast.LENGTH_LONG).show();
+                        preferences.saveSelectedChannel(responseBody.getId());
                         Intent intent = new Intent(CreateChannelActivity.this, ChatActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
                     }
@@ -124,6 +129,7 @@ public class CreateChannelActivity extends AppCompatActivity {
                     @Override
                     public void onResponseError(String errorMessage) {
                         loading.setVisibility(View.INVISIBLE);
+                        ScreenDisablerHelper.enableScreenTouch(getWindow());
                         String textToShow;
                         if (!TextUtils.isEmpty(errorMessage)) {
                             textToShow = errorMessage;
@@ -170,7 +176,7 @@ public class CreateChannelActivity extends AppCompatActivity {
         channelRequest.description = description.getText().toString();
         channelRequest.isPublic = channelPrivacy.isChecked();
         channelRequest.welcome = welcome.getText().toString();
-        channelRequest.organizationId = this.organizationId;
+        channelRequest.organizationId = preferences.getSelectedOrganization();
 
         return channelRequest;
     }

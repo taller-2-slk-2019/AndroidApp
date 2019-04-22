@@ -15,7 +15,9 @@ import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
+import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.OrganizationService;
+import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
 import java.util.List;
 
@@ -34,18 +36,20 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
     private CreateOrganizationStepOneFragment createOrganizationStepOneFragment;
     private CreateOrganizationStepTwoFragment createOrganizationStepTwoFragment;
     private ProgressBar loadingView;
+    private UserManagerPreferences preferences;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_organization);
+        preferences = new UserManagerPreferences(this);
         setUpFragment(savedInstanceState);
         setUpUI();
         setUpInitials();
     }
 
     private void setUpUI() {
-        loadingView = findViewById(R.id.loading_create_orga);
+        loadingView = findViewById(R.id.loading);
     }
 
     private void setUpInitials() {
@@ -134,6 +138,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
     public void onFinishButtonClick(OrganizationRequest organizationRequest) {
 
         loadingView.setVisibility(View.VISIBLE);
+        ScreenDisablerHelper.disableScreenTouch(getWindow());
 
         this.organizationRequest=organizationRequest;
 
@@ -149,8 +154,11 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
             @Override
             public void onResponseSuccess(Organization organization) {
                 loadingView.setVisibility(View.INVISIBLE);
-                Toast.makeText(getContext(), "Woow! Organización creada con el id: " + organization.getId(), Toast.LENGTH_LONG).show();
+                ScreenDisablerHelper.enableScreenTouch(getWindow());
+                Toast.makeText(getContext(), "Woow! Organización creada", Toast.LENGTH_LONG).show();
+                preferences.saveSelectedOrganization(organization.getId());
                 Intent intent = new Intent(CreateOrganizationActivity.this, ChatActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
             }
@@ -158,6 +166,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
             @Override
             public void onResponseError(String errorMessage) {
                 loadingView.setVisibility(View.INVISIBLE);
+                ScreenDisablerHelper.enableScreenTouch(getWindow());
                 String textToShow;
                 if(!TextUtils.isEmpty(errorMessage)){
                     textToShow=errorMessage;
@@ -185,7 +194,8 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
 
     @Override
     public void onFileUploadError(Exception exception) {
-        Toast.makeText(CreateOrganizationActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
+        Toast.makeText(CreateOrganizationActivity.this, "No fue posible crear una organización. Intente más tarde.", Toast.LENGTH_LONG).show();
+        ScreenDisablerHelper.enableScreenTouch(getWindow());
         finish();
     }
 

@@ -3,34 +3,34 @@ package com.taller2.hypechatapp.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
-import com.taller2.hypechatapp.adapters.INavigation;
-import com.taller2.hypechatapp.adapters.NavigationAdapter;
+import com.taller2.hypechatapp.adapters.IMenuItemsClick;
+import com.taller2.hypechatapp.adapters.MenuChannelsAdapter;
+import com.taller2.hypechatapp.adapters.MenuConversationsAdapter;
 import com.taller2.hypechatapp.adapters.OrganizationSpinnerAdapter;
 import com.taller2.hypechatapp.components.PicassoLoader;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
-import com.taller2.hypechatapp.model.NavigationDrawerShowable;
+import com.taller2.hypechatapp.model.Channel;
+import com.taller2.hypechatapp.model.Conversation;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
-import com.taller2.hypechatapp.services.NavigationMenuService;
+import com.taller2.hypechatapp.services.ChannelService;
+import com.taller2.hypechatapp.services.ConversationService;
 import com.taller2.hypechatapp.services.OrganizationService;
 import com.taller2.hypechatapp.services.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -42,37 +42,38 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.taller2.hypechatapp.ui.model.NavigationActionItem.ActionType.CREATE_DIRECT_MESSAGE;
+public abstract class MenuActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, IMenuItemsClick {
 
-public abstract class MenuActivity extends AppCompatActivity implements INavigation, AdapterView.OnItemSelectedListener {
-
-    private Toolbar toolbar;
+    protected Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ImageView userImage;
     private TextView userName;
-    private ImageButton addOrganizationButton;
     private Spinner organizationsSpinner;
-    private NavigationAdapter navigationAdapter;
     private UserProfileUpdate userProfileUpdate;
+    private MenuChannelsAdapter channelsAdapter;
+    private MenuConversationsAdapter conversationsAdapter;
 
     private OrganizationService organizationService;
-    private NavigationMenuService navigationMenuService;
     private UserService userService;
-    private UserManagerPreferences userManagerPreferences;
+    private ChannelService channelsService;
+    private ConversationService conversationsService;
+    protected UserManagerPreferences userManagerPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        navigationMenuService = new NavigationMenuService();
         organizationService = new OrganizationService();
         userService = new UserService();
+        channelsService = new ChannelService();
+        conversationsService = new ConversationService();
         userManagerPreferences = new UserManagerPreferences(this);
         userProfileUpdate = new UserProfileUpdate();
 
         setupUI();
         addOrganizationsInSpinner();
         addListenerOnSpinnerOrganizationSelection();
-        setUpRecyclerView();
+        setUpChannels();
+        setUpConversations();
     }
 
     private void setupUI() {
@@ -95,7 +96,7 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
 
         userName = findViewById(R.id.txt_username);
         organizationsSpinner = findViewById(R.id.organizations_spinner);
-        addOrganizationButton = findViewById(R.id.ib_add_organization);
+        ImageButton addOrganizationButton = findViewById(R.id.ib_add_organization);
 
         userService.getUser(userProfileUpdate);
 
@@ -118,9 +119,7 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
                 if (organizations.isEmpty()) {
                     createNewOrganization();
                     finish();
-
                 } else {
-
                     OrganizationSpinnerAdapter dataAdapter = new OrganizationSpinnerAdapter(getContext(),
                             android.R.layout.simple_spinner_item, organizations);
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -147,62 +146,75 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
     }
 
     private Integer getSelectedOrganizationPosition(List<Organization> organizations) {
-        Integer position = 0;
         Integer selectedOrganizationId = userManagerPreferences.getSelectedOrganization();
-        if (selectedOrganizationId > -1) {
-            for (int idx = 0; idx < organizations.size(); idx ++) {
-                if (organizations.get(idx).getId() == selectedOrganizationId) {
-                    return idx;
-                }
+        for (int idx = 0; idx < organizations.size(); idx ++) {
+            if (organizations.get(idx).getId().equals(selectedOrganizationId)) {
+                return idx;
             }
         }
 
-        return position;
+        return 0;
     }
 
     public void addListenerOnSpinnerOrganizationSelection() {
-        organizationsSpinner = findViewById(R.id.organizations_spinner);
         organizationsSpinner.setOnItemSelectedListener(this);
     }
 
-    private void setUpRecyclerView() {
+    private void setUpChannels() {
+        RecyclerView rvChannels = findViewById(R.id.rvChannels);
+        channelsAdapter = new MenuChannelsAdapter(this);
+        rvChannels.setAdapter(channelsAdapter);
 
-        RecyclerView recyclerView = findViewById(R.id.rvDrawerList);
-        navigationAdapter = new NavigationAdapter(this, new ArrayList<NavigationDrawerShowable>());
-        recyclerView.setAdapter(navigationAdapter);
-
-        LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(this); // (Context context, int spanCount)
+        LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(this);
         mLinearLayoutManagerVertical.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+        rvChannels.setLayoutManager(mLinearLayoutManagerVertical);
+        rvChannels.setItemAnimator(new DefaultItemAnimator());
 
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        View newChannel = findViewById(R.id.new_channel_layout);
+        TextView channelTitle = newChannel.findViewById(R.id.item_title);
+        channelTitle.setText(R.string.menu_channels);
+        ImageView channelButton = newChannel.findViewById(R.id.item_img);
+        channelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createNewChannel();
+            }
+        });
+    }
+
+    private void setUpConversations() {
+        RecyclerView rvConversations = findViewById(R.id.rvConversations);
+        conversationsAdapter = new MenuConversationsAdapter(this);
+        rvConversations.setAdapter(conversationsAdapter);
+
+        LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(this);
+        mLinearLayoutManagerVertical.setOrientation(RecyclerView.VERTICAL);
+        rvConversations.setLayoutManager(mLinearLayoutManagerVertical);
+        rvConversations.setItemAnimator(new DefaultItemAnimator());
+
+        View newConversation = findViewById(R.id.new_conversation_layout);
+        TextView conversationTitle = newConversation.findViewById(R.id.item_title);
+        conversationTitle.setText(R.string.menu_conversations);
+        ImageView conversationButton = newConversation.findViewById(R.id.item_img);
+        conversationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createNewConversation();
+            }
+        });
     }
 
     private void showOrganizationUserInfo() {
-        ProgressBar loadingView = findViewById(R.id.loading_main);
-        loadingView.setVisibility(View.VISIBLE);
-
-        navigationMenuService.getNavigationMenuData(userManagerPreferences.getSelectedOrganization(), new Client<List<Comparable>>() {
+        channelsService.getChannelsByOrganizationAndUser(userManagerPreferences.getSelectedOrganization(), new Client<List<Channel>>() {
             @Override
-            public void onResponseSuccess(List<Comparable> navigationUserInfo) {
-                ProgressBar loadingView = findViewById(R.id.loading_main);
-                loadingView.setVisibility(View.INVISIBLE);
-
-                navigationAdapter.refreshAdapter(navigationUserInfo);
+            public void onResponseSuccess(List<Channel> channels) {
+                channelsAdapter.setChannels(channels);
+                selectChannel();
             }
 
             @Override
             public void onResponseError(String errorMessage) {
-                ProgressBar loadingView = findViewById(R.id.loading_main);
-                loadingView.setVisibility(View.INVISIBLE);
-                String textToShow;
-                if (!TextUtils.isEmpty(errorMessage)) {
-                    textToShow = errorMessage;
-                } else {
-                    textToShow = "Ha ocurrido un error al intentar obtener los datos del usuario";
-                }
-
-                Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -210,6 +222,76 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
                 return MenuActivity.this;
             }
         });
+
+        conversationsService.getConversationsByOrganizationAndUser(userManagerPreferences.getSelectedOrganization(), new Client<List<Conversation>>() {
+            @Override
+            public void onResponseSuccess(List<Conversation> conversations) {
+                conversationsAdapter.setConversations(conversations);
+                selectConversation();
+            }
+
+            @Override
+            public void onResponseError(String errorMessage) {
+                Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public Context getContext() {
+                return MenuActivity.this;
+            }
+        });
+    }
+
+    private void selectChannel() {
+        if (userManagerPreferences.getSelectedConversation() > 0){
+            return;
+        }
+
+        List<Channel> channels = channelsAdapter.getChannels();
+        if (channels.size() == 0){
+            userManagerPreferences.clearSelectedChannel();
+            if (conversationsAdapter.getItemCount() > 0){
+                this.selectConversation();
+            } else {
+                this.onChatSelected();
+            }
+            return;
+        }
+        Integer selectedChannelId = userManagerPreferences.getSelectedChannel();
+        for (Channel channel: channels) {
+            if (channel.getId().equals(selectedChannelId)) {
+                toolbar.setTitle(channel.getName());
+                this.onChatSelected();
+                return;
+            }
+        }
+        userManagerPreferences.saveSelectedChannel(channels.get(0).getId());
+        toolbar.setTitle(channels.get(0).getName());
+        this.onChatSelected();
+    }
+
+    private void selectConversation() {
+        if (userManagerPreferences.getSelectedChannel() > 0){
+            return;
+        }
+
+        List<Conversation> conversations = conversationsAdapter.getConversations();
+        if (conversations.size() == 0){
+            userManagerPreferences.clearSelectedConversation();
+            this.selectChannel();
+            return;
+        }
+        Integer selectedConversationId = userManagerPreferences.getSelectedConversation();
+        for (Conversation conversation: conversations) {
+            if (conversation.id.equals(selectedConversationId)) {
+                toolbar.setTitle(conversation.getName());
+                this.onChatSelected();
+                return;
+            }
+        }
+
+        userManagerPreferences.clearSelectedConversation();
+        this.selectChannel();
     }
 
     private void viewUserProfile() {
@@ -232,7 +314,11 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
 
     private void createNewChannel() {
         Intent intent = new Intent(this, CreateChannelActivity.class);
-        intent.putExtra("ORGANIZATION_ID", userManagerPreferences.getSelectedOrganization());
+        startActivity(intent);
+    }
+
+    private void createNewConversation() {
+        Intent intent = new Intent(this, CreateConversationActivity.class);
         startActivity(intent);
     }
 
@@ -241,25 +327,20 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
         startActivity(intent);
     }
 
-    @Override
-    public void onViewClick(int position) {
-        Toast.makeText(this, "position: " + position, Toast.LENGTH_SHORT).show();
+    private void viewSendInvitations() {
+        Intent intent = new Intent(this,SendInvitationsActivity.class);
+        startActivity(intent);
     }
 
-    @Override
-    public void onIconClick(String type) {
-        if (CREATE_DIRECT_MESSAGE.toString().equals(type)) {
-            //createNewOrganization();
-        } else {
-            createNewChannel();
-        }
+    private void viewReceivedInvitations() {
+        Intent intent = new Intent(this,ReceivedInvitationsActivity.class);
+        startActivity(intent);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -281,26 +362,31 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
 
         //noinspection SimplifiableIfStatement
         switch (id) {
-            case R.id.action_settings:
-                return true;
-
             case R.id.action_log_out:
                 logOut();
                 return true;
 
-            case R.id.organization_profile:
-                viewOrganizationProfile();
+            case R.id.send_invitations:
+                viewSendInvitations();
+                return true;
+
+            case R.id.received_invitations:
+                viewReceivedInvitations();
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+
+
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        // new organization selected
         Integer selectedOrganization = ((Organization) parent.getSelectedItem()).getId();
         Integer preferenceOrganization = userManagerPreferences.getSelectedOrganization();
-        if (selectedOrganization != preferenceOrganization) {
+        if (!selectedOrganization.equals(preferenceOrganization)) {
             userManagerPreferences.saveSelectedOrganization(selectedOrganization);
             finish();
             startActivity(getIntent());
@@ -338,5 +424,23 @@ public abstract class MenuActivity extends AppCompatActivity implements INavigat
             return MenuActivity.this;
         }
 
+    }
+
+    protected abstract void onChatSelected();
+
+    @Override
+    public void onChannelClick(Channel channel){
+        toolbar.setTitle(channel.getName());
+        userManagerPreferences.saveSelectedChannel(channel.getId());
+        drawerLayout.closeDrawer(GravityCompat.START);
+        onChatSelected();
+    }
+
+    @Override
+    public void onConversationClick(Conversation conversation){
+        toolbar.setTitle(conversation.getName());
+        userManagerPreferences.saveSelectedConversation(conversation.id);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        onChatSelected();
     }
 }
