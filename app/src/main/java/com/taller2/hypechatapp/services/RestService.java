@@ -3,7 +3,6 @@ package com.taller2.hypechatapp.services;
 import android.util.Log;
 
 import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.network.model.NoResponse;
 
 import java.io.IOException;
 
@@ -14,11 +13,9 @@ public class RestService {
 
     public void manageSuccessResponse(Response response, String serviceTag, Client client) {
         if (response.code() >= 200 && response.code() < 300) {
+            client.onResponseSuccess(response.body());
             if (response.body() != null) {
                 Log.i(serviceTag, response.body().toString());
-                client.onResponseSuccess(response.body());
-            } else {
-                client.onResponseSuccess(new NoResponse());
             }
         } else {
             if (response.body() != null) {

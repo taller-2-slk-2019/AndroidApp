@@ -93,4 +93,8 @@ public class ApiClient {
     public ConversationApi getConversationClient() {
         return retrofit.create(ConversationApi.class);
     }
+
+    public FirebaseApi getFirebaseApiClient() {
+        return retrofit.create(FirebaseApi.class);
+    }
 }

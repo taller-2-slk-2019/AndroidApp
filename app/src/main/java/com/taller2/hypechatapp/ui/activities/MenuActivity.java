@@ -66,6 +66,16 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         channelsService = new ChannelService();
         conversationsService = new ConversationService();
         userManagerPreferences = new UserManagerPreferences(this);
+        if (getIntent().getExtras() != null){
+            int organizationId = getIntent().getExtras().getInt("organizationId", 0);
+            if (organizationId > 0){
+                userManagerPreferences.saveSelectedOrganization(organizationId);
+            }
+            int channelId = getIntent().getExtras().getInt("channelId", 0);
+            if (channelId > 0){
+                userManagerPreferences.saveSelectedChannel(channelId);
+            }
+        }
 
         setupUI();
         addOrganizationsInSpinner();
@@ -306,7 +316,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     }
 
     private void logOut(){
-        FirebaseAuthService.logOut();
+        FirebaseAuthService.logOut(this);
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
