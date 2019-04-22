@@ -87,6 +87,7 @@
     <string name="received_invitations_label">Invitaciones Recibidas</string>
     <string name="received_invitations_menu_label">Invitaciones Recibidas</string>
     <string name="received_invitation_text">La organización &lt;b>%1$s&lt;/b> desea que te unas a su equipo. ¿Aceptas?</string>
+    <string name="send_invitations_error_message">Hubo un problema para enviar invitaciones a los siguientes correos. Asegurate que los correos pertenezcan a usuarios de Hypechat y que no pertenezcan actualmente a la organización.</string>
 
 
 </resources>
