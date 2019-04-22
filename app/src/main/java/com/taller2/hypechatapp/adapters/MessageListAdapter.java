@@ -58,15 +58,31 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageViewHolder> 
     }
 
     public void addOlderMessages(List<Message> messages) {
+        Message first = null;
+        if (getItemCount() > 0){
+            first = this.messages.get(0);
+        }
         for (Message message: messages) {
-            this.messages.add(0, message);
+            if (first == null || (compareMessages(message, first) && message.id < first.id)){
+                this.messages.add(0, message);
+            }
         }
         notifyDataSetChanged();
     }
 
     public void addLastMessage(Message message) {
+        if (getItemCount() > 0){
+            Message other = messages.get(0);
+            if (!compareMessages(message, other)){
+                return;
+            }
+        }
         messages.add(message);
         notifyDataSetChanged();
+    }
+
+    private boolean compareMessages(Message message, Message other){
+        return other.channelId == message.channelId && other.conversationId == message.conversationId;
     }
 
     public void clear() {

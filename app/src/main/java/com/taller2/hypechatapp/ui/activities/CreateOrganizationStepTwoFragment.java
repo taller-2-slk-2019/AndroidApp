@@ -31,7 +31,7 @@ public class CreateOrganizationStepTwoFragment extends Fragment
         implements OnMapReadyCallback, GoogleMap.OnMapClickListener{
 
     private static final int REQUEST_CODE = 2;
-    public static final int RESULT_CODE = 400;
+    private static final int RESULT_CODE = 400;
 
     private OnFinishButtonClickListener callback;
     private OrganizationRequest organizationRequest;
@@ -40,7 +40,6 @@ public class CreateOrganizationStepTwoFragment extends Fragment
     private static final int DEFAULT_ZOOM = 14;
     private View returnView;
     private TextView locationError;
-    private MaterialButton endButton;
 
     @Nullable
     @Override
@@ -75,7 +74,7 @@ public class CreateOrganizationStepTwoFragment extends Fragment
             }
         });
 
-        endButton=returnView.findViewById(R.id.new_organization_end_button);
+        MaterialButton endButton = returnView.findViewById(R.id.new_organization_end_button);
         endButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,17 +84,11 @@ public class CreateOrganizationStepTwoFragment extends Fragment
                     return;
 
                 organizationRequest.welcome=welcomeMessageInputText.getText().toString();
-                blockButtons();
 
                 callback.onFinishButtonClick(organizationRequest);
 
             }
         });
-    }
-
-    private void blockButtons(){
-        map.setOnMapClickListener(null);
-        endButton.setClickable(false);
     }
 
     private boolean validateUserInput(TextInputEditText welcomeMessageInputText) {

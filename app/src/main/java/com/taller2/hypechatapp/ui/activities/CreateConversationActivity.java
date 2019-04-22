@@ -18,6 +18,7 @@ import com.taller2.hypechatapp.network.model.ConversationRequest;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ConversationService;
 import com.taller2.hypechatapp.services.UserService;
+import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,7 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
                 }
                 usersAdapter.setUsers(filteredUsers);
                 loading.setVisibility(View.INVISIBLE);
+                ScreenDisablerHelper.enableScreenTouch(getWindow());
             }
 
             @Override
@@ -98,6 +100,7 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
     @Override
     public void onUserClick(final User user) {
         loading.setVisibility(View.VISIBLE);
+        ScreenDisablerHelper.disableScreenTouch(getWindow());
 
         ConversationRequest conversation = new ConversationRequest();
         conversation.organizationId = preferences.getSelectedOrganization();
@@ -107,6 +110,7 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
             @Override
             public void onResponseSuccess(Conversation response) {
                 loading.setVisibility(View.INVISIBLE);
+                ScreenDisablerHelper.enableScreenTouch(getWindow());
                 Toast.makeText(getContext(), "Woow! Conversación iniciada con " + user.getName(), Toast.LENGTH_LONG).show();
                 preferences.saveSelectedConversation(response.id);
                 Intent intent = new Intent(CreateConversationActivity.this, ChatActivity.class);
@@ -118,6 +122,7 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
             @Override
             public void onResponseError(String errorMessage) {
                 loading.setVisibility(View.INVISIBLE);
+                ScreenDisablerHelper.enableScreenTouch(getWindow());
                 String textToShow = "No fue posible iniciar una conversación. Intente más tarde.";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
             }

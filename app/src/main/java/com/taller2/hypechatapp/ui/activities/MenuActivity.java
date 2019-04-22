@@ -44,7 +44,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class MenuActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, IMenuItemsClick {
 
-    private Toolbar toolbar;
+    protected Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ImageView userImage;
     private TextView userName;
@@ -66,6 +66,16 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         channelsService = new ChannelService();
         conversationsService = new ConversationService();
         userManagerPreferences = new UserManagerPreferences(this);
+        if (getIntent().getExtras() != null){
+            int organizationId = getIntent().getExtras().getInt("organizationId", 0);
+            if (organizationId > 0){
+                userManagerPreferences.saveSelectedOrganization(organizationId);
+            }
+            int channelId = getIntent().getExtras().getInt("channelId", 0);
+            if (channelId > 0){
+                userManagerPreferences.saveSelectedChannel(channelId);
+            }
+        }
 
         setupUI();
         addOrganizationsInSpinner();
@@ -263,15 +273,6 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         }
 
         List<Channel> channels = channelsAdapter.getChannels();
-        if (channels.size() == 0){
-            userManagerPreferences.clearSelectedChannel();
-            if (conversationsAdapter.getItemCount() > 0){
-                this.selectConversation();
-            } else {
-                this.onChatSelected();
-            }
-            return;
-        }
         Integer selectedChannelId = userManagerPreferences.getSelectedChannel();
         for (Channel channel: channels) {
             if (channel.getId().equals(selectedChannelId)) {
@@ -280,8 +281,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
                 return;
             }
         }
-        userManagerPreferences.saveSelectedChannel(channels.get(0).getId());
-        toolbar.setTitle(channels.get(0).getName());
+        userManagerPreferences.clearSelectedChannel();
         this.onChatSelected();
     }
 
@@ -291,11 +291,6 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         }
 
         List<Conversation> conversations = conversationsAdapter.getConversations();
-        if (conversations.size() == 0){
-            userManagerPreferences.clearSelectedConversation();
-            this.selectChannel();
-            return;
-        }
         Integer selectedConversationId = userManagerPreferences.getSelectedConversation();
         for (Conversation conversation: conversations) {
             if (conversation.id.equals(selectedConversationId)) {
@@ -306,7 +301,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         }
 
         userManagerPreferences.clearSelectedConversation();
-        this.selectChannel();
+        this.onChatSelected();
     }
 
     private void viewUserProfile() {
@@ -321,7 +316,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     }
 
     private void logOut(){
-        FirebaseAuthService.logOut();
+        FirebaseAuthService.logOut(this);
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

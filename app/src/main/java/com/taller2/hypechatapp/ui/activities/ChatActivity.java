@@ -18,9 +18,11 @@ import com.taller2.hypechatapp.components.ImagePicker;
 import com.taller2.hypechatapp.firebase.FirebaseStorageService;
 import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.Message;
+import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.services.MessageService;
+import com.taller2.hypechatapp.services.OrganizationService;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -70,6 +72,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         updateUI();
         if (hasChatSelected()){
             subscribe();
+            messagesListContainer.setEnabled(true);
             onRefresh();
         }
     }
@@ -121,6 +124,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
             messagesListContainer.setVisibility(View.INVISIBLE);
             newMessageContainer.setVisibility(View.INVISIBLE);
             noChannelContainer.setVisibility(View.VISIBLE);
+            setOrganizationWelcome();
         }
     }
 
@@ -258,6 +262,27 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
                 onFileUploadError(ex);
             }
         }
+    }
+
+    private void setOrganizationWelcome(){
+        final TextView welcome = findViewById(R.id.organizationWelcome);
+        new OrganizationService().getOrganizationProfile(userManagerPreferences.getSelectedOrganization(), new Client<Organization>() {
+            @Override
+            public void onResponseSuccess(Organization responseBody) {
+                welcome.setText(responseBody.getWelcome());
+                toolbar.setTitle(responseBody.getName());
+            }
+
+            @Override
+            public void onResponseError(String errorMessage) {
+                welcome.setText(R.string.no_channel_msg);
+            }
+
+            @Override
+            public Context getContext() {
+                return ChatActivity.this;
+            }
+        });
     }
 
     @Override

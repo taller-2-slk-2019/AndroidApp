@@ -29,6 +29,7 @@ import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
+import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,11 +42,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText emailText;
     private TextInputEditText passwordText;
-    private Button loginButton;
-    private LoginButton fbLoginButton;
     private ProgressBar loading;
     private TextView errorText;
-    private TextView noAccountText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +61,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setNormalLogin(){
-        loginButton = findViewById(R.id.login_button);
+        Button loginButton = findViewById(R.id.login_button);
         emailText = findViewById(R.id.email_text);
         passwordText = findViewById(R.id.password_text);
 
-        noAccountText = findViewById(R.id.no_account_text);
+        TextView noAccountText = findViewById(R.id.no_account_text);
         noAccountText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setFacebookLogin(){
-        fbLoginButton = findViewById(R.id.login_button_facebook);
+        LoginButton fbLoginButton = findViewById(R.id.login_button_facebook);
         fbLoginButton.setReadPermissions("email", "public_profile");
 
         fbLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -132,10 +130,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loading(){
         loading.setVisibility(View.VISIBLE);
-        loginButton.setClickable(false);
-        fbLoginButton.setClickable(false);
-        noAccountText.setClickable(false);
         errorText.setVisibility(View.INVISIBLE);
+        ScreenDisablerHelper.disableScreenTouch(getWindow());
     }
 
     private void showError(boolean fb){
@@ -147,14 +143,13 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         loading.setVisibility(View.INVISIBLE);
-        loginButton.setClickable(true);
-        fbLoginButton.setClickable(true);
-        noAccountText.setClickable(true);
-        FirebaseAuthService.logOut();
+        ScreenDisablerHelper.enableScreenTouch(getWindow());
+        FirebaseAuthService.logOut(this);
     }
 
     public void userLoggedIn(){
         Log.i("LoginActivity","User is logged in with token: " + FirebaseAuthService.getCurrentUserToken());
+        FirebaseAuthService.logIn(this);
         Intent intent = new Intent(this, ChatActivity.class);
         startActivity(intent);
         finish();
