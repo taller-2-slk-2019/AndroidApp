@@ -20,7 +20,6 @@ import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.Message;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.services.MessageService;
 import com.taller2.hypechatapp.services.OrganizationService;
 
@@ -205,9 +204,9 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     private void sendMessage(Message message){
         message.channelId = selectedChannel;
         message.conversationId = selectedConversation;
-        messageService.createMessage(message, new Client<NoResponse>() {
+        messageService.createMessage(message, new Client<Void>() {
             @Override
-            public void onResponseSuccess(NoResponse responseBody) {
+            public void onResponseSuccess(Void responseBody) {
                 newMessageText.setText("");
             }
 

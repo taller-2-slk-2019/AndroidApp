@@ -6,7 +6,6 @@ import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.UserApi;
 import com.taller2.hypechatapp.network.model.ReceivedInvitation;
-import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.network.model.UserLocationRequest;
 
 import java.util.List;
@@ -69,29 +68,29 @@ public class UserService extends RestService {
     }
 
     public void updateUser(User user, final Client client){
-        userApi.updateUser(FirebaseAuthService.getCurrentUserToken(), user).enqueue(new Callback<NoResponse>() {
+        userApi.updateUser(FirebaseAuthService.getCurrentUserToken(), user).enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<NoResponse> call, Response<NoResponse> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 manageSuccessResponse(response,SERVICE_TAG,client);
 
             }
 
             @Override
-            public void onFailure(Call<NoResponse> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 manageFailure(SERVICE_TAG,t,client);
             }
         });
     }
 
     public void updateUserLocation(UserLocationRequest userLocationRequest, final Client client){
-        userApi.updateUserLocation(FirebaseAuthService.getCurrentUserToken(), userLocationRequest).enqueue(new Callback<NoResponse>() {
+        userApi.updateUserLocation(FirebaseAuthService.getCurrentUserToken(), userLocationRequest).enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<NoResponse> call, Response<NoResponse> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 manageSuccessResponse(response,SERVICE_TAG,client);
             }
 
             @Override
-            public void onFailure(Call<NoResponse> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 manageFailure(SERVICE_TAG,t,client);
             }
         });
@@ -112,14 +111,14 @@ public class UserService extends RestService {
     }
 
     public void rejectInvitation(String invitationToken, final Client client){
-        userApi.rejectInvitation(invitationToken).enqueue(new Callback<NoResponse>() {
+        userApi.rejectInvitation(invitationToken).enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<NoResponse> call, Response<NoResponse> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 manageSuccessResponse(response,SERVICE_TAG,client);
             }
 
             @Override
-            public void onFailure(Call<NoResponse> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 manageFailure(SERVICE_TAG,t,client);
             }
         });

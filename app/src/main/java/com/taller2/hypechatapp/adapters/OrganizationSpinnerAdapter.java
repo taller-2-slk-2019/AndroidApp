@@ -1,12 +1,14 @@
 package com.taller2.hypechatapp.adapters;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.Organization;
 
 import java.util.List;
@@ -14,10 +16,12 @@ import java.util.List;
 public class OrganizationSpinnerAdapter extends ArrayAdapter<Organization> {
 
     private List<Organization> organizations;
+    private Context context;
 
     public OrganizationSpinnerAdapter(Context context, int textViewResourceId, List<Organization> modelArrayList) {
         super(context, textViewResourceId, modelArrayList);
         this.organizations = modelArrayList;
+        this.context = context;
     }
 
     @Override
@@ -48,6 +52,7 @@ public class OrganizationSpinnerAdapter extends ArrayAdapter<Organization> {
         View spinnerRow = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
 
         TextView label = spinnerRow.findViewById(android.R.id.text1);
+        label.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
         label.setText(String.format("%s", model != null ? model.getName() : ""));
 
         return spinnerRow;

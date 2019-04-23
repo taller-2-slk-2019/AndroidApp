@@ -1,7 +1,9 @@
 package com.taller2.hypechatapp.ui.activities;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,6 +51,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     private ImageView userImage;
     private TextView userName;
     private Spinner organizationsSpinner;
+    private UserProfileUpdate userProfileUpdate;
     private MenuChannelsAdapter channelsAdapter;
     private MenuConversationsAdapter conversationsAdapter;
 
@@ -66,17 +69,9 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         channelsService = new ChannelService();
         conversationsService = new ConversationService();
         userManagerPreferences = new UserManagerPreferences(this);
-        if (getIntent().getExtras() != null){
-            int organizationId = getIntent().getExtras().getInt("organizationId", 0);
-            if (organizationId > 0){
-                userManagerPreferences.saveSelectedOrganization(organizationId);
-            }
-            int channelId = getIntent().getExtras().getInt("channelId", 0);
-            if (channelId > 0){
-                userManagerPreferences.saveSelectedChannel(channelId);
-            }
-        }
+        userProfileUpdate = new UserProfileUpdate();
 
+        setUserPreferences();
         setupUI();
         addOrganizationsInSpinner();
         addListenerOnSpinnerOrganizationSelection();
@@ -106,24 +101,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         organizationsSpinner = findViewById(R.id.organizations_spinner);
         ImageButton addOrganizationButton = findViewById(R.id.ib_add_organization);
 
-        userService.getUser(new Client<User>() {
-            @Override
-            public void onResponseSuccess(User responseBody) {
-                userName.setText(responseBody.getUsername());
-                String url = responseBody.getPicture();
-                PicassoLoader.load(getApplicationContext(), String.format("%s?type=large", url), userImage);
-            }
-
-            @Override
-            public void onResponseError(String errorMessage) {
-                Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public Context getContext() {
-                return MenuActivity.this;
-            }
-        });
+        userService.getUser(userProfileUpdate);
 
         addOrganizationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -267,6 +245,19 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         });
     }
 
+    private void setUserPreferences() {
+        if (getIntent().getExtras() != null) {
+            int organizationId = getIntent().getExtras().getInt("organizationId", 0);
+            if (organizationId > 0) {
+                userManagerPreferences.saveSelectedOrganization(organizationId);
+            }
+            int channelId = getIntent().getExtras().getInt("channelId", 0);
+            if (channelId > 0) {
+                userManagerPreferences.saveSelectedChannel(channelId);
+            }
+        }
+    }
+
     private void selectChannel() {
         if (userManagerPreferences.getSelectedConversation() > 0){
             return;
@@ -376,10 +367,6 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
                 logOut();
                 return true;
 
-            case R.id.organization_profile:
-                viewOrganizationProfile();
-                return true;
-
             case R.id.send_invitations:
                 viewSendInvitations();
                 return true;
@@ -403,13 +390,46 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         if (!selectedOrganization.equals(preferenceOrganization)) {
             userManagerPreferences.saveSelectedOrganization(selectedOrganization);
             finish();
-            startActivity(getIntent());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                startActivity(getIntent(),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+            } else {
+                startActivity(getIntent());
+            }
         }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        userService.getUser(userProfileUpdate);
+    }
+
+    public class UserProfileUpdate implements Client<User> {
+
+        @Override
+        public void onResponseSuccess(User responseBody) {
+            userName.setText(responseBody.getUsername());
+            String url = responseBody.getPicture();
+            PicassoLoader.load(getApplicationContext(), String.format("%s?type=large", url), R.drawable.default_user, userImage);
+        }
+
+        @Override
+        public void onResponseError(String errorMessage) {
+            Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_SHORT).show();
+
+        }
+
+        @Override
+        public Context getContext() {
+            return MenuActivity.this;
+        }
+
     }
 
     protected abstract void onChatSelected();

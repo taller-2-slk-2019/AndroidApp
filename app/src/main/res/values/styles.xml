@@ -15,7 +15,12 @@
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginEnd">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
-        <item name="android:textColorHint">@color/whiteHype</item>
+        <item name="android:textColorHint">@color/white</item>
+    </style>
+
+    <style name="CreationForm.TextInputLayout.Profile" parent="CreationForm.TextInputLayout">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColorHint">@color/colorPrimaryDark</item>
     </style>
 
 
@@ -23,11 +28,15 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textColorHint">@color/whiteHype</item>
+        <item name="android:textColorHint">@color/white</item>
+    </style>
+
+    <style name="CreationForm.TextInputLayout.Text.Profile" parent="CreationForm.TextInputLayout.Text">
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="ButtonPrimaryAction" parent="Widget.AppCompat.Button.Borderless.Colored">
-        <item name="android:textColor">@color/whiteHype</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="ButtonSecondaryAction" parent="Widget.AppCompat.Button.Borderless.Colored">

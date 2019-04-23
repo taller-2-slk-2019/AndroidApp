@@ -1,7 +1,6 @@
 package com.taller2.hypechatapp.network;
 
 import com.taller2.hypechatapp.model.Message;
-import com.taller2.hypechatapp.network.model.NoResponse;
 
 import java.util.List;
 
@@ -19,6 +18,6 @@ public interface MessageApi {
                                     @Query("offset") Integer offset);
 
     @POST("/messages")
-    Call<NoResponse> createMessage(@Query("userToken") String userToken, @Body Message message);
+    Call<Void> createMessage(@Query("userToken") String userToken, @Body Message message);
 
 }

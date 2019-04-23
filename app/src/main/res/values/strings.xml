@@ -45,7 +45,7 @@
     <string name="no_channel_msg">Unite a un canal o creá uno nuevo para poder chatear.</string>
 
     <!-- user profile view -->
-    <string name="user_profile_title">Perfil de usuario</string>
+    <string name="user_profile_title">Editar usuario</string>
     <string name="update_user_profile_button">Actualizar\nPerfil</string>
     <string name="name_user_profile">Nombre: </string>
     <string name="username_user_profile">Usuario: </string>
@@ -76,6 +76,7 @@
     <!-- Other -->
     <string name="image_picker_error">Debe seleccionar una imagen!</string>
     <string name="fail_getting_info">No se pudo obtener toda la información</string>
+    <string name="btn_update_user">Actualizar</string>
 
 
     <!-- Invitations -->

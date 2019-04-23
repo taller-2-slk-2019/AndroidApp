@@ -13,4 +13,10 @@ public class PicassoLoader {
         Picasso.with(context).load(url).fit().placeholder(default_image)
                 .error(error_image).into(image);
     }
+
+    public static void load(Context context, String url, int defaultImageResource, final ImageView image) {
+        int error_image = R.drawable.default_image;
+        Picasso.with(context).load(url).fit().placeholder(defaultImageResource)
+                .error(error_image).into(image);
+    }
 }
