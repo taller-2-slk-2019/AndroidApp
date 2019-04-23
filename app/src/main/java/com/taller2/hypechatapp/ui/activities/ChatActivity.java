@@ -78,7 +78,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     }
 
     @Override
-    protected void onDestroy(){
+    public void onDestroy(){
         unsubscribe();
         super.onDestroy();
     }

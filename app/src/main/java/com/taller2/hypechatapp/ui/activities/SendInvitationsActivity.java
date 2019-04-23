@@ -2,32 +2,16 @@ package com.taller2.hypechatapp.ui.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
 import com.taller2.hypechatapp.R;
-import com.taller2.hypechatapp.adapters.SendInvitationsAdapter;
-import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.network.model.OrganizationRequest;
-import com.taller2.hypechatapp.network.model.UserInvitationRequest;
-import com.taller2.hypechatapp.preferences.UserManagerPreferences;
-import com.taller2.hypechatapp.services.OrganizationService;
+import com.taller2.hypechatapp.ui.fragments.FailedInvitationsFragment;
+import com.taller2.hypechatapp.ui.fragments.SendInvitationsFragment;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class SendInvitationsActivity extends AppCompatActivity implements SendInvitationsFragment.OnSendButtonClickListener {

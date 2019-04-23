@@ -17,6 +17,7 @@ import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.InvitationClickListener;
 import com.taller2.hypechatapp.adapters.InvitationResponseListener;
 import com.taller2.hypechatapp.adapters.ReceivedInvitationsAdapter;
+import com.taller2.hypechatapp.model.JoinOrganizationEvent;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.AcceptInvitationRequest;
 import com.taller2.hypechatapp.network.model.NoResponse;
@@ -25,16 +26,20 @@ import com.taller2.hypechatapp.services.OrganizationService;
 import com.taller2.hypechatapp.services.UserService;
 import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 public class ReceivedInvitationsActivity extends AppCompatActivity implements InvitationClickListener {
 
-    private ProgressBar loadingView;
-    RecyclerView invitationsRecyclerView;
-    ReceivedInvitationsAdapter receivedInvitationsAdapter;
     List<ReceivedInvitation> receivedInvitations;
     UserService userService;
     OrganizationService organizationService;
+
+    private ProgressBar loadingView;
+    RecyclerView invitationsRecyclerView;
+    ReceivedInvitationsAdapter receivedInvitationsAdapter;
+    private boolean hasAcceptedInvitations=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +110,7 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
             @Override
             public void onResponseSuccess(NoResponse responseBody) {
                 loadingView.setVisibility(View.INVISIBLE);
+                hasAcceptedInvitations=true;
 
                 ScreenDisablerHelper.enableScreenTouch(getWindow());
 
@@ -164,5 +170,13 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
                 return ReceivedInvitationsActivity.this;
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(hasAcceptedInvitations){
+            EventBus.getDefault().post(new JoinOrganizationEvent());
+        }
+        super.onBackPressed();
     }
 }

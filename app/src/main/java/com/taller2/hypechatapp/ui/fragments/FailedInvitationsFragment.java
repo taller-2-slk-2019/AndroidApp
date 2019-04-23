@@ -1,4 +1,4 @@
-package com.taller2.hypechatapp.ui.activities;
+package com.taller2.hypechatapp.ui.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
