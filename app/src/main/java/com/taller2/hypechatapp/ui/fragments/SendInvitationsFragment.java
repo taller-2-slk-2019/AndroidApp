@@ -49,7 +49,6 @@ public class SendInvitationsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         returnView=inflater.inflate(R.layout.fragment_send_invitations, container, false);
 
-        //failedInvitations=(List<String>) getArguments().getSerializable("failedInvitations");
         //Add first line to the list
         if(emailsList.isEmpty()){
             emailsList.add("");
@@ -92,11 +91,11 @@ public class SendInvitationsFragment extends Fragment {
             @Override
             public void onResponseSuccess(List<String> failedInvitations) {
                 loadingView.setVisibility(View.INVISIBLE);
-                if (failedInvitations.size()>0){
-                    callback.onSendButtonClick(failedInvitations);
-                } else {
+                if (failedInvitations.isEmpty()){
                     Toast.makeText(getContext(), "Invitaciones Enviadas!!!", Toast.LENGTH_LONG).show();
                     getActivity().finish();
+                } else {
+                    callback.onSendButtonClick(failedInvitations);
                 }
 
             }

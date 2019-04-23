@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class FailedInvitationsAdapter extends RecyclerView.Adapter<FailedInvitationViewHolder> {
 
-    public List<String> failedInvitations;
+    private List<String> failedInvitations;
 
     public FailedInvitationsAdapter(List<String> failedInvitations) {
         this.failedInvitations = failedInvitations;

@@ -83,7 +83,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         }
 
         setupUI();
-        addOrganizationsInSpinner();
+        addOrganizationsInSpinner(false);
         addListenerOnSpinnerOrganizationSelection();
         setUpChannels();
         setUpConversations();
@@ -143,19 +143,24 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     }
 
     // add items into spinner dynamically
-    public void addOrganizationsInSpinner() {
+    public void addOrganizationsInSpinner(final boolean justUpdateSpinner) {
         organizationService.getOrganizationsByUser(new Client<List<Organization>>() {
             @Override
             public void onResponseSuccess(List<Organization> organizations) {
 
-                //first time, the user does not have organization.
-                if (organizations.isEmpty()) {
-                    createNewOrganization();
-                    finish();
-                } else {
+                if(justUpdateSpinner){
                     setOrganizationsToSpinner(organizations);
-                    showOrganizationUserInfo();
+                } else {
+                    //first time, the user does not have organization.
+                    if (organizations.isEmpty()) {
+                        createNewOrganization();
+                        finish();
+                    } else {
+                        setOrganizationsToSpinner(organizations);
+                        showOrganizationUserInfo();
+                    }
                 }
+
             }
 
             @Override
@@ -173,23 +178,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onJoinOrganizationEvent(JoinOrganizationEvent event){
 
-        //If a JoinOrganizationEvent is detected the organizations spinner needs to be reloaded
-        organizationService.getOrganizationsByUser(new Client<List<Organization>>() {
-            @Override
-            public void onResponseSuccess(List<Organization> organizations) {
-                setOrganizationsToSpinner(organizations);
-            }
-
-            @Override
-            public void onResponseError(String errorMessage) {
-                Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public Context getContext() {
-                return MenuActivity.this;
-            }
-        });
+        addOrganizationsInSpinner(true);
     }
 
     private void setOrganizationsToSpinner(List<Organization> organizations) {

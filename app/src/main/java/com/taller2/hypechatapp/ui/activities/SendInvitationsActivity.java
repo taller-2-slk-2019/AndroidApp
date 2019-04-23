@@ -24,11 +24,6 @@ public class SendInvitationsActivity extends AppCompatActivity implements SendIn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.frame_container);
 
-        //Add first line to the list
-        //emailsList.add("");
-        //organizationService = new OrganizationService();
-        //preferences = new UserManagerPreferences(this);
-
         setUpFragment(savedInstanceState);
     }
 
