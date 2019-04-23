@@ -25,6 +25,7 @@ import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
+import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -111,17 +112,33 @@ public class UserProfileActivity extends AppCompatActivity implements FirebaseSt
         updateUserBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showLoading(true);
-                if (filePath != null) {
-                    uploadProfileImage();
-                } else {
-                    updateUser();
+                if (isValidForm(username, name)) {
+                    showLoading(true);
+                    if (filePath != null) {
+                        uploadProfileImage();
+                    } else {
+                        updateUser();
+                    }
                 }
             }
         });
 
         name.addTextChangedListener(new ChangesDetection());
         username.addTextChangedListener(new ChangesDetection());
+    }
+
+    private boolean isValidForm(TextInputEditText username, TextInputEditText name) {
+        if (TextUtils.isEmpty(username.getText().toString())) {
+            username.setError(getString(R.string.input_channel_description_error));
+            return false;
+        }
+
+        if (TextUtils.isEmpty(name.getText().toString())) {
+            name.setError(getString(R.string.input_channel_welcome_error));
+            return false;
+        }
+
+        return true;
     }
 
     private void updatePreviousValues() {
@@ -132,7 +149,6 @@ public class UserProfileActivity extends AppCompatActivity implements FirebaseSt
         User userRequest = new User();
         userRequest.setName(name.getText().toString());
         userRequest.setUsername(username.getText().toString());
-        userRequest.setToken(FirebaseAuthService.getCurrentUserToken());
         userRequest.setPicture(imageUrl);
 
         userService.updateUser(userRequest, new Client<Void>() {
@@ -188,12 +204,14 @@ public class UserProfileActivity extends AppCompatActivity implements FirebaseSt
     private void showLoading(boolean isLoading) {
         if (isLoading) {
             loading.setVisibility(View.VISIBLE);
-            updateUserBtn.setClickable(false);
+            ScreenDisablerHelper.disableScreenTouch(getWindow());
             imagePicker.disable();
         } else {
             loading.setVisibility(View.INVISIBLE);
-            updateUserBtn.setClickable(true);
+            ScreenDisablerHelper.enableScreenTouch(getWindow());
             imagePicker.enable();
+
+
         }
     }
 

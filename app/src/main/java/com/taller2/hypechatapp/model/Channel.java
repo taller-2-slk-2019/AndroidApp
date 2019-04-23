@@ -28,6 +28,9 @@ public class Channel implements Serializable {
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
+    @SerializedName("organizationId")
+    @Expose
+    public int organizationId;
 
     public Integer getId() {
         return id;
