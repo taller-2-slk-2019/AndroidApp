@@ -18,6 +18,7 @@ import com.taller2.hypechatapp.adapters.InvitationClickListener;
 import com.taller2.hypechatapp.adapters.InvitationResponseListener;
 import com.taller2.hypechatapp.adapters.ReceivedInvitationsAdapter;
 import com.taller2.hypechatapp.model.JoinOrganizationEvent;
+import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.AcceptInvitationRequest;
 import com.taller2.hypechatapp.network.model.NoResponse;
@@ -28,6 +29,7 @@ import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReceivedInvitationsActivity extends AppCompatActivity implements InvitationClickListener {
@@ -39,7 +41,7 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
     private ProgressBar loadingView;
     RecyclerView invitationsRecyclerView;
     ReceivedInvitationsAdapter receivedInvitationsAdapter;
-    private boolean hasAcceptedInvitations=false;
+    private List<Organization> acceptedOrganizations=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,19 +100,19 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
     }
 
     @Override
-    public void onAcceptClick(String token, final int adapterPosition, final InvitationResponseListener listener) {
+    public void onAcceptClick(final ReceivedInvitation receivedInvitation, final int adapterPosition, final InvitationResponseListener listener) {
         loadingView.setVisibility(View.VISIBLE);
 
         ScreenDisablerHelper.disableScreenTouch(getWindow());
 
         AcceptInvitationRequest acceptInvitationRequest=new AcceptInvitationRequest();
-        acceptInvitationRequest.token=token;
+        acceptInvitationRequest.token=receivedInvitation.token;
         organizationService.acceptInvitation(acceptInvitationRequest, new Client<NoResponse>(){
 
             @Override
             public void onResponseSuccess(NoResponse responseBody) {
                 loadingView.setVisibility(View.INVISIBLE);
-                hasAcceptedInvitations=true;
+                acceptedOrganizations.add(receivedInvitation.organization);
 
                 ScreenDisablerHelper.enableScreenTouch(getWindow());
 
@@ -174,8 +176,8 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
 
     @Override
     public void onBackPressed() {
-        if(hasAcceptedInvitations){
-            EventBus.getDefault().post(new JoinOrganizationEvent());
+        if(!acceptedOrganizations.isEmpty()){
+            EventBus.getDefault().post(new JoinOrganizationEvent(acceptedOrganizations));
         }
         super.onBackPressed();
     }

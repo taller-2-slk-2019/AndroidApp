@@ -62,12 +62,12 @@ public class ReceivedInvitationsAdapter extends RecyclerView.Adapter<RecyclerVie
         if (viewType==VIEW_TYPE_NOT_EMPTY){
             final ReceivedInvitationViewHolder vh = (ReceivedInvitationViewHolder) holder;
             Resources res = context.getResources();
-            String text = String.format(res.getString(R.string.received_invitation_text), invitations.get(vh.getAdapterPosition()).organization);
+            String text = String.format(res.getString(R.string.received_invitation_text), invitations.get(vh.getAdapterPosition()).organization.getName());
             vh.invitationTextView.setText(Html.fromHtml(text));
             vh.acceptInvitationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    invitationClickListener.onAcceptClick(invitations.get(vh.getAdapterPosition()).token, vh.getAdapterPosition(),ReceivedInvitationsAdapter.this);
+                    invitationClickListener.onAcceptClick(invitations.get(vh.getAdapterPosition()), vh.getAdapterPosition(),ReceivedInvitationsAdapter.this);
                 }
             });
             vh.rejectInvitationButton.setOnClickListener(new View.OnClickListener() {

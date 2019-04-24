@@ -83,12 +83,12 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         }
 
         setupUI();
-        addOrganizationsInSpinner(false);
+        addOrganizationsInSpinner();
         addListenerOnSpinnerOrganizationSelection();
         setUpChannels();
         setUpConversations();
 
-        EventBus.getDefault().register(this);
+        //EventBus.getDefault().register(this);
 
     }
 
@@ -143,24 +143,19 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     }
 
     // add items into spinner dynamically
-    public void addOrganizationsInSpinner(final boolean justUpdateSpinner) {
+    public void addOrganizationsInSpinner() {
         organizationService.getOrganizationsByUser(new Client<List<Organization>>() {
             @Override
             public void onResponseSuccess(List<Organization> organizations) {
 
-                if(justUpdateSpinner){
-                    setOrganizationsToSpinner(organizations);
+                //first time, the user does not have organization.
+                if (organizations.isEmpty()) {
+                    createNewOrganization();
+                    finish();
                 } else {
-                    //first time, the user does not have organization.
-                    if (organizations.isEmpty()) {
-                        createNewOrganization();
-                        finish();
-                    } else {
-                        setOrganizationsToSpinner(organizations);
-                        showOrganizationUserInfo();
-                    }
+                    setOrganizationsToSpinner(organizations);
+                    showOrganizationUserInfo();
                 }
-
             }
 
             @Override
@@ -178,7 +173,10 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onJoinOrganizationEvent(JoinOrganizationEvent event){
 
-        addOrganizationsInSpinner(true);
+        OrganizationSpinnerAdapter dataAdapter = (OrganizationSpinnerAdapter) organizationsSpinner.getAdapter();
+        dataAdapter.addAll(event.acceptedOrganizations);
+        dataAdapter.notifyDataSetChanged();
+        //addOrganizationsInSpinner(true);
     }
 
     private void setOrganizationsToSpinner(List<Organization> organizations) {
@@ -455,7 +453,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
     @Override
     public void onDestroy() {
-        EventBus.getDefault().unregister(this);
+        //EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 }

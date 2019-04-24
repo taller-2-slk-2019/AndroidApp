@@ -3,6 +3,7 @@ package com.taller2.hypechatapp.network.model;
 import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.taller2.hypechatapp.model.Organization;
 
 public class ReceivedInvitation implements Serializable
 {
@@ -12,11 +13,8 @@ public class ReceivedInvitation implements Serializable
     public String token;
     @SerializedName("organization")
     @Expose
-    public String organization;
+    public Organization organization;
     @SerializedName("description")
-    @Expose
-    public String description;
-    @SerializedName("invitedAt")
     @Expose
     public String invitedAt;
     private final static long serialVersionUID = 2759717683566975654L;
