@@ -85,13 +85,11 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
 
     private void subscribe(){
         FirebaseMessaging.getInstance().subscribeToTopic(getTopic());
-        EventBus.getDefault().register(this);
     }
 
     private void unsubscribe(){
         if (hasChatSelected()){
             FirebaseMessaging.getInstance().unsubscribeFromTopic(getTopic());
-            EventBus.getDefault().unregister(this);
         }
     }
 

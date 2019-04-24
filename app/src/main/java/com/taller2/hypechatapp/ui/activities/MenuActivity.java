@@ -88,7 +88,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         setUpChannels();
         setUpConversations();
 
-        //EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
 
     }
 
@@ -453,7 +453,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
     @Override
     public void onDestroy() {
-        //EventBus.getDefault().unregister(this);
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 }
