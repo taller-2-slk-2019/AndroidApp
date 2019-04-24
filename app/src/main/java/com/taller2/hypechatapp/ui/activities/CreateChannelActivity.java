@@ -167,7 +167,6 @@ public class CreateChannelActivity extends AppCompatActivity {
         }
 
         return true;
-
     }
 
     private ChannelRequest createRequest() {

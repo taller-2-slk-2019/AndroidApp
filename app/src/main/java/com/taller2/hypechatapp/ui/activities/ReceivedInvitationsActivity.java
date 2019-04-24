@@ -21,7 +21,6 @@ import com.taller2.hypechatapp.model.JoinOrganizationEvent;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.AcceptInvitationRequest;
-import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.network.model.ReceivedInvitation;
 import com.taller2.hypechatapp.services.OrganizationService;
 import com.taller2.hypechatapp.services.UserService;
@@ -107,10 +106,10 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
 
         AcceptInvitationRequest acceptInvitationRequest=new AcceptInvitationRequest();
         acceptInvitationRequest.token=receivedInvitation.token;
-        organizationService.acceptInvitation(acceptInvitationRequest, new Client<NoResponse>(){
+        organizationService.acceptInvitation(acceptInvitationRequest, new Client<Void>(){
 
             @Override
-            public void onResponseSuccess(NoResponse responseBody) {
+            public void onResponseSuccess(Void responseBody) {
                 loadingView.setVisibility(View.INVISIBLE);
                 acceptedOrganizations.add(receivedInvitation.organization);
 
@@ -144,10 +143,10 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
 
         ScreenDisablerHelper.disableScreenTouch(getWindow());
 
-        userService.rejectInvitation(token, new Client<NoResponse>(){
+        userService.rejectInvitation(token, new Client<Void>(){
 
             @Override
-            public void onResponseSuccess(NoResponse responseBody) {
+            public void onResponseSuccess(Void responseBody) {
                 loadingView.setVisibility(View.INVISIBLE);
 
                 ScreenDisablerHelper.enableScreenTouch(getWindow());

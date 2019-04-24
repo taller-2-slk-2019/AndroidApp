@@ -2,7 +2,6 @@ package com.taller2.hypechatapp.network;
 
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.model.ReceivedInvitation;
-import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.network.model.UserLocationRequest;
 
 import java.util.List;
@@ -25,17 +24,17 @@ public interface UserApi {
     Call<List<User>> getUsersByOrganization(@Query("organizationId") Integer organizationId);
 
     @PUT("/users")
-    Call<NoResponse> updateUser(@Query("userToken") String userToken, @Body User user);
+    Call<Void> updateUser(@Query("userToken") String userToken, @Body User user);
 
     @POST("/users")
     Call<User> registerUser(@Body User user);
 
     @PUT("/users/location")
-    Call<NoResponse> updateUserLocation(@Query("userToken") String userToken, @Body UserLocationRequest userLocationRequest);
+    Call<Void> updateUserLocation(@Query("userToken") String userToken, @Body UserLocationRequest userLocationRequest);
 
     @GET("/users/invitations")
     Call<List<ReceivedInvitation>> getReceivedInvitations(@Query("userToken") String userToken);
 
     @DELETE("/users/invitations/{invitationToken}")
-    Call<NoResponse> rejectInvitation(@Path("invitationToken") String invitationToken);
+    Call<Void> rejectInvitation(@Path("invitationToken") String invitationToken);
 }

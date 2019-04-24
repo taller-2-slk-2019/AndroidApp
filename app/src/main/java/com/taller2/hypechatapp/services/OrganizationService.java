@@ -6,7 +6,6 @@ import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.OrganizationApi;
 import com.taller2.hypechatapp.network.model.AcceptInvitationRequest;
-import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
 import com.taller2.hypechatapp.network.model.UserInvitationRequest;
 
@@ -86,15 +85,15 @@ public class OrganizationService extends RestService {
     }
 
     public void acceptInvitation(AcceptInvitationRequest acceptInvitationRequest, final Client client){
-        organizationApi.acceptInvitation(acceptInvitationRequest).enqueue(new Callback<NoResponse>(){
+        organizationApi.acceptInvitation(acceptInvitationRequest).enqueue(new Callback<Void>(){
 
             @Override
-            public void onResponse(Call<NoResponse> call, Response<NoResponse> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 manageSuccessResponse(response,SERVICE_TAG,client);
             }
 
             @Override
-            public void onFailure(Call<NoResponse> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 manageFailure(SERVICE_TAG,t,client);
             }
         });

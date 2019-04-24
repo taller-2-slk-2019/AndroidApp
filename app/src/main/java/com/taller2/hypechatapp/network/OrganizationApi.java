@@ -2,7 +2,6 @@ package com.taller2.hypechatapp.network;
 
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.model.AcceptInvitationRequest;
-import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
 import com.taller2.hypechatapp.network.model.UserInvitationRequest;
 
@@ -30,5 +29,5 @@ public interface OrganizationApi {
     Call<List<String>> inviteUsers(@Path("organizationId") Integer organizationId, @Body UserInvitationRequest userInvitationRequest);
 
     @POST("/organizations/users")
-    Call<NoResponse> acceptInvitation(@Body AcceptInvitationRequest organization);
+    Call<Void> acceptInvitation(@Body AcceptInvitationRequest organization);
 }
