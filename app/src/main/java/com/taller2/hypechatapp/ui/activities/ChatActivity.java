@@ -24,7 +24,6 @@ import com.taller2.hypechatapp.network.model.NoResponse;
 import com.taller2.hypechatapp.services.MessageService;
 import com.taller2.hypechatapp.services.OrganizationService;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
