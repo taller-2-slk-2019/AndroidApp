@@ -78,7 +78,13 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
                         filteredUsers.add(user);
                     }
                 }
-                usersAdapter.setUsers(filteredUsers);
+
+                if (filteredUsers.isEmpty()){
+                    findViewById(R.id.no_conversation_users).setVisibility(View.VISIBLE);
+                } else {
+                    usersAdapter.setUsers(filteredUsers);
+                }
+
                 loading.setVisibility(View.INVISIBLE);
                 ScreenDisablerHelper.enableScreenTouch(getWindow());
             }

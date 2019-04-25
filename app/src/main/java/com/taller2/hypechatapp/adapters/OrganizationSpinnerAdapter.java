@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.Organization;
 
 import java.util.List;
@@ -36,9 +35,7 @@ public class OrganizationSpinnerAdapter extends ArrayAdapter<Organization> {
 
     @Override
     public int getCount() {
-        int count = organizations.size();
-        //return count > 0 ? count - 1 : count;
-        return count;
+        return organizations.size();
     }
 
     @Override

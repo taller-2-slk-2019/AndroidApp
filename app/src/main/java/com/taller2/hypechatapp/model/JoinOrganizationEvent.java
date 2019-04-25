@@ -1,11 +1,9 @@
 package com.taller2.hypechatapp.model;
 
-import java.util.List;
-
 public class JoinOrganizationEvent {
-    public List<Organization> acceptedOrganizations;
+    public Organization organization;
 
-    public JoinOrganizationEvent(List<Organization> acceptedOrganizations) {
-        this.acceptedOrganizations = acceptedOrganizations;
+    public JoinOrganizationEvent(Organization organization) {
+        this.organization = organization;
     }
 }

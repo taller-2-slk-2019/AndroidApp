@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,10 +20,12 @@ public class MessageFileViewHolder extends MessageViewHolder implements Firebase
     private TextView messageFile;
     private String fileUrl;
     private Context context;
+    private ProgressBar loading;
 
     public MessageFileViewHolder(@NonNull View itemView) {
         super(itemView);
         context = itemView.getContext();
+        loading = itemView.findViewById(R.id.loading);
     }
 
     @Override
@@ -39,6 +42,7 @@ public class MessageFileViewHolder extends MessageViewHolder implements Firebase
             @Override
             public void onClick(View view) {
                 messageFile.setClickable(false);
+                loading.setVisibility(View.VISIBLE);
                 new FirebaseStorageService().downloadFile(MessageFileViewHolder.this, fileUrl);
             }
         });
@@ -52,6 +56,7 @@ public class MessageFileViewHolder extends MessageViewHolder implements Firebase
     @Override
     public void onFileDownloaded(Uri filePath, String contentType) {
         messageFile.setClickable(true);
+        loading.setVisibility(View.INVISIBLE);
 
         Intent intent = new Intent();
         intent.setAction(android.content.Intent.ACTION_VIEW);
@@ -65,6 +70,7 @@ public class MessageFileViewHolder extends MessageViewHolder implements Firebase
         String textToShow = "No se pudo descargar el archivo";
         Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
         messageFile.setClickable(true);
+        loading.setVisibility(View.INVISIBLE);
     }
 
     @Override

@@ -36,6 +36,7 @@
     <string name="channel_privacy_closed">Cerrado</string>
 
     <!-- conversations creation view -->
+    <string name="no_conversations_msg">No hay usuarios con quien conversar… Envía invitaciones para agregar a tus colegas y amigos!</string>
     <string name="new_conversation_title">Nueva Conversación</string>
     <string name="conversations_description">Elegí un usuario para chatear</string>
 
@@ -50,6 +51,7 @@
     <string name="name_user_profile">Nombre: </string>
     <string name="username_user_profile">Usuario: </string>
     <string name="email_user_profile">Email: </string>
+    <string name="btn_update_user">Actualizar</string>
 
     <!-- organization profile view -->
     <string name="organization_profile_title">Perfil de la organización</string>
@@ -73,12 +75,6 @@
     <string name="register_username">Usuario</string>
     <string name="error_invalid_email">El mail es inválido</string>
 
-    <!-- Other -->
-    <string name="image_picker_error">Debe seleccionar una imagen!</string>
-    <string name="fail_getting_info">No se pudo obtener toda la información</string>
-    <string name="btn_update_user">Actualizar</string>
-
-
     <!-- Invitations -->
     <string name="send_invitations_button">Enviar</string>
     <string name="email_invitation_text_hint">Añadir otro email</string>
@@ -89,7 +85,11 @@
     <string name="received_invitations_menu_label">Invitaciones Recibidas</string>
     <string name="received_invitation_text">La organización &lt;b>%1$s&lt;/b> desea que te unas a su equipo. ¿Aceptas?</string>
     <string name="send_invitations_error_message">Hubo un problema para enviar invitaciones a los siguientes correos. Asegurate que los correos pertenezcan a usuarios de Hypechat y que no pertenezcan actualmente a la organización.</string>
-    <string name="received_invitation_empty_message">No haz recibido invitaciones... Crea una organización y agrega a tus colegas y amigos!</string>
+    <string name="received_invitation_empty_message">No haz recibido invitaciones… Crea una organización y agrega a tus colegas y amigos!</string>
+
+    <!-- Other -->
+    <string name="image_picker_error">Debe seleccionar una imagen!</string>
+    <string name="fail_getting_info">No se pudo obtener toda la información</string>
 
 
 </resources>

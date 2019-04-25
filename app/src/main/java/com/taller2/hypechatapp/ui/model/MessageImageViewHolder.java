@@ -28,7 +28,7 @@ public class MessageImageViewHolder extends MessageViewHolder {
     @Override
     public void setMessage(Message message) {
         super.setMessage(message);
-        PicassoLoader.load(context, message.data, messageImage);
+        PicassoLoader.loadWithoutFit(context, message.data, messageImage);
     }
 
     @Override

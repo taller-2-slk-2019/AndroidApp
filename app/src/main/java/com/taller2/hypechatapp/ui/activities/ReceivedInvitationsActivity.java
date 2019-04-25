@@ -1,11 +1,5 @@
 package com.taller2.hypechatapp.ui.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,7 +12,6 @@ import com.taller2.hypechatapp.adapters.InvitationClickListener;
 import com.taller2.hypechatapp.adapters.InvitationResponseListener;
 import com.taller2.hypechatapp.adapters.ReceivedInvitationsAdapter;
 import com.taller2.hypechatapp.model.JoinOrganizationEvent;
-import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.AcceptInvitationRequest;
 import com.taller2.hypechatapp.network.model.ReceivedInvitation;
@@ -28,8 +21,13 @@ import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ReceivedInvitationsActivity extends AppCompatActivity implements InvitationClickListener {
 
@@ -40,7 +38,6 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
     private ProgressBar loadingView;
     RecyclerView invitationsRecyclerView;
     ReceivedInvitationsAdapter receivedInvitationsAdapter;
-    private List<Organization> acceptedOrganizations=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +108,7 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
             @Override
             public void onResponseSuccess(Void responseBody) {
                 loadingView.setVisibility(View.INVISIBLE);
-                acceptedOrganizations.add(receivedInvitation.organization);
+                EventBus.getDefault().post(new JoinOrganizationEvent(receivedInvitation.organization));
 
                 ScreenDisablerHelper.enableScreenTouch(getWindow());
 
@@ -173,11 +170,4 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        if(!acceptedOrganizations.isEmpty()){
-            EventBus.getDefault().post(new JoinOrganizationEvent(acceptedOrganizations));
-        }
-        super.onBackPressed();
-    }
 }

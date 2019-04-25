@@ -150,11 +150,9 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onJoinOrganizationEvent(JoinOrganizationEvent event){
-
         OrganizationSpinnerAdapter dataAdapter = (OrganizationSpinnerAdapter) organizationsSpinner.getAdapter();
-        dataAdapter.addAll(event.acceptedOrganizations);
+        dataAdapter.add(event.organization);
         dataAdapter.notifyDataSetChanged();
-        //addOrganizationsInSpinner(true);
     }
 
     private void setOrganizationsToSpinner(List<Organization> organizations) {
