@@ -23,7 +23,6 @@ import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.MessageService;
 import com.taller2.hypechatapp.services.OrganizationService;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -77,20 +76,18 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     }
 
     @Override
-    protected void onDestroy(){
+    public void onDestroy(){
         unsubscribe();
         super.onDestroy();
     }
 
     private void subscribe(){
         FirebaseMessaging.getInstance().subscribeToTopic(getTopic());
-        EventBus.getDefault().register(this);
     }
 
     private void unsubscribe(){
         if (hasChatSelected()){
             FirebaseMessaging.getInstance().unsubscribeFromTopic(getTopic());
-            EventBus.getDefault().unregister(this);
         }
     }
 

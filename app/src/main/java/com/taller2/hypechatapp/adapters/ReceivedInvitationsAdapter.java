@@ -16,8 +16,10 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ReceivedInvitationsAdapter extends RecyclerView.Adapter<ReceivedInvitationViewHolder> implements InvitationResponseListener {
+public class ReceivedInvitationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements InvitationResponseListener {
 
+    private static final int VIEW_TYPE_EMPTY=0;
+    private static final int VIEW_TYPE_NOT_EMPTY=1;
     private List<ReceivedInvitation> invitations;
     private InvitationClickListener invitationClickListener;
     private Context context;
@@ -28,38 +30,65 @@ public class ReceivedInvitationsAdapter extends RecyclerView.Adapter<ReceivedInv
         this.context=context;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if(invitations.size()==0)
+            return VIEW_TYPE_EMPTY;
+        else
+            return VIEW_TYPE_NOT_EMPTY;
+    }
+
     @NonNull
     @Override
-    public ReceivedInvitationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.received_invitation, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if(viewType==VIEW_TYPE_EMPTY){
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.received_invitation_empty, parent, false);
 
-        ReceivedInvitationViewHolder vh=new ReceivedInvitationViewHolder(v);
-        return vh;
+            return new EmptyViewHolder(v);
+        } else {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.received_invitation, parent, false);
+
+            ReceivedInvitationViewHolder vh=new ReceivedInvitationViewHolder(v);
+            return vh;
+        }
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ReceivedInvitationViewHolder holder, int position) {
-        Resources res = context.getResources();
-        String text = String.format(res.getString(R.string.received_invitation_text), invitations.get(holder.getAdapterPosition()).organization);
-        holder.invitationTextView.setText(Html.fromHtml(text));
-        holder.acceptInvitationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                invitationClickListener.onAcceptClick(invitations.get(holder.getAdapterPosition()).token, holder.getAdapterPosition(),ReceivedInvitationsAdapter.this);
-            }
-        });
-        holder.rejectInvitationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                invitationClickListener.onRejectClick(invitations.get(holder.getAdapterPosition()).token, holder.getAdapterPosition(),ReceivedInvitationsAdapter.this);
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
 
-            }
-        });
+        int viewType = getItemViewType(position);
+
+        if (viewType==VIEW_TYPE_NOT_EMPTY){
+            final ReceivedInvitationViewHolder vh = (ReceivedInvitationViewHolder) holder;
+            Resources res = context.getResources();
+            String text = String.format(res.getString(R.string.received_invitation_text), invitations.get(vh.getAdapterPosition()).organization.getName());
+            vh.invitationTextView.setText(Html.fromHtml(text));
+            vh.acceptInvitationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    invitationClickListener.onAcceptClick(invitations.get(vh.getAdapterPosition()), vh.getAdapterPosition(),ReceivedInvitationsAdapter.this);
+                }
+            });
+            vh.rejectInvitationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    invitationClickListener.onRejectClick(invitations.get(vh.getAdapterPosition()).token, vh.getAdapterPosition(),ReceivedInvitationsAdapter.this);
+
+                }
+            });
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return invitations.size();
+        //Hack to show the empty view
+        if(invitations.size() == 0){
+            return 1;
+        }else {
+            return invitations.size();
+        }
     }
 
 
@@ -69,5 +98,10 @@ public class ReceivedInvitationsAdapter extends RecyclerView.Adapter<ReceivedInv
         notifyItemRemoved(adapterPosition);
     }
 
+    public static class EmptyViewHolder extends RecyclerView.ViewHolder{
 
+        public EmptyViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
 }

@@ -24,6 +24,7 @@ import com.taller2.hypechatapp.components.PicassoLoader;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.model.Conversation;
+import com.taller2.hypechatapp.model.JoinOrganizationEvent;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
@@ -32,6 +33,10 @@ import com.taller2.hypechatapp.services.ChannelService;
 import com.taller2.hypechatapp.services.ConversationService;
 import com.taller2.hypechatapp.services.OrganizationService;
 import com.taller2.hypechatapp.services.UserService;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -77,6 +82,9 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         addListenerOnSpinnerOrganizationSelection();
         setUpChannels();
         setUpConversations();
+
+        EventBus.getDefault().register(this);
+
     }
 
     private void setupUI() {
@@ -123,15 +131,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
                     createNewOrganization();
                     finish();
                 } else {
-                    OrganizationSpinnerAdapter dataAdapter = new OrganizationSpinnerAdapter(getContext(),
-                            android.R.layout.simple_spinner_item, organizations);
-                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    organizationsSpinner.setAdapter(dataAdapter);
-
-                    Integer selectedOrganizationPosition = getSelectedOrganizationPosition(organizations);
-                    organizationsSpinner.setSelection(selectedOrganizationPosition);
-                    userManagerPreferences.saveSelectedOrganization(organizations.get(selectedOrganizationPosition).getId());
-
+                    setOrganizationsToSpinner(organizations);
                     showOrganizationUserInfo();
                 }
             }
@@ -146,6 +146,26 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
                 return MenuActivity.this;
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onJoinOrganizationEvent(JoinOrganizationEvent event){
+
+        OrganizationSpinnerAdapter dataAdapter = (OrganizationSpinnerAdapter) organizationsSpinner.getAdapter();
+        dataAdapter.addAll(event.acceptedOrganizations);
+        dataAdapter.notifyDataSetChanged();
+        //addOrganizationsInSpinner(true);
+    }
+
+    private void setOrganizationsToSpinner(List<Organization> organizations) {
+        OrganizationSpinnerAdapter dataAdapter = new OrganizationSpinnerAdapter(this,
+                android.R.layout.simple_spinner_item, organizations);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        organizationsSpinner.setAdapter(dataAdapter);
+
+        Integer selectedOrganizationPosition = getSelectedOrganizationPosition(organizations);
+        organizationsSpinner.setSelection(selectedOrganizationPosition);
+        userManagerPreferences.saveSelectedOrganization(organizations.get(selectedOrganizationPosition).getId());
     }
 
     private Integer getSelectedOrganizationPosition(List<Organization> organizations) {
@@ -448,5 +468,12 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         userManagerPreferences.saveSelectedConversation(conversation.id);
         drawerLayout.closeDrawer(GravityCompat.START);
         onChatSelected();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 }

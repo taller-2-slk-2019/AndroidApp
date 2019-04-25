@@ -1,4 +1,4 @@
-package com.taller2.hypechatapp.ui.activities;
+package com.taller2.hypechatapp.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +19,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
+import com.taller2.hypechatapp.ui.activities.ChooseLocationActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

@@ -18,6 +18,8 @@ import com.taller2.hypechatapp.network.model.OrganizationRequest;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.OrganizationService;
 import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
+import com.taller2.hypechatapp.ui.fragments.CreateOrganizationStepOneFragment;
+import com.taller2.hypechatapp.ui.fragments.CreateOrganizationStepTwoFragment;
 
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_organization);
+        setContentView(R.layout.frame_container);
         preferences = new UserManagerPreferences(this);
         setUpFragment(savedInstanceState);
         setUpUI();
@@ -59,7 +61,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
     private void setUpFragment(@Nullable Bundle savedInstanceState) {
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
-        if (findViewById(R.id.fragment_container) != null) {
+        if (findViewById(R.id.fragment_container_frame_layout) != null) {
 
             // However, if we're being restored from a previous state,
             // then we don't need to do anything and should return or else
@@ -79,7 +81,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
 
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, createOrganizationStepOneFragment).commit();
+                    .add(R.id.fragment_container_frame_layout, createOrganizationStepOneFragment).commit();
         }
     }
 
@@ -97,7 +99,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
 
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack so the user can navigate back
-        transaction.replace(R.id.fragment_container, createOrganizationStepTwoFragment);
+        transaction.replace(R.id.fragment_container_frame_layout, createOrganizationStepTwoFragment);
         transaction.addToBackStack(null);
 
         // Commit the transaction
