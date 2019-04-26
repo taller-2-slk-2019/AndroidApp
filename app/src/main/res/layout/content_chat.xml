@@ -27,7 +27,7 @@ tools:showIn="@layout/app_bar_main">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/newMessageContainer"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="100dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
@@ -37,7 +37,8 @@ tools:showIn="@layout/app_bar_main">
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible">
 
         <EditText
             android:id="@+id/newMessageText"
@@ -45,18 +46,17 @@ tools:showIn="@layout/app_bar_main">
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
             android:ems="10"
-            android:hint="@string/new_message_hint"
+            android:hint="@string/new_message_text_hint"
             android:inputType="textMultiLine"
             android:maxLength="254"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/sendMessageButton"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         <ImageView
             android:id="@+id/sendMessageButton"
@@ -74,34 +74,54 @@ tools:showIn="@layout/app_bar_main">
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="35dp"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="22dp"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toStartOf="@+id/sendMessageButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/pickImageButton"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="0"
                 android:clickable="true"
                 android:src="@drawable/pick_image" />
 
             <ImageView
                 android:id="@+id/pickFileButton"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:layout_weight="0"
                 android:clickable="true"
                 android:src="@drawable/pick_file" />
+
+            <ImageView
+                android:id="@+id/sendCodeButton"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:layout_weight="0"
+                android:clickable="true"
+                android:src="@drawable/send_code"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/sendTextButton"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:layout_weight="0"
+                android:clickable="true"
+                android:src="@drawable/send_text"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
         </LinearLayout>
 

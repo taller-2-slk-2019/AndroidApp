@@ -26,7 +26,7 @@ public class PicassoLoader {
     public static void loadWithoutFit(Context context, String url, final ImageView image) {
         Picasso.with(context)
                 .load(url)
-                .resize(6000, 2000)
+                .resize(500, 1000)
                 .onlyScaleDown()
                 .centerInside().placeholder(default_image)
                 .error(error_image)

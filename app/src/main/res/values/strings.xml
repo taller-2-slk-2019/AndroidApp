@@ -41,7 +41,8 @@
     <string name="conversations_description">Elegí un usuario para chatear</string>
 
     <!-- chat view -->
-    <string name="new_message_hint">Enviá algo bueno al chat!</string>
+    <string name="new_message_text_hint">Enviá algo bueno al chat!</string>
+    <string name="new_message_code_hint">Compartí tu código!</string>
     <string name="download_message_file">Ver archivo enviado</string>
     <string name="no_channel_msg">Unite a un canal o creá uno nuevo para poder chatear.</string>
 
