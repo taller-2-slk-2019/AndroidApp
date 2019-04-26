@@ -36,7 +36,7 @@
     <string name="channel_privacy_closed">Cerrado</string>
 
     <!-- conversations creation view -->
-    <string name="no_conversations_msg">No hay usuarios con quien conversar… Envía invitaciones para agregar a tus colegas y amigos!</string>
+    <string name="no_conversations_msg">No hay usuarios con quien conversar… Enviá invitaciones para agregar a tus colegas y amigos!</string>
     <string name="new_conversation_title">Nueva Conversación</string>
     <string name="conversations_description">Elegí un usuario para chatear</string>
 

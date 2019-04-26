@@ -80,7 +80,7 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
                 }
 
                 if (filteredUsers.isEmpty()){
-                    findViewById(R.id.no_conversation_users).setVisibility(View.VISIBLE);
+                    findViewById(R.id.create_conversation_no_users).setVisibility(View.VISIBLE);
                 } else {
                     usersAdapter.setUsers(filteredUsers);
                 }
