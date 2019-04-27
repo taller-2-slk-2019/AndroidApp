@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.taller2.hypechatapp.R;
-import com.taller2.hypechatapp.network.model.ReceivedInvitation;
+import com.taller2.hypechatapp.model.ReceivedInvitation;
 import com.taller2.hypechatapp.ui.model.ReceivedInvitationViewHolder;
 
 import java.util.List;

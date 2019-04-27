@@ -1,9 +1,9 @@
-package com.taller2.hypechatapp.network.model;
+package com.taller2.hypechatapp.model;
 
-import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.taller2.hypechatapp.model.Organization;
+
+import java.io.Serializable;
 
 public class ReceivedInvitation implements Serializable
 {
@@ -14,7 +14,7 @@ public class ReceivedInvitation implements Serializable
     @SerializedName("organization")
     @Expose
     public Organization organization;
-    @SerializedName("description")
+    @SerializedName("invitedAt")
     @Expose
     public String invitedAt;
     private final static long serialVersionUID = 2759717683566975654L;

@@ -34,7 +34,7 @@ public abstract class MessageViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setMessage(Message message) {
-        username.setText(message.sender.getName());
+        username.setText(message.getSenderName());
         date.setText(DateHelper.serverToLocalString(message.createdAt));
     }
 

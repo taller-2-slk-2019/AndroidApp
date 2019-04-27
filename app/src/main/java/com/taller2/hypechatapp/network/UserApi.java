@@ -1,7 +1,7 @@
 package com.taller2.hypechatapp.network;
 
 import com.taller2.hypechatapp.model.User;
-import com.taller2.hypechatapp.network.model.ReceivedInvitation;
+import com.taller2.hypechatapp.model.ReceivedInvitation;
 import com.taller2.hypechatapp.network.model.UserLocationRequest;
 
 import java.util.List;

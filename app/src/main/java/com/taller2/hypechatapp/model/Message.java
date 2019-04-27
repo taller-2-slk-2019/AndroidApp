@@ -33,4 +33,14 @@ public class Message implements Serializable {
     @SerializedName("sender")
     @Expose
     public User sender;
+    @SerializedName("bot")
+    @Expose
+    public String bot;
+
+    public String getSenderName(){
+        if (sender != null){
+            return sender.getName();
+        }
+        return "Bot " + bot;
+    }
 }

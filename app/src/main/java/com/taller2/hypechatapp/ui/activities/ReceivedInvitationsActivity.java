@@ -14,7 +14,7 @@ import com.taller2.hypechatapp.adapters.ReceivedInvitationsAdapter;
 import com.taller2.hypechatapp.model.JoinOrganizationEvent;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.AcceptInvitationRequest;
-import com.taller2.hypechatapp.network.model.ReceivedInvitation;
+import com.taller2.hypechatapp.model.ReceivedInvitation;
 import com.taller2.hypechatapp.services.OrganizationService;
 import com.taller2.hypechatapp.services.UserService;
 import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
