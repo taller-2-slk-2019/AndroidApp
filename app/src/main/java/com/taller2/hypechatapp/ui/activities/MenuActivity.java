@@ -24,7 +24,6 @@ import com.taller2.hypechatapp.components.PicassoLoader;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.model.Conversation;
-import com.taller2.hypechatapp.model.JoinOrganizationEvent;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
@@ -149,10 +148,15 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onJoinOrganizationEvent(JoinOrganizationEvent event){
+    public void onJoinOrganizationEvent(Organization organization){
         OrganizationSpinnerAdapter dataAdapter = (OrganizationSpinnerAdapter) organizationsSpinner.getAdapter();
-        dataAdapter.add(event.organization);
+        dataAdapter.add(organization);
         dataAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onJoinChannelEvent(Channel channel){
+        channelsAdapter.add(channel);
     }
 
     private void setOrganizationsToSpinner(List<Organization> organizations) {

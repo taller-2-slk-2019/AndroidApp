@@ -50,4 +50,9 @@ public class MenuChannelsAdapter extends RecyclerView.Adapter<MenuChannelItemVie
     public List<Channel> getChannels() {
         return data;
     }
+
+    public void add(Channel channel) {
+        data.add(channel);
+        this.notifyDataSetChanged();
+    }
 }

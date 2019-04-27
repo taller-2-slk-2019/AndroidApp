@@ -81,5 +81,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void handleChannelInvitation(String data) {
         Channel channel = gson.fromJson(data, Channel.class);
         new NewChannelInvitationNotification(this, channel).send();
+        EventBus.getDefault().post(channel);
     }
 }
