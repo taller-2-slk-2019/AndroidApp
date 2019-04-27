@@ -10,6 +10,7 @@ import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.model.Message;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.model.User;
+import com.taller2.hypechatapp.notifications.NewChannelInvitationNotification;
 import com.taller2.hypechatapp.notifications.NewOrganizationInvitationNotification;
 import com.taller2.hypechatapp.notifications.UserMentionedNotification;
 
@@ -47,6 +48,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     Log.d(TAG, "handling new invitation");
                     handleInvitation(data.get("organization"));
                     break;
+                case "channel_invitation":
+                    Log.d(TAG, "handling new channel invitation");
+                    handleChannelInvitation(data.get("channel"));
+                    break;
             }
         }
 
@@ -71,5 +76,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void handleInvitation(String data) {
         Organization organization = gson.fromJson(data, Organization.class);
         new NewOrganizationInvitationNotification(this, organization).send();
+    }
+
+    private void handleChannelInvitation(String data) {
+        Channel channel = gson.fromJson(data, Channel.class);
+        new NewChannelInvitationNotification(this, channel).send();
     }
 }
