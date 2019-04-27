@@ -1,35 +1,34 @@
 package com.taller2.hypechatapp.ui.model;
 
 import android.view.View;
-import android.widget.ImageView;
 
 import com.taller2.hypechatapp.R;
-import com.taller2.hypechatapp.components.PicassoLoader;
 import com.taller2.hypechatapp.model.Message;
 
 import androidx.annotation.NonNull;
+import io.github.kbiakov.codeview.CodeView;
 
-public class MessageImageViewHolder extends MessageViewHolder {
+public class MessageCodeViewHolder extends MessageViewHolder {
 
-    private ImageView messageImage;
+    private CodeView messageText;
 
-    public MessageImageViewHolder(@NonNull View itemView) {
+    public MessageCodeViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 
     @Override
     protected void initialize(View view){
-        messageImage = view.findViewById(R.id.message_image);
+        messageText = view.findViewById(R.id.message_code);
     }
 
     @Override
     public void setMessage(Message message) {
         super.setMessage(message);
-        PicassoLoader.loadWithoutFit(context, message.data, messageImage);
+        messageText.setCode(message.data);
     }
 
     @Override
     protected int getViewId() {
-        return R.layout.message_image;
+        return R.layout.message_code;
     }
 }

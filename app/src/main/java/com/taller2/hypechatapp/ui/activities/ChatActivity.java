@@ -41,6 +41,9 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     private MessageListAdapter messagesAdapter;
 
     private TextView newMessageText;
+    private String selectedTextType = Message.TYPE_TEXT;
+    private ImageView sendTextButton;
+    private ImageView sendCodeButton;
 
     private MessageService messageService;
 
@@ -163,6 +166,35 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
                 FilePicker.chooseFile(ChatActivity.this);
             }
         });
+
+        sendTextButton = findViewById(R.id.sendTextButton);
+        sendTextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedTextType = Message.TYPE_TEXT;
+                onSelectedTextTypeChanged();
+            }
+        });
+
+        sendCodeButton = findViewById(R.id.sendCodeButton);
+        sendCodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedTextType = Message.TYPE_CODE;
+                onSelectedTextTypeChanged();
+            }
+        });
+    }
+
+    private void onSelectedTextTypeChanged(){
+        if (selectedTextType.equals(Message.TYPE_TEXT)){
+            newMessageText.setHint(R.string.new_message_text_hint);
+        } else {
+            newMessageText.setHint(R.string.new_message_code_hint);
+        }
+
+        sendTextButton.setVisibility(selectedTextType.equals(Message.TYPE_TEXT) ? View.GONE : View.VISIBLE);
+        sendCodeButton.setVisibility(selectedTextType.equals(Message.TYPE_CODE) ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -228,7 +260,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
 
         Message message = new Message();
         message.data = messageText;
-        message.type = Message.TYPE_TEXT;
+        message.type = selectedTextType;
 
         sendMessage(message);
     }

@@ -19,12 +19,10 @@ public class MessageFileViewHolder extends MessageViewHolder implements Firebase
 
     private TextView messageFile;
     private String fileUrl;
-    private Context context;
     private ProgressBar loading;
 
     public MessageFileViewHolder(@NonNull View itemView) {
         super(itemView);
-        context = itemView.getContext();
         loading = itemView.findViewById(R.id.loading);
     }
 

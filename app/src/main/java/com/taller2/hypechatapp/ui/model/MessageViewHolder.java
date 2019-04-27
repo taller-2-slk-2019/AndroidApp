@@ -1,5 +1,6 @@
 package com.taller2.hypechatapp.ui.model;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -16,10 +17,12 @@ public abstract class MessageViewHolder extends RecyclerView.ViewHolder {
 
     private TextView username;
     private TextView date;
+    protected Context context;
 
     public MessageViewHolder(@NonNull View itemView) {
         super(itemView);
 
+        context = itemView.getContext();
         username = itemView.findViewById(R.id.message_username);
         date = itemView.findViewById(R.id.message_date);
 

@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.Message;
+import com.taller2.hypechatapp.ui.model.MessageCodeViewHolder;
 import com.taller2.hypechatapp.ui.model.MessageFileViewHolder;
 import com.taller2.hypechatapp.ui.model.MessageImageViewHolder;
 import com.taller2.hypechatapp.ui.model.MessageTextViewHolder;
@@ -21,7 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MessageListAdapter extends RecyclerView.Adapter<MessageViewHolder> {
     private List<Message> messages = new ArrayList<>();
 
-    private List<String> messageTypes = new ArrayList<String>(Arrays.asList(Message.TYPE_TEXT, Message.TYPE_IMAGE, Message.TYPE_FILE));
+    private List<String> messageTypes = new ArrayList<String>(
+            Arrays.asList(Message.TYPE_TEXT, Message.TYPE_IMAGE, Message.TYPE_FILE, Message.TYPE_CODE));
 
     @Override
     public int getItemViewType(int position) {
@@ -42,6 +44,8 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageViewHolder> 
                 return new MessageImageViewHolder(view);
             case Message.TYPE_FILE:
                 return new MessageFileViewHolder(view);
+            case Message.TYPE_CODE:
+                return new MessageCodeViewHolder(view);
         }
 
         throw new IllegalArgumentException();
