@@ -81,7 +81,15 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageViewHolder> 
                 return;
             }
         }
-        messages.add(message);
+
+        int index = messages.size();
+        while (index > 0 ){
+            if (messages.get(index - 1).id < message.id){
+                break;
+            }
+            index --;
+        }
+        messages.add(index, message);
         notifyDataSetChanged();
     }
 
