@@ -159,6 +159,14 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
             }
         });
 
+        ImageView pickFileButton = findViewById(R.id.pickFileButton);
+        pickFileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FilePicker.chooseFile(ChatActivity.this);
+            }
+        });
+
         sendTextButton = findViewById(R.id.sendTextButton);
         sendTextButton.setOnClickListener(new View.OnClickListener() {
             @Override
