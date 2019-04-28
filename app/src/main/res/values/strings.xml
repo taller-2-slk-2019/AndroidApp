@@ -12,6 +12,11 @@
     <string name="menu_conversations">CONVERSACIONES</string>
     <string name="action_log_out">Cerrar Sesión</string>
 
+    <!-- Welcome activity -->
+    <string name="app_welcome">Bienvenido a Hypechat.\nPara empezar a chatear, crea una nueva organización o revisa las invitaciones recibidas.</string>
+    <string name="create_organization">Crear Organización</string>
+    <string name="show_invitations">Ver Invitaciones</string>
+
     <!-- organization creation view -->
     <string name="hint_organization_name">Nombre de la organización</string>
     <string name="hint_organization_description">Descripción</string>

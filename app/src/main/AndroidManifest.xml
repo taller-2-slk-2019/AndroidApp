@@ -111,6 +111,7 @@
             android:label="@string/received_invitations_label"
             android:screenOrientation="portrait"
             />
+        <activity android:name=".ui.activities.WelcomeActivity" />
     </application>
 
 </manifest>
