@@ -77,7 +77,7 @@ public class FirebaseAuthService {
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 //do nothing
             }
 

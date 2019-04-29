@@ -1,11 +1,10 @@
 package com.taller2.hypechatapp.ui.activities;
 
-import android.app.ProgressDialog;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,17 +62,9 @@ public class OrganizationProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
-                //dialog.dismiss();
-                //setAlertDialog();
-                String textToShow;
-                if(!TextUtils.isEmpty(errorMessage)){
-                    textToShow=errorMessage;
-                } else {
-                    textToShow="No fue posible obtener el perfil de la organización. Intente más tarde.";
-                }
+            public void onResponseError(boolean connectionError, String errorMessage) {
+                String textToShow="No fue posible obtener el perfil de la organización. Intente más tarde.";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
-                finish();
             }
 
             @Override

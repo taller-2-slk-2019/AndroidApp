@@ -217,7 +217,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 messagesListContainer.setRefreshing(false);
                 String textToShow = "Ha ocurrido un error al cargar los mensajes";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
@@ -240,7 +240,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 String textToShow = "No se pudo enviar el mensaje";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
             }
@@ -302,7 +302,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 welcome.setText(R.string.no_channel_msg);
             }
 

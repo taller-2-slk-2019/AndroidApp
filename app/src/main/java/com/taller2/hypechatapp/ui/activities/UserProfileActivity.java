@@ -19,7 +19,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.components.ImagePicker;
 import com.taller2.hypechatapp.components.PicassoLoader;
-import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.firebase.FirebaseStorageService;
 import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.User;
@@ -90,17 +89,9 @@ public class UserProfileActivity extends AppCompatActivity implements FirebaseSt
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
-
-                String textToShow;
-                if (!TextUtils.isEmpty(errorMessage)) {
-                    textToShow = errorMessage;
-                } else {
-                    textToShow = "No fue posible obtener el perfil del usuario. Intente más tarde.";
-                }
-
+            public void onResponseError(boolean connectionError, String errorMessage) {
+                String textToShow = "No fue posible obtener el perfil del usuario. Intente más tarde.";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
-                finish();
             }
 
             @Override
@@ -151,19 +142,26 @@ public class UserProfileActivity extends AppCompatActivity implements FirebaseSt
         userRequest.setUsername(username.getText().toString());
         userRequest.setPicture(imageUrl);
 
+        username.setError(null);
+
         userService.updateUser(userRequest, new Client<Void>() {
             @Override
             public void onResponseSuccess(Void nothing) {
                 showLoading(false);
                 updateUserBtn.setEnabled(false);
                 updatePreviousValues();
-                Toast.makeText(getContext(), "Usuario actualizado ok!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Usuario actualizado correctamente!", Toast.LENGTH_LONG).show();
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
-                Toast.makeText(getContext(), "Error al actualizar usuario", Toast.LENGTH_LONG).show();
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 showLoading(false);
+                if (connectionError){
+                    Toast.makeText(getContext(), "Error al actualizar usuario", Toast.LENGTH_LONG).show();
+                } else {
+                    username.setError("El nombre de usuario ya existe");
+                    username.requestFocus();
+                };
             }
 
             @Override

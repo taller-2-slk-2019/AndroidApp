@@ -1,9 +1,7 @@
 package com.taller2.hypechatapp.ui.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +12,10 @@ import com.google.android.material.button.MaterialButton;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.SendInvitationsAdapter;
 import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.network.model.OrganizationRequest;
 import com.taller2.hypechatapp.network.model.UserInvitationRequest;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.OrganizationService;
+import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,11 +84,13 @@ public class SendInvitationsFragment extends Fragment {
     private void sendInvitations(UserInvitationRequest userInvitationRequest) {
 
         loadingView.setVisibility(View.VISIBLE);
+        ScreenDisablerHelper.disableScreenTouch(getActivity().getWindow());
 
         organizationService.inviteUsers(preferences.getSelectedOrganization(), userInvitationRequest, new Client<List<String>>() {
             @Override
             public void onResponseSuccess(List<String> failedInvitations) {
                 loadingView.setVisibility(View.INVISIBLE);
+                ScreenDisablerHelper.enableScreenTouch(getActivity().getWindow());
                 if (failedInvitations.isEmpty()){
                     Toast.makeText(getContext(), "Invitaciones Enviadas!!!", Toast.LENGTH_LONG).show();
                     getActivity().finish();
@@ -101,16 +101,11 @@ public class SendInvitationsFragment extends Fragment {
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
+                ScreenDisablerHelper.enableScreenTouch(getActivity().getWindow());
                 loadingView.setVisibility(View.INVISIBLE);
-                String textToShow;
-                if(!TextUtils.isEmpty(errorMessage)){
-                    textToShow=errorMessage;
-                } else {
-                    textToShow="No fue posible enviar las invitaciones a los usuarios indicados. Intente más tarde.";
-                }
+                String textToShow="No fue posible enviar las invitaciones a los usuarios indicados. Intente más tarde.";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
-                getActivity().finish();
             }
 
             @Override

@@ -18,21 +18,19 @@ public class RestService {
                 Log.i(serviceTag, response.body().toString());
             }
         } else {
-            if (response.body() != null) {
-                Log.e(serviceTag, response.body().toString());
-            } else {
-                try {
-                    Log.e(serviceTag, response.message() + ": " + response.errorBody().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            try {
+                Log.e(serviceTag, response.message() + ": " + response.errorBody().string());
+                client.onResponseError(false, response.errorBody().string());
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            client.onResponseError(null);
+            client.onResponseError(false, "");
         }
     }
 
     public void manageFailure(String serviceTag, Throwable t, Client client) {
         Log.e(serviceTag, t.getMessage());
-        client.onResponseError(null);
+        client.onResponseError(true, "");
     }
 }

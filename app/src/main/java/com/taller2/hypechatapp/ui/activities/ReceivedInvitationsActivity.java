@@ -2,7 +2,6 @@ package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -11,9 +10,9 @@ import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.InvitationClickListener;
 import com.taller2.hypechatapp.adapters.InvitationResponseListener;
 import com.taller2.hypechatapp.adapters.ReceivedInvitationsAdapter;
+import com.taller2.hypechatapp.model.ReceivedInvitation;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.AcceptInvitationRequest;
-import com.taller2.hypechatapp.model.ReceivedInvitation;
 import com.taller2.hypechatapp.services.OrganizationService;
 import com.taller2.hypechatapp.services.UserService;
 import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
@@ -60,14 +59,9 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 loadingView.setVisibility(View.INVISIBLE);
-                String textToShow;
-                if(!TextUtils.isEmpty(errorMessage)){
-                    textToShow=errorMessage;
-                } else {
-                    textToShow="No fue posible obtener las invitaciones. Intente más tarde.";
-                }
+                String textToShow="No fue posible obtener las invitaciones. Intente más tarde.";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
                 finish();
             }
@@ -116,7 +110,7 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 loadingView.setVisibility(View.INVISIBLE);
 
                 ScreenDisablerHelper.enableScreenTouch(getWindow());
@@ -152,7 +146,7 @@ public class ReceivedInvitationsActivity extends AppCompatActivity implements In
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 loadingView.setVisibility(View.INVISIBLE);
 
                 ScreenDisablerHelper.enableScreenTouch(getWindow());

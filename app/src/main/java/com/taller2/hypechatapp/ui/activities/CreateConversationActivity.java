@@ -90,7 +90,7 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 loading.setVisibility(View.INVISIBLE);
                 String textToShow = "No se pudo obtener los usuarios de la organización";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
@@ -126,7 +126,7 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 loading.setVisibility(View.INVISIBLE);
                 ScreenDisablerHelper.enableScreenTouch(getWindow());
                 String textToShow = "No fue posible iniciar una conversación. Intente más tarde.";

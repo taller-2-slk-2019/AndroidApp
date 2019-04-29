@@ -72,12 +72,14 @@
     <string name="login_email_hint">Email</string>
     <string name="login_password_hint">Contraseña</string>
     <string name="register_name">Nombre completo</string>
-    <string name="fb_log_in_error">No se pudo iniciar sesión</string>
+    <string name="fb_log_in_error">No se pudo iniciar sesión con Facebook</string>
     <string name="log_in_error">Email o contraseña incorrectos</string>
     <string name="error_register">El nombre de usuario ya existe</string>
     <string name="error_register_firebase">El email ya existe o es inválido</string>
     <string name="error_weak_password">Contraseña muy corta [mínimo 6 caracteres]</string>
     <string name="error_user_exists">Email ya utilizado en otra cuenta</string>
+    <string name="error_login_connection">No fue posible iniciar sesión. Intente más tarde.</string>
+    <string name="error_register_connection">No fue posible registarse. Intente más tarde.</string>
     <string name="register_username">Usuario</string>
     <string name="error_invalid_email">El mail es inválido</string>
 

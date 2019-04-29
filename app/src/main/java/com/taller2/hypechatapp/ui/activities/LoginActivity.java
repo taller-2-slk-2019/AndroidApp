@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -19,6 +20,7 @@ import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -43,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText emailText;
     private TextInputEditText passwordText;
     private ProgressBar loading;
-    private TextView errorText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         userService = new UserService();
         loading = findViewById(R.id.loading);
-        errorText = findViewById(R.id.error_text);
 
         setFacebookLogin();
         setNormalLogin();
@@ -129,21 +129,25 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loading(){
+        passwordText.setError(null);
         loading.setVisibility(View.VISIBLE);
-        errorText.setVisibility(View.INVISIBLE);
         ScreenDisablerHelper.disableScreenTouch(getWindow());
     }
 
-    private void showError(boolean fb){
-        errorText.setVisibility(View.VISIBLE);
-        if (fb){
-            errorText.setText(R.string.fb_log_in_error);
-        } else {
-            errorText.setText(R.string.log_in_error);
-        }
-
+    private void hideLoading(){
         loading.setVisibility(View.INVISIBLE);
         ScreenDisablerHelper.enableScreenTouch(getWindow());
+    }
+
+    private void showError(boolean facebookError){
+        if (facebookError){
+            Toast.makeText(this, R.string.fb_log_in_error, Toast.LENGTH_LONG).show();
+        } else {
+            passwordText.setError(getResources().getString(R.string.log_in_error));
+            passwordText.requestFocus();
+        }
+
+        hideLoading();
         FirebaseAuthService.logOut(this);
     }
 
@@ -170,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 showError(true);
             }
 
@@ -218,7 +222,13 @@ public class LoginActivity extends AppCompatActivity {
                         userLoggedIn();
                     } else {
                         Log.w("Firebase log in", "Log in failed", task.getException());
-                        showError(false);
+                        if (task.getException() instanceof FirebaseNetworkException){
+                            hideLoading();
+                            Toast.makeText(LoginActivity.this,
+                                    getResources().getString(R.string.error_login_connection), Toast.LENGTH_LONG).show();
+                        } else {
+                            showError(false);
+                        }
                     }
                 }
             });
