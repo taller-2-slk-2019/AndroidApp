@@ -127,7 +127,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
                 //first time, the user does not have organization.
                 if (organizations.isEmpty()) {
-                    createNewOrganization();
+                    welcome();
                     finish();
                 } else {
                     setOrganizationsToSpinner(organizations);
@@ -332,6 +332,11 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         FirebaseAuthService.logOut(this);
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    private void welcome() {
+        Intent intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
     }
 
