@@ -15,7 +15,8 @@ public interface ChannelApi {
 
     @GET("/channels")
     Call<List<Channel>> getChannels(@Query("organizationId") Integer organizationId,
-                                    @Query("userToken") String userToken);
+                                    @Query("userToken") String userToken,
+                                    @Query("userIsMember") Boolean userIsMember);
 
     @POST("/channels")
     Call<Channel> createChannel(@Query("userToken") String userToken, @Body ChannelRequest channel);

@@ -25,7 +25,21 @@ public class ChannelService extends RestService {
     }
 
     public void getChannelsByOrganizationAndUser(Integer organizationId, final Client client) {
-        channelApi.getChannels(organizationId, FirebaseAuthService.getCurrentUserToken()).enqueue(new Callback<List<Channel>>() {
+        channelApi.getChannels(organizationId, FirebaseAuthService.getCurrentUserToken(),Boolean.TRUE).enqueue(new Callback<List<Channel>>() {
+            @Override
+            public void onResponse(Call<List<Channel>> call, Response<List<Channel>> response) {
+                manageSuccessResponse(response, SERVICE_TAG, client);
+            }
+
+            @Override
+            public void onFailure(Call<List<Channel>> call, Throwable t) {
+                manageFailure(SERVICE_TAG, t, client);
+            }
+        });
+    }
+
+    public void getPublicChannelsByOrganizationAndUser(Integer organizationId, final Client client) {
+        channelApi.getChannels(organizationId, FirebaseAuthService.getCurrentUserToken(),Boolean.FALSE).enqueue(new Callback<List<Channel>>() {
             @Override
             public void onResponse(Call<List<Channel>> call, Response<List<Channel>> response) {
                 manageSuccessResponse(response, SERVICE_TAG, client);
