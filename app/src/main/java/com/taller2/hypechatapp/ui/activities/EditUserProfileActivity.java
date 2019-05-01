@@ -90,15 +90,9 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
 
-                String textToShow;
-                if (!TextUtils.isEmpty(errorMessage)) {
-                    textToShow = errorMessage;
-                } else {
-                    textToShow = "No fue posible obtener el perfil del usuario. Intente más tarde.";
-                }
-
+                String textToShow = "No fue posible obtener el perfil del usuario. Intente más tarde.";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
                 finish();
             }
@@ -129,12 +123,12 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
 
     private boolean isValidForm(TextInputEditText username, TextInputEditText name) {
         if (TextUtils.isEmpty(username.getText().toString())) {
-            username.setError(getString(R.string.input_channel_description_error));
+            username.setError(getString(R.string.input_username_error));
             return false;
         }
 
         if (TextUtils.isEmpty(name.getText().toString())) {
-            name.setError(getString(R.string.input_channel_welcome_error));
+            name.setError(getString(R.string.input_name_error));
             return false;
         }
 
@@ -150,6 +144,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
         userRequest.setName(name.getText().toString());
         userRequest.setUsername(username.getText().toString());
         userRequest.setPicture(imageUrl);
+        username.setError(null);
 
         userService.updateUser(userRequest, new Client<Void>() {
             @Override
@@ -161,8 +156,13 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
-                Toast.makeText(getContext(), "Error al actualizar usuario", Toast.LENGTH_LONG).show();
+            public void onResponseError(boolean connectionError, String errorMessage) {
+                if (connectionError) {
+                    Toast.makeText(getContext(), "Error al actualizar usuario", Toast.LENGTH_LONG).show();
+                } else {
+                    username.setError("El nombre de usuario ya existe");
+                    username.requestFocus();
+                }
                 showLoading(false);
             }
 

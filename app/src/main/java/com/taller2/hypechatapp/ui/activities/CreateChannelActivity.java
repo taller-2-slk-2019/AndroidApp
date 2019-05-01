@@ -106,7 +106,7 @@ public class CreateChannelActivity extends AppCompatActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                channelName.setError(null);
                 if (!isValidForm(channelName, description, welcome)) {
                     return;
                 }
@@ -118,6 +118,7 @@ public class CreateChannelActivity extends AppCompatActivity {
                     @Override
                     public void onResponseSuccess(Channel responseBody) {
                         loading.setVisibility(View.INVISIBLE);
+                        ScreenDisablerHelper.enableScreenTouch(getWindow());
                         Toast.makeText(getContext(), "Woow! Canal creado", Toast.LENGTH_LONG).show();
                         preferences.saveSelectedChannel(responseBody.getId());
                         Intent intent = new Intent(CreateChannelActivity.this, ChatActivity.class);
@@ -127,17 +128,16 @@ public class CreateChannelActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onResponseError(String errorMessage) {
+                    public void onResponseError(boolean connectionError, String errorMessage) {
                         loading.setVisibility(View.INVISIBLE);
                         ScreenDisablerHelper.enableScreenTouch(getWindow());
-                        String textToShow;
-                        if (!TextUtils.isEmpty(errorMessage)) {
-                            textToShow = errorMessage;
+                        if (connectionError) {
+                            String textToShow = "No fue posible crear un canal. Intente más tarde.";
+                            Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
                         } else {
-                            textToShow = "No fue posible crear un canal. Intente más tarde.";
+                            channelName.setError("El nombre del canal ya existe");
+                            channelName.requestFocus();
                         }
-                        Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
-                        finish();
                     }
 
                     @Override

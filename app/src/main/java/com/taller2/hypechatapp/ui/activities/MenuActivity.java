@@ -137,7 +137,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_SHORT).show();
             }
 
@@ -239,7 +239,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_LONG).show();
             }
 
@@ -257,7 +257,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_LONG).show();
             }
 
@@ -448,7 +448,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         }
 
         @Override
-        public void onResponseError(String errorMessage) {
+        public void onResponseError(boolean connectionError, String errorMessage) {
             Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_SHORT).show();
 
         }

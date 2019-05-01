@@ -1,12 +1,8 @@
 package com.taller2.hypechatapp.ui.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -23,6 +19,9 @@ import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
 
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class UserProfileActivity extends AppCompatActivity {
     private UserService userService;
@@ -77,7 +76,7 @@ public class UserProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean conenctionError, String errorMessage) {
                 Toast.makeText(getContext(), "No pudimos obtener tus estadísticas =(", Toast.LENGTH_LONG).show();
             }
 
@@ -109,15 +108,9 @@ public class UserProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
 
-                String textToShow;
-                if (!TextUtils.isEmpty(errorMessage)) {
-                    textToShow = errorMessage;
-                } else {
-                    textToShow = "No fue posible obtener el perfil del usuario. Intente más tarde.";
-                }
-
+                String textToShow = "No fue posible obtener el perfil del usuario. Intente más tarde.";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
                 finish();
             }
