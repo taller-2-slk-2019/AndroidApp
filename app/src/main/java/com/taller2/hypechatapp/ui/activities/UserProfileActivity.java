@@ -123,9 +123,6 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private String getOrganizationText(List<String> organizations) {
         String separator = "";
-        organizations.add("organization3");
-        organizations.add("organization4");
-        organizations.add("organization5");
 
         StringBuilder sb = new StringBuilder();
         for (String organizationName: organizations) {
