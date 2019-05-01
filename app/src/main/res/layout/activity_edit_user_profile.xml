@@ -15,7 +15,7 @@
         tools:layout_editor_absoluteX="0dp">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_view_profile"
+            android:id="@+id/toolbar_edit_profile"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
@@ -64,14 +64,12 @@
         android:hint="@string/register_username"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        android:focusable="false"
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_toolbar">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/username_profile"
-            android:focusable="false"
             style="@style/CreationForm.TextInputLayout.Text.Profile" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -83,85 +81,48 @@
         android:ems="10"
         android:hint="@string/register_name"
         android:inputType="textPersonName"
-        android:focusable="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_username_profile">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/name_profile"
-            android:focusable="false"
-            style="@style/CreationForm.TextInputLayout.Text.Profile" />
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/name_profile"
+        style="@style/CreationForm.TextInputLayout.Text.Profile" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="65dp"
-        android:layout_height="76dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_name_profile"
-        app:srcCompat="@drawable/messages" />
-
-    <TextView
-        android:id="@+id/txt_msg_sent"
+    <Button
+        android:id="@+id/btn_update_user"
+        style="@style/ButtonPrimaryAction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="40dp"
-        android:text="35"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/layout_name_profile"
-        tools:text="50" />
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:text="@string/btn_update_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_name_profile" />
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="65dp"
-        android:layout_height="75dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+    <include layout="@layout/progress_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:srcCompat="@drawable/organizations" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_btn_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="140dp"
+        android:layout_marginRight="140dp"
         android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:elevation="100dp"
+        app:fabSize="mini"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/baseline_edit_white_18" />
 
-    <TextView
-        android:id="@+id/txt_organizations"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:text="org1"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView4"
-        app:layout_constraintTop_toTopOf="@+id/imageView4" />
-
-    <include
-        android:id="@+id/include3"
-        layout="@layout/progress_bar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -75,6 +75,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         userManagerPreferences = new UserManagerPreferences(this);
         userProfileUpdate = new UserProfileUpdate();
 
+
         setUserPreferences();
         setupUI();
         addOrganizationsInSpinner();
