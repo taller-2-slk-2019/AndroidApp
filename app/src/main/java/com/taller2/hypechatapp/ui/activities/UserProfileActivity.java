@@ -67,7 +67,35 @@ public class UserProfileActivity extends AppCompatActivity {
 
         msgSent = findViewById(R.id.txt_msg_sent);
         organizations = findViewById(R.id.txt_organizations);
+        updateUserInfo();
 
+        userService.getStatistics(new Client<UserStatistics>() {
+            @Override
+            public void onResponseSuccess(UserStatistics stats) {
+                msgSent.setText(String.valueOf(stats.messagesSent));
+                organizations.setText(getOrganizationText(stats.organizations));
+            }
+
+            @Override
+            public void onResponseError(String errorMessage) {
+                Toast.makeText(getContext(), "No pudimos obtener tus estadísticas =(", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public Context getContext() {
+                 return UserProfileActivity.this;
+            }
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUserInfo();
+    }
+
+    private void updateUserInfo() {
         userService.getUser(new Client<User>() {
 
             @Override
@@ -99,26 +127,6 @@ public class UserProfileActivity extends AppCompatActivity {
                 return UserProfileActivity.this;
             }
         });
-
-
-        userService.getStatistics(new Client<UserStatistics>() {
-            @Override
-            public void onResponseSuccess(UserStatistics stats) {
-                msgSent.setText(String.valueOf(stats.messagesSent));
-                organizations.setText(getOrganizationText(stats.organizations));
-            }
-
-            @Override
-            public void onResponseError(String errorMessage) {
-                Toast.makeText(getContext(), "No pudimos obtener tus estadísticas =(", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public Context getContext() {
-                 return UserProfileActivity.this;
-            }
-        });
-
     }
 
     private String getOrganizationText(List<String> organizations) {
