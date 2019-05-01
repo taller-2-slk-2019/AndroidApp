@@ -2,6 +2,7 @@ package com.taller2.hypechatapp.network;
 
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.model.ReceivedInvitation;
+import com.taller2.hypechatapp.model.UserStatistics;
 import com.taller2.hypechatapp.network.model.UserLocationRequest;
 
 import java.util.List;
@@ -34,6 +35,9 @@ public interface UserApi {
 
     @GET("/users/invitations")
     Call<List<ReceivedInvitation>> getReceivedInvitations(@Query("userToken") String userToken);
+
+    @GET("/users/statistics")
+    Call<UserStatistics> getStatistics(@Query("userToken") String userToken);
 
     @DELETE("/users/invitations/{invitationToken}")
     Call<Void> rejectInvitation(@Path("invitationToken") String invitationToken);

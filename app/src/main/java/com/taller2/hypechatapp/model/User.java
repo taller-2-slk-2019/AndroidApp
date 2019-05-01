@@ -1,56 +1,23 @@
 
 package com.taller2.hypechatapp.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
 
 public class User implements Serializable {
 
-    @SerializedName("id")
-    @Expose
-    private Integer id;
-    @SerializedName("token")
-    @Expose
-    private String token;
-    @SerializedName("name")
-    @Expose
-    private String name;
-    @SerializedName("username")
-    @Expose
-    private String username;
-    @SerializedName("email")
-    @Expose
-    private String email;
-    @SerializedName("picture")
-    @Expose
-    private String picture;
-    @SerializedName("latitude")
-    @Expose
-    private Double latitude;
-    @SerializedName("longitude")
-    @Expose
-    private Double longitude;
-    @SerializedName("createdAt")
-    @Expose
-    private String createdAt;
-    @SerializedName("updatedAt")
-    @Expose
-    private String updatedAt;
-
-    @SerializedName("organizations")
-    @Expose
-    private List<Organization> organizations;
-
-    public List<Organization> getOrganizations() {
-        return organizations;
-    }
-
-    public void setOrganizations(List<Organization> organizations) {
-        this.organizations = organizations;
-    }
+    public Integer id;
+    public String token;
+    public String name;
+    public String username;
+    public String email;
+    public String picture;
+    public Double latitude;
+    public Double longitude;
+    public String createdAt;
+    public String updatedAt;
+    public List<Organization> organizations;
 
     public Integer getId() {
         return id;

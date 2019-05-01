@@ -57,13 +57,6 @@ public class ApiClient {
 
 
     public OrganizationApi getOrganizationClient() {
-        return getOrganizationClient(false);
-    }
-
-    public OrganizationApi getOrganizationClient(boolean withCallbackExecutor) {
-        if (withCallbackExecutor) {
-            return retrofitExecutorCallback.create(OrganizationApi.class);
-        }
         return retrofit.create(OrganizationApi.class);
     }
 
