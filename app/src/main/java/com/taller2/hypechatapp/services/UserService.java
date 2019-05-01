@@ -2,6 +2,7 @@ package com.taller2.hypechatapp.services;
 
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.User;
+import com.taller2.hypechatapp.model.UserStatistics;
 import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.UserApi;
@@ -17,7 +18,6 @@ import retrofit2.Response;
 public class UserService extends RestService {
 
     private UserApi userApi;
-
     static final String SERVICE_TAG = "USERSERVICE";
 
     public UserService() {
@@ -110,6 +110,20 @@ public class UserService extends RestService {
         });
     }
 
+    public void getStatistics(final Client client) {
+        userApi.getStatistics(FirebaseAuthService.getCurrentUserToken()).enqueue(new Callback<UserStatistics>() {
+            @Override
+            public void onResponse(Call<UserStatistics> call, Response<UserStatistics> response) {
+                manageSuccessResponse(response, SERVICE_TAG, client);
+            }
+
+            @Override
+            public void onFailure(Call<UserStatistics> call, Throwable t) {
+                manageFailure(SERVICE_TAG, t, client);
+            }
+        });
+    }
+
     public void rejectInvitation(String invitationToken, final Client client){
         userApi.rejectInvitation(invitationToken).enqueue(new Callback<Void>() {
             @Override
@@ -123,4 +137,5 @@ public class UserService extends RestService {
             }
         });
     }
+
 }
