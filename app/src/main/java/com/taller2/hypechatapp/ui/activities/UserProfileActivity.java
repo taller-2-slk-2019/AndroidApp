@@ -110,7 +110,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
             @Override
             public void onResponseError(String errorMessage) {
-
+                Toast.makeText(getContext(), "No pudimos obtener tus estadísticas =(", Toast.LENGTH_LONG).show();
             }
 
             @Override
