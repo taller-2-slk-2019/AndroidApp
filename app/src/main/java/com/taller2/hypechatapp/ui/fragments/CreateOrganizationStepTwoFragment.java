@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
 import com.taller2.hypechatapp.ui.activities.ChooseLocationActivity;
+import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,6 +47,7 @@ public class CreateOrganizationStepTwoFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         returnView = inflater.inflate(R.layout.create_organization_step2, container, false);
+        returnView.findViewById(R.id.layoutContainer).setOnTouchListener(new OnViewTouchListener());
 
         organizationRequest=(OrganizationRequest)getArguments().getSerializable("organizationRequest");
 
