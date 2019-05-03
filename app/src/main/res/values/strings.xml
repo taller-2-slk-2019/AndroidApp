@@ -12,6 +12,11 @@
     <string name="menu_conversations">CONVERSACIONES</string>
     <string name="action_log_out">Cerrar Sesión</string>
 
+    <!-- Welcome activity -->
+    <string name="app_welcome">Bienvenido a Hypechat.\nPara empezar a chatear, crea una nueva organización o revisa las invitaciones recibidas.</string>
+    <string name="create_organization">Crear Organización</string>
+    <string name="show_invitations">Ver Invitaciones</string>
+
     <!-- organization creation view -->
     <string name="hint_organization_name">Nombre de la organización</string>
     <string name="hint_organization_description">Descripción</string>
@@ -53,6 +58,8 @@
     <string name="username_user_profile">Usuario: </string>
     <string name="email_user_profile">Email: </string>
     <string name="btn_update_user">Actualizar</string>
+    <string name="input_username_error">Ingrese un nombre de usuario</string>
+    <string name="input_name_error">Ingrese un nombre</string>
 
     <!-- organization profile view -->
     <string name="organization_profile_title">Perfil de la organización</string>
@@ -67,12 +74,14 @@
     <string name="login_email_hint">Email</string>
     <string name="login_password_hint">Contraseña</string>
     <string name="register_name">Nombre completo</string>
-    <string name="fb_log_in_error">No se pudo iniciar sesión</string>
+    <string name="fb_log_in_error">No se pudo iniciar sesión con Facebook</string>
     <string name="log_in_error">Email o contraseña incorrectos</string>
     <string name="error_register">El nombre de usuario ya existe</string>
     <string name="error_register_firebase">El email ya existe o es inválido</string>
     <string name="error_weak_password">Contraseña muy corta [mínimo 6 caracteres]</string>
     <string name="error_user_exists">Email ya utilizado en otra cuenta</string>
+    <string name="error_login_connection">No fue posible iniciar sesión. Intente más tarde.</string>
+    <string name="error_register_connection">No fue posible registarse. Intente más tarde.</string>
     <string name="register_username">Usuario</string>
     <string name="error_invalid_email">El mail es inválido</string>
 
@@ -86,7 +95,7 @@
     <string name="received_invitations_menu_label">Invitaciones Recibidas</string>
     <string name="received_invitation_text">La organización &lt;b>%1$s&lt;/b> desea que te unas a su equipo. ¿Aceptas?</string>
     <string name="send_invitations_error_message">Hubo un problema para enviar invitaciones a los siguientes correos. Asegurate que los correos pertenezcan a usuarios de Hypechat y que no pertenezcan actualmente a la organización.</string>
-    <string name="received_invitation_empty_message">No haz recibido invitaciones… Crea una organización y agrega a tus colegas y amigos!</string>
+    <string name="received_invitation_empty_message">No hay más invitaciones pendientes.</string>
 
     <!-- Other -->
     <string name="image_picker_error">Debe seleccionar una imagen!</string>

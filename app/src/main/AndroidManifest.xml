@@ -15,6 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ui.activities.UserProfileActivity"></activity>
+
         <service
             android:name=".firebase.MyFirebaseMessagingService"
             android:enabled="true"
@@ -23,6 +25,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -52,7 +55,7 @@
             android:name=".ui.activities.CreateConversationActivity"
             android:label="@string/new_conversation_title" />
         <activity
-            android:name=".ui.activities.UserProfileActivity"
+            android:name=".ui.activities.EditUserProfileActivity"
             android:label="@string/user_profile_title"
             android:screenOrientation="portrait" />
         <activity
@@ -99,6 +102,8 @@
         <activity
             android:name=".ui.activities.ReceivedInvitationsActivity"
             android:label="@string/received_invitations_label"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.activities.WelcomeActivity" />
             android:screenOrientation="portrait" />
 
         <activity android:name=".ui.activities.PublicChannelsActivity"

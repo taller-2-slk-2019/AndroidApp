@@ -6,7 +6,7 @@ public interface Client<T> {
 
     void onResponseSuccess(T responseBody);
 
-    void onResponseError(String errorMessage);
+    void onResponseError(boolean connectionError, String errorMessage);
 
     Context getContext();
 }

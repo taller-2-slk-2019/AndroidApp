@@ -118,6 +118,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
             email.setError(getString(R.string.error_user_exists));
             email.requestFocus();
         } else {
+            Toast.makeText(this, R.string.error_register_connection, Toast.LENGTH_LONG).show();
             Log.e(getPackageName(), exception.getMessage());
         }
 
@@ -139,9 +140,9 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 FirebaseAuthService.getCurrentUser().delete();
-                showError(false);
+                showError(false, connectionError);
             }
 
             @Override
@@ -164,12 +165,14 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
         errorText.setVisibility(View.INVISIBLE);
     }
 
-    private void showError(boolean firebase) {
+    private void showError(boolean firebase, boolean connectionError) {
         errorText.setVisibility(View.VISIBLE);
         if (firebase) {
             errorText.setText(R.string.error_register_firebase);
-        } else {
+        } else if (!connectionError) {
             errorText.setText(R.string.error_register);
+        } else {
+            Toast.makeText(this, R.string.error_register_connection, Toast.LENGTH_LONG).show();
         }
 
 
@@ -224,7 +227,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
 
     @Override
     public void onFileUploadError(Exception exception) {
-        showError(false);
+        showError(false, true);
     }
 
     private void uploadProfileImage() {

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -166,17 +165,11 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 loadingView.setVisibility(View.INVISIBLE);
                 ScreenDisablerHelper.enableScreenTouch(getWindow());
-                String textToShow;
-                if(!TextUtils.isEmpty(errorMessage)){
-                    textToShow=errorMessage;
-                } else {
-                    textToShow="No fue posible crear una organización. Intente más tarde.";
-                }
+                String textToShow="No fue posible crear una organización. Intente más tarde.";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
-                finish();
             }
 
             @Override

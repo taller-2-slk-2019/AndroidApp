@@ -75,6 +75,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         userManagerPreferences = new UserManagerPreferences(this);
         userProfileUpdate = new UserProfileUpdate();
 
+
         setUserPreferences();
         setupUI();
         addOrganizationsInSpinner();
@@ -127,7 +128,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
                 //first time, the user does not have organization.
                 if (organizations.isEmpty()) {
-                    createNewOrganization();
+                    welcome();
                     finish();
                 } else {
                     setOrganizationsToSpinner(organizations);
@@ -136,7 +137,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_SHORT).show();
             }
 
@@ -238,7 +239,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_LONG).show();
             }
 
@@ -256,7 +257,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             }
 
             @Override
-            public void onResponseError(String errorMessage) {
+            public void onResponseError(boolean connectionError, String errorMessage) {
                 Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_LONG).show();
             }
 
@@ -332,6 +333,11 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         FirebaseAuthService.logOut(this);
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    private void welcome() {
+        Intent intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
     }
 
@@ -442,7 +448,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         }
 
         @Override
-        public void onResponseError(String errorMessage) {
+        public void onResponseError(boolean connectionError, String errorMessage) {
             Toast.makeText(getContext(), R.string.fail_getting_info, Toast.LENGTH_SHORT).show();
 
         }
