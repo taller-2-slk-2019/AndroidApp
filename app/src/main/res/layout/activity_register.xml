@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/register_bg"
-    tools:context=".ui.activities.RegisterActivity">
+    tools:context=".ui.activities.RegisterActivity"
+    android:id="@+id/layoutContainer">
 
     <include
         android:id="@+id/title"

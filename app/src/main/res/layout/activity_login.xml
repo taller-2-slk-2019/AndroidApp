@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@drawable/login_bg"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/layoutContainer">
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -73,36 +74,6 @@
         android:layout_height="wrap_content"
         layout="@layout/title_logo"
         />
-
-
-    <!--<TextView-->
-        <!--android:id="@+id/title"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="24dp"-->
-        <!--android:layout_marginLeft="24dp"-->
-        <!--android:layout_marginTop="110dp"-->
-        <!--android:layout_marginEnd="24dp"-->
-        <!--android:layout_marginRight="24dp"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:text="HypeChat"-->
-        <!--android:textSize="50sp"-->
-        <!--app:fontFamily="sans-serif-condensed-medium"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.366"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--<ImageView-->
-        <!--android:id="@+id/logo_hypechat"-->
-        <!--android:layout_width="99dp"-->
-        <!--android:layout_height="73dp"-->
-        <!--android:layout_marginTop="70dp"-->
-        <!--android:layout_marginEnd="70dp"-->
-        <!--android:layout_marginRight="70dp"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--app:srcCompat="@drawable/ic_chat" />-->
 
     <TextView
         android:id="@+id/label_no_account_text"

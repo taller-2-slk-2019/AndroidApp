@@ -22,6 +22,7 @@ import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.MessageService;
 import com.taller2.hypechatapp.services.OrganizationService;
+import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -54,6 +55,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_chat);
         super.onCreate(savedInstanceState);
+        findViewById(R.id.layoutContainer).setOnTouchListener(new OnViewTouchListener());
 
         messageService = new MessageService();
 

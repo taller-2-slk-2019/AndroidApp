@@ -16,6 +16,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.components.ImagePicker;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
+import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,6 +45,7 @@ public class CreateOrganizationStepOneFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         returnView=inflater.inflate(R.layout.create_organization_step1, container, false);
+        returnView.findViewById(R.id.layoutContainer).setOnTouchListener(new OnViewTouchListener());
 
         organizationRequest=(OrganizationRequest)getArguments().getSerializable("organizationRequest");
         setUpImagePicker();
