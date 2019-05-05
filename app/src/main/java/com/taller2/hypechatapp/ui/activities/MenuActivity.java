@@ -199,6 +199,13 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         View newChannel = findViewById(R.id.new_channel_layout);
         TextView channelTitle = newChannel.findViewById(R.id.item_title);
         channelTitle.setText(R.string.menu_channels);
+        channelTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MenuActivity.this, PublicChannelsActivity.class);
+                startActivity(intent);
+            }
+        });
         ImageView channelButton = newChannel.findViewById(R.id.item_img);
         channelButton.setOnClickListener(new View.OnClickListener() {
             @Override
