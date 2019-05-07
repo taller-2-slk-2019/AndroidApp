@@ -112,12 +112,10 @@ public class PublicChannelsActivity extends AppCompatActivity implements IMenuIt
             @Override
             public void onResponseSuccess(Void responseBody) {
                 loadingView.setVisibility(View.INVISIBLE);
-                //EventBus.getDefault().post(channel);
                 userManagerPreferences.saveSelectedChannel(channel.getId());
                 Intent intent = new Intent(PublicChannelsActivity.this, ChatActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                //setResult(RESULT_OK);
                 finish();
             }
 

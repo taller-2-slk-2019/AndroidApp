@@ -21,8 +21,8 @@ public class PublicChannelsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private static final int VIEW_TYPE_EMPTY=0;
     private static final int VIEW_TYPE_NOT_EMPTY=1;
     private final IMenuItemsClick listener;
-    private List<Channel> channelsList = new ArrayList<>();
-    private List<Channel> filteredChannelList = new ArrayList<>();
+    private List<Channel> channelsList;
+    private List<Channel> filteredChannelList;
 
 
     @Override

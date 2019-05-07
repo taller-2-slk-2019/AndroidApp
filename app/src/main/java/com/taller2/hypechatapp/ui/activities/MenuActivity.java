@@ -205,7 +205,6 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MenuActivity.this, PublicChannelsActivity.class);
-                //startActivityForResult(intent, PUBLIC_CHANNELS_REQUEST_CODE);
                 intent.putExtra("userId",user.id);
                 startActivity(intent);
             }
@@ -497,14 +496,4 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         super.onDestroy();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        /*if(requestCode == PUBLIC_CHANNELS_REQUEST_CODE && resultCode == RESULT_OK){
-            selectChannel();
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }*/
-
-    }
 }
