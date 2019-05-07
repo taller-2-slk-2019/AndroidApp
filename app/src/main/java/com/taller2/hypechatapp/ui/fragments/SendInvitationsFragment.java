@@ -16,6 +16,7 @@ import com.taller2.hypechatapp.network.model.UserInvitationRequest;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.OrganizationService;
 import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
+import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,6 +47,7 @@ public class SendInvitationsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         returnView=inflater.inflate(R.layout.fragment_send_invitations, container, false);
+        returnView.findViewById(R.id.layoutContainer).setOnTouchListener(new OnViewTouchListener());
 
         //Add first line to the list
         if(emailsList.isEmpty()){

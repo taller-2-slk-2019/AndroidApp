@@ -32,6 +32,7 @@ import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
 import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
+import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        findViewById(R.id.layoutContainer).setOnTouchListener(new OnViewTouchListener());
 
         callbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();

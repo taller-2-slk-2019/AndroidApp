@@ -20,6 +20,7 @@ import com.taller2.hypechatapp.network.model.ChannelRequest;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
 import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
+import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -38,6 +39,7 @@ public class CreateChannelActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_create_channel);
+        findViewById(R.id.layoutContainer).setOnTouchListener(new OnViewTouchListener());
 
         preferences = new UserManagerPreferences(this);
         channelService = new ChannelService();
