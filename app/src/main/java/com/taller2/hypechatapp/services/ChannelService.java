@@ -6,6 +6,7 @@ import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.ChannelApi;
 import com.taller2.hypechatapp.network.Client;
+import com.taller2.hypechatapp.network.model.ChannelInvitationRequest;
 import com.taller2.hypechatapp.network.model.ChannelRequest;
 
 import java.util.List;
@@ -61,6 +62,20 @@ public class ChannelService extends RestService {
 
             @Override
             public void onFailure(Call<Channel> call, Throwable t) {
+                manageFailure(SERVICE_TAG, t, client);
+            }
+        });
+    }
+
+    public void addUserToChannel(Integer channelId, ChannelInvitationRequest request, final Client client) {
+        channelApi.addUserToChannel(channelId, request).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                manageSuccessResponse(response, SERVICE_TAG, client);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
                 manageFailure(SERVICE_TAG, t, client);
             }
         });

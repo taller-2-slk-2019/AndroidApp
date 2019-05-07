@@ -20,15 +20,14 @@ import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.IMenuItemsClick;
-import com.taller2.hypechatapp.adapters.MenuChannelsAdapter;
-import com.taller2.hypechatapp.adapters.PublicChannelListener;
 import com.taller2.hypechatapp.adapters.PublicChannelsAdapter;
-import com.taller2.hypechatapp.adapters.ReceivedInvitationsAdapter;
 import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.model.Conversation;
 import com.taller2.hypechatapp.network.Client;
+import com.taller2.hypechatapp.network.model.ChannelInvitationRequest;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,17 +43,19 @@ public class PublicChannelsActivity extends AppCompatActivity implements IMenuIt
     private SearchView searchView;
 
     private List<Channel> channelsList = new ArrayList<>();
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_public_channels);
 
+        userId=getIntent().getIntExtra("userId",0);
+
         channelService=new ChannelService();
         userManagerPreferences = new UserManagerPreferences(this);
 
         setUpUI();
-        //setUpRecyclerView();
         getPublicChannels();
 
     }
@@ -102,12 +103,35 @@ public class PublicChannelsActivity extends AppCompatActivity implements IMenuIt
     }
 
     @Override
-    public void onChannelClick(Channel channel) {
-        userManagerPreferences.saveSelectedChannel(channel.getId());
-        Intent intent = new Intent(PublicChannelsActivity.this, ChatActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
+    public void onChannelClick(final Channel channel) {
+        loadingView.setVisibility(View.VISIBLE);
+        ChannelInvitationRequest request=new ChannelInvitationRequest();
+        request.userId=String.valueOf(userId);
+        channelService.addUserToChannel(channel.getId(), request, new Client<Void>(){
+
+            @Override
+            public void onResponseSuccess(Void responseBody) {
+                loadingView.setVisibility(View.INVISIBLE);
+                //EventBus.getDefault().post(channel);
+                userManagerPreferences.saveSelectedChannel(channel.getId());
+                Intent intent = new Intent(PublicChannelsActivity.this, ChatActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                //setResult(RESULT_OK);
+                finish();
+            }
+
+            @Override
+            public void onResponseError(boolean connectionError, String errorMessage) {
+                Toast.makeText(getContext(), "Ocurrió un error al intentar acceder al canal público." +
+                        " Intente más tarde.", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public Context getContext() {
+                return PublicChannelsActivity.this;
+            }
+        });
     }
 
     @Override

@@ -50,6 +50,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class MenuActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, IMenuItemsClick {
 
+    public static final int PUBLIC_CHANNELS_REQUEST_CODE = 212;
     protected Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ImageView userImage;
@@ -64,6 +65,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     private ChannelService channelsService;
     private ConversationService conversationsService;
     protected UserManagerPreferences userManagerPreferences;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,6 +205,8 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MenuActivity.this, PublicChannelsActivity.class);
+                //startActivityForResult(intent, PUBLIC_CHANNELS_REQUEST_CODE);
+                intent.putExtra("userId",user.id);
                 startActivity(intent);
             }
         });
@@ -449,6 +453,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
         @Override
         public void onResponseSuccess(User responseBody) {
+            user=responseBody;
             userName.setText(responseBody.getUsername());
             String url = responseBody.getPicture();
             PicassoLoader.load(getApplicationContext(), String.format("%s?type=large", url), R.drawable.default_user, userImage);
@@ -490,5 +495,16 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        /*if(requestCode == PUBLIC_CHANNELS_REQUEST_CODE && resultCode == RESULT_OK){
+            selectChannel();
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }*/
+
     }
 }
