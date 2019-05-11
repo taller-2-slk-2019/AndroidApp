@@ -10,6 +10,9 @@ public class Conversation implements Serializable {
     @SerializedName("id")
     @Expose
     public Integer id;
+    @SerializedName("organizationId")
+    @Expose
+    public Integer organizationId;
     @SerializedName("users")
     @Expose
     public List<User> users;

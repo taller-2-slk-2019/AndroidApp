@@ -160,6 +160,11 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         channelsAdapter.add(channel);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onJoinConversationEvent(Conversation conversation){
+        conversationsAdapter.add(conversation);
+    }
+
     private void setOrganizationsToSpinner(List<Organization> organizations) {
         OrganizationSpinnerAdapter dataAdapter = new OrganizationSpinnerAdapter(this,
                 android.R.layout.simple_spinner_item, organizations);
@@ -277,6 +282,10 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             int channelId = getIntent().getExtras().getInt("channelId", 0);
             if (channelId > 0) {
                 userManagerPreferences.saveSelectedChannel(channelId);
+            }
+            int conversationId = getIntent().getExtras().getInt("conversationId", 0);
+            if (conversationId > 0) {
+                userManagerPreferences.saveSelectedConversation(conversationId);
             }
         }
     }
