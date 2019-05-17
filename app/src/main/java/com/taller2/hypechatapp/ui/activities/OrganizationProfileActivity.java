@@ -14,6 +14,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.components.PicassoLoader;
 import com.taller2.hypechatapp.model.Organization;
+import com.taller2.hypechatapp.model.roles.Role;
+import com.taller2.hypechatapp.model.roles.RoleFactory;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.OrganizationService;
@@ -104,9 +106,11 @@ public class OrganizationProfileActivity extends AppCompatActivity {
     }
 
     private void initializeButtons() {
+        Role role = RoleFactory.getRole(prefs.getOrganizationRole());
+
         // Send invitations
         Button sendInvitationsButton = findViewById(R.id.sendInvitationsButton);
-        //TODO show or hide button depending on role
+        sendInvitationsButton.setVisibility(role.hasUsersPermissions() ? View.VISIBLE : View.GONE);
         sendInvitationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,7 +138,7 @@ public class OrganizationProfileActivity extends AppCompatActivity {
 
         // Channels
         Button channelsButton = findViewById(R.id.showChannelsButton);
-        //TODO show or hide button depending on role
+        channelsButton.setVisibility(role.hasChannelsPermissions() ? View.VISIBLE : View.GONE);
         channelsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
