@@ -94,7 +94,8 @@ public class OrganizationProfileActivity extends AppCompatActivity {
     }
 
     private void editOrganization() {
-        //TODO do something
+        Intent intent = new Intent(this, EditOrganizationActivity.class);
+        startActivity(intent);
     }
 
     private void initializeButtons() {

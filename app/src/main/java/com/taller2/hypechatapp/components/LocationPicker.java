@@ -28,13 +28,25 @@ public class LocationPicker implements OnMapReadyCallback, GoogleMap.OnMapClickL
 
     public LocationPicker(final Activity activity, MapFragment mapFragment,
                           MaterialButton chooseLocationButton) {
+        create(activity, mapFragment, chooseLocationButton);
+    }
+
+    public LocationPicker(final Activity activity, MapFragment mapFragment,
+                          MaterialButton chooseLocationButton, double latitude, double longitude) {
+        latLng = new LatLng(latitude, longitude);
+        create(activity, mapFragment, chooseLocationButton);
+    }
+
+    private void create(final Activity activity, MapFragment mapFragment,
+                        MaterialButton chooseLocationButton) {
         this.activity = activity;
         this.mapFragment = mapFragment;
         this.chooseLocationButton = chooseLocationButton;
 
         mapFragment.getMapAsync(this);
-        mapFragment.getView().setVisibility(View.GONE);
+        mapFragment.getView().setVisibility(latLng != null ? View.VISIBLE : View.GONE);
 
+        chooseLocationButton.setVisibility(latLng != null ? View.GONE : View.VISIBLE);
         chooseLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,21 +55,9 @@ public class LocationPicker implements OnMapReadyCallback, GoogleMap.OnMapClickL
         });
     }
 
-    public void setLatLng(float latitude, float longitude) {
-        latLng = new LatLng(latitude, longitude);
-    }
-
     public LatLng analyzeResults(Intent data) {
         latLng = data.getParcelableExtra("selectedLocation");
-
-        map.clear();
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                latLng, DEFAULT_ZOOM));
-        map.addMarker(new MarkerOptions().position(latLng));
-
-        mapFragment.getView().setVisibility(View.VISIBLE);
-        chooseLocationButton.setVisibility(View.INVISIBLE);
-
+        setMap();
         return latLng;
     }
 
@@ -66,6 +66,9 @@ public class LocationPicker implements OnMapReadyCallback, GoogleMap.OnMapClickL
         map = googleMap;
         map.getUiSettings().setMapToolbarEnabled(false);
         map.setOnMapClickListener(this);
+        if (latLng != null) {
+            setMap();
+        }
     }
 
     @Override
@@ -75,5 +78,14 @@ public class LocationPicker implements OnMapReadyCallback, GoogleMap.OnMapClickL
             intent.putExtra("startLocation", this.latLng);
         }
         activity.startActivityForResult(intent, LOCATION_PICKER_REQUEST_CODE);
+    }
+
+    private void setMap() {
+        map.clear();
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
+        map.addMarker(new MarkerOptions().position(latLng));
+
+        mapFragment.getView().setVisibility(View.VISIBLE);
+        chooseLocationButton.setVisibility(View.INVISIBLE);
     }
 }
