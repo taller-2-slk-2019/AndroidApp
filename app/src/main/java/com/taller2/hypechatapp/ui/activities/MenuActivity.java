@@ -364,11 +364,6 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         startActivity(intent);
     }
 
-    private void viewSendInvitations() {
-        Intent intent = new Intent(this, SendInvitationsActivity.class);
-        startActivity(intent);
-    }
-
     private void viewReceivedInvitations() {
         Intent intent = new Intent(this, ReceivedInvitationsActivity.class);
         startActivity(intent);
@@ -402,11 +397,6 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             case R.id.action_log_out:
                 logOut();
                 return true;
-
-            case R.id.send_invitations:
-                viewSendInvitations();
-                return true;
-
             case R.id.received_invitations:
                 viewReceivedInvitations();
                 return true;

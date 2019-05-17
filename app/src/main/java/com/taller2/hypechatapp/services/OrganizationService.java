@@ -70,7 +70,8 @@ public class OrganizationService extends RestService {
     }
 
     public void inviteUsers(Integer organizationId, UserInvitationRequest userInvitationRequest, final Client client){
-        organizationApi.inviteUsers(organizationId,userInvitationRequest).enqueue(new Callback<List<String>>(){
+        organizationApi.inviteUsers(organizationId,userInvitationRequest, FirebaseAuthService.getCurrentUserToken())
+                .enqueue(new Callback<List<String>>(){
 
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {

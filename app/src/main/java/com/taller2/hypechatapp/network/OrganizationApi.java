@@ -17,16 +17,18 @@ import retrofit2.http.Query;
 public interface OrganizationApi {
 
     @GET("/organizations/{id}")
-    Call<Organization> getOrganizationProfile(@Path("id")Integer organizationId);
+    Call<Organization> getOrganizationProfile(@Path("id") Integer organizationId);
 
     @GET("/organizations")
-    Call<List<Organization>> getOrganizationsByUser(@Query("userToken")String userToken);
+    Call<List<Organization>> getOrganizationsByUser(@Query("userToken") String userToken);
 
     @POST("/organizations/")
-    Call<Organization> createOrganization(@Query("userToken")String userToken, @Body OrganizationRequest organization);
+    Call<Organization> createOrganization(@Query("userToken") String userToken, @Body OrganizationRequest organization);
 
     @POST("/organizations/{organizationId}/invitations")
-    Call<List<String>> inviteUsers(@Path("organizationId") Integer organizationId, @Body UserInvitationRequest userInvitationRequest);
+    Call<List<String>> inviteUsers(@Path("organizationId") Integer organizationId,
+                                   @Body UserInvitationRequest userInvitationRequest,
+                                   @Query("userToken") String userToken);
 
     @POST("/organizations/users")
     Call<Void> acceptInvitation(@Body AcceptInvitationRequest organization);
