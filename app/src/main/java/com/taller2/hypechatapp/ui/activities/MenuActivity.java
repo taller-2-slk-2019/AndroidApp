@@ -149,19 +149,19 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onJoinOrganizationEvent(Organization organization){
+    public void onJoinOrganizationEvent(Organization organization) {
         OrganizationSpinnerAdapter dataAdapter = (OrganizationSpinnerAdapter) organizationsSpinner.getAdapter();
         dataAdapter.add(organization);
         dataAdapter.notifyDataSetChanged();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onJoinChannelEvent(Channel channel){
+    public void onJoinChannelEvent(Channel channel) {
         channelsAdapter.add(channel);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onJoinConversationEvent(Conversation conversation){
+    public void onJoinConversationEvent(Conversation conversation) {
         conversationsAdapter.add(conversation);
     }
 
@@ -178,7 +178,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
     private Integer getSelectedOrganizationPosition(List<Organization> organizations) {
         Integer selectedOrganizationId = userManagerPreferences.getSelectedOrganization();
-        for (int idx = 0; idx < organizations.size(); idx ++) {
+        for (int idx = 0; idx < organizations.size(); idx++) {
             if (organizations.get(idx).getId().equals(selectedOrganizationId)) {
                 return idx;
             }
@@ -291,13 +291,13 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     }
 
     private void selectChannel() {
-        if (userManagerPreferences.getSelectedConversation() > 0){
+        if (userManagerPreferences.getSelectedConversation() > 0) {
             return;
         }
 
         List<Channel> channels = channelsAdapter.getChannels();
         Integer selectedChannelId = userManagerPreferences.getSelectedChannel();
-        for (Channel channel: channels) {
+        for (Channel channel : channels) {
             if (channel.getId().equals(selectedChannelId)) {
                 toolbar.setTitle(channel.getName());
                 this.onChatSelected();
@@ -309,13 +309,13 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     }
 
     private void selectConversation() {
-        if (userManagerPreferences.getSelectedChannel() > 0){
+        if (userManagerPreferences.getSelectedChannel() > 0) {
             return;
         }
 
         List<Conversation> conversations = conversationsAdapter.getConversations();
         Integer selectedConversationId = userManagerPreferences.getSelectedConversation();
-        for (Conversation conversation: conversations) {
+        for (Conversation conversation : conversations) {
             if (conversation.id.equals(selectedConversationId)) {
                 toolbar.setTitle(conversation.getName());
                 this.onChatSelected();
@@ -332,13 +332,12 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         startActivity(intent);
     }
 
-    private void viewOrganizationProfile() {
+    private void showOrganizationProfile() {
         Intent intent = new Intent(this, OrganizationProfileActivity.class);
-        intent.putExtra("ORGANIZATION_ID", userManagerPreferences.getSelectedOrganization());
         startActivity(intent);
     }
 
-    private void logOut(){
+    private void logOut() {
         FirebaseAuthService.logOut(this);
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -366,12 +365,12 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     }
 
     private void viewSendInvitations() {
-        Intent intent = new Intent(this,SendInvitationsActivity.class);
+        Intent intent = new Intent(this, SendInvitationsActivity.class);
         startActivity(intent);
     }
 
     private void viewReceivedInvitations() {
-        Intent intent = new Intent(this,ReceivedInvitationsActivity.class);
+        Intent intent = new Intent(this, ReceivedInvitationsActivity.class);
         startActivity(intent);
     }
 
@@ -411,12 +410,13 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             case R.id.received_invitations:
                 viewReceivedInvitations();
                 return true;
+            case R.id.organization_profile:
+                showOrganizationProfile();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
 
     @Override
@@ -472,7 +472,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     protected abstract void onChatSelected();
 
     @Override
-    public void onChannelClick(Channel channel){
+    public void onChannelClick(Channel channel) {
         toolbar.setTitle(channel.getName());
         userManagerPreferences.saveSelectedChannel(channel.getId());
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -480,7 +480,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     }
 
     @Override
-    public void onConversationClick(Conversation conversation){
+    public void onConversationClick(Conversation conversation) {
         toolbar.setTitle(conversation.getName());
         userManagerPreferences.saveSelectedConversation(conversation.id);
         drawerLayout.closeDrawer(GravityCompat.START);

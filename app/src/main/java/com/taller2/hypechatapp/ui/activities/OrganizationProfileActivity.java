@@ -1,11 +1,10 @@
 package com.taller2.hypechatapp.ui.activities;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,75 +12,73 @@ import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.components.PicassoLoader;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.Client;
+import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.OrganizationService;
+import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 public class OrganizationProfileActivity extends AppCompatActivity {
-    OrganizationService organizationService;
-    TextView name, description, welcomeMessage;
-    ProgressDialog dialog;
-    ImageView profilePicture;
+    private OrganizationService organizationService;
+    private TextView name, description, welcomeMessage;
+    private ProgressBar loading;
+    private ImageView profilePicture;
+    private UserManagerPreferences prefs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organization_profile);
+        organizationService = new OrganizationService();
+        prefs = new UserManagerPreferences(this);
 
         setUpUI();
     }
 
     private void setUpUI() {
-        Toolbar toolbar = findViewById(R.id.toolbar_organization_profile);
-        setSupportActionBar(toolbar);
 
-        dialog = new ProgressDialog(OrganizationProfileActivity.this);
-        dialog.setMessage("Cargando...");
-        dialog.show();
+        name = findViewById(R.id.organizationProfileName);
+        description = findViewById(R.id.organizationProfileDescription);
+        welcomeMessage = findViewById(R.id.organizationProfileWelcome);
+        profilePicture = findViewById(R.id.organizationProfileImage);
+        loading = findViewById(R.id.loading);
 
-        name = findViewById(R.id.organization_name);
-        description = findViewById(R.id.organization_description);
-        welcomeMessage = findViewById(R.id.organization_welcome_message);
-        profilePicture = findViewById(R.id.organization_picture);
-
-        organizationService = new OrganizationService();
-
-        int organizationId = getIntent().getIntExtra("ORGANIZATION_ID", -1);
-
-        organizationService.getOrganizationProfile(organizationId, new Client<Organization>() {
+        showLoading();
+        organizationService.getOrganizationProfile(prefs.getSelectedOrganization(), new Client<Organization>() {
 
             @Override
             public void onResponseSuccess(Organization responseBody) {
+                hideLoading();
                 name.setText(responseBody.getName());
                 description.setText(responseBody.getDescription());
                 welcomeMessage.setText(responseBody.getWelcome());
                 String url = responseBody.getPicture();
                 PicassoLoader.load(getApplicationContext(), url, profilePicture);
-                dialog.dismiss();
             }
 
             @Override
             public void onResponseError(boolean connectionError, String errorMessage) {
-                String textToShow="No fue posible obtener el perfil de la organización. Intente más tarde.";
+                String textToShow = "No fue posible obtener el perfil de la organización. Intente más tarde.";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
+                hideLoading();
             }
 
             @Override
-            public Context getContext() { return OrganizationProfileActivity.this; }
-        });
-    }
-
-    private void setAlertDialog() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Alerta");
-        alertDialog.setMessage("Se produjo un error al obtener la información de la organización");
-        alertDialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
+            public Context getContext() {
+                return OrganizationProfileActivity.this;
             }
         });
-        alertDialog.create().show();
     }
+
+    private void showLoading() {
+        loading.setVisibility(View.VISIBLE);
+        ScreenDisablerHelper.disableScreenTouch(getWindow());
+    }
+
+    private void hideLoading() {
+        loading.setVisibility(View.GONE);
+        ScreenDisablerHelper.enableScreenTouch(getWindow());
+    }
+
 }
