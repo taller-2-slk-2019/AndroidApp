@@ -8,6 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.components.PicassoLoader;
 import com.taller2.hypechatapp.model.Organization;
@@ -44,6 +45,14 @@ public class OrganizationProfileActivity extends AppCompatActivity {
         profilePicture = findViewById(R.id.organizationProfileImage);
         loading = findViewById(R.id.loading);
 
+        FloatingActionButton editButton = findViewById(R.id.organizationProfileEdit);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editOrganization();
+            }
+        });
+
         showLoading();
         organizationService.getOrganizationProfile(prefs.getSelectedOrganization(), new Client<Organization>() {
 
@@ -54,7 +63,7 @@ public class OrganizationProfileActivity extends AppCompatActivity {
                 description.setText(responseBody.getDescription());
                 welcomeMessage.setText(responseBody.getWelcome());
                 String url = responseBody.getPicture();
-                PicassoLoader.load(getApplicationContext(), url, profilePicture);
+                PicassoLoader.load(getApplicationContext(), String.format("%s?type=large", url), R.drawable.default_user, profilePicture);
             }
 
             @Override
@@ -79,6 +88,10 @@ public class OrganizationProfileActivity extends AppCompatActivity {
     private void hideLoading() {
         loading.setVisibility(View.GONE);
         ScreenDisablerHelper.enableScreenTouch(getWindow());
+    }
+
+    private void editOrganization() {
+        //TODO do something
     }
 
 }

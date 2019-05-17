@@ -97,7 +97,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_btn_edit"
+        android:id="@+id/organizationProfileEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
@@ -110,6 +110,7 @@
         app:srcCompat="@mipmap/baseline_edit_white_18" />
 
     <include
+        android:id="@+id/include4"
         layout="@layout/progress_bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -117,5 +118,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/include4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/organizationProfileWelcomeLayout">
+
+        <Button
+            android:id="@+id/sendInvitationsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enviar Invitaciones" />
+
+        <Button
+            android:id="@+id/showUsersButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lista de Usuarios" />
+
+        <Button
+            android:id="@+id/showUsersMapButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mapa de Usuarios" />
+
+        <Button
+            android:id="@+id/showChannelsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Canales" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
