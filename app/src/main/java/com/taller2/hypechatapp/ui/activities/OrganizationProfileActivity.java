@@ -48,14 +48,6 @@ public class OrganizationProfileActivity extends AppCompatActivity {
         profilePicture = findViewById(R.id.organizationProfileImage);
         loading = findViewById(R.id.loading);
         initializeButtons();
-
-        FloatingActionButton editButton = findViewById(R.id.organizationProfileEdit);
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editOrganization();
-            }
-        });
     }
 
     @Override
@@ -107,6 +99,18 @@ public class OrganizationProfileActivity extends AppCompatActivity {
 
     private void initializeButtons() {
         Role role = RoleFactory.getRole(prefs.getOrganizationRole());
+
+        // Edit organization
+        FloatingActionButton editButton = findViewById(R.id.organizationProfileEdit);
+        if (!role.hasOrganizationPermissions()) {
+            editButton.hide();
+        }
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editOrganization();
+            }
+        });
 
         // Send invitations
         Button sendInvitationsButton = findViewById(R.id.sendInvitationsButton);
