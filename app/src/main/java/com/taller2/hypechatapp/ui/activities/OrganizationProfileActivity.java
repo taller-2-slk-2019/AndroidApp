@@ -54,10 +54,17 @@ public class OrganizationProfileActivity extends AppCompatActivity {
                 editOrganization();
             }
         });
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateOrganizationProfile();
+    }
+
+    private void updateOrganizationProfile() {
         showLoading();
         organizationService.getOrganizationProfile(prefs.getSelectedOrganization(), new Client<Organization>() {
-
             @Override
             public void onResponseSuccess(Organization responseBody) {
                 hideLoading();
