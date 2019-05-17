@@ -3,6 +3,7 @@ package com.taller2.hypechatapp.ui.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -38,12 +39,12 @@ public class OrganizationProfileActivity extends AppCompatActivity {
     }
 
     private void setUpUI() {
-
         name = findViewById(R.id.organizationProfileName);
         description = findViewById(R.id.organizationProfileDescription);
         welcomeMessage = findViewById(R.id.organizationProfileWelcome);
         profilePicture = findViewById(R.id.organizationProfileImage);
         loading = findViewById(R.id.loading);
+        initializeButtons();
 
         FloatingActionButton editButton = findViewById(R.id.organizationProfileEdit);
         editButton.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +93,61 @@ public class OrganizationProfileActivity extends AppCompatActivity {
 
     private void editOrganization() {
         //TODO do something
+    }
+
+    private void initializeButtons() {
+        // Send invitations
+        Button sendInvitationsButton = findViewById(R.id.sendInvitationsButton);
+        //TODO show or hide button depending on role
+        sendInvitationsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendInvitations();
+            }
+        });
+
+        // Users list
+        Button usersListButton = findViewById(R.id.showUsersButton);
+        usersListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showUsersList();
+            }
+        });
+
+        // Users map
+        Button usersMapButton = findViewById(R.id.showUsersMapButton);
+        usersMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showUsersMap();
+            }
+        });
+
+        // Channels
+        Button channelsButton = findViewById(R.id.showChannelsButton);
+        //TODO show or hide button depending on role
+        channelsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showChannels();
+            }
+        });
+    }
+
+    private void sendInvitations() {
+    }
+
+    private void showUsersList() {
+        // TODO do something
+    }
+
+    private void showUsersMap() {
+        // TODO do something
+    }
+
+    private void showChannels() {
+        // TODO do something
     }
 
 }
