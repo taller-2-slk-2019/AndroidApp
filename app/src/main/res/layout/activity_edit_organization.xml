@@ -94,7 +94,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <include
-        android:id="@+id/include5"
+        android:id="@+id/location_picker"
         layout="@layout/location_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
         android:layout_marginRight="40dp"
         android:text="@string/btn_update_user"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include5" />
+        app:layout_constraintTop_toBottomOf="@+id/location_picker" />
 
     <include
         layout="@layout/progress_bar"
