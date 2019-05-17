@@ -62,7 +62,13 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         setUpUI();
     }
 
-    private boolean hasChatSelected(){
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
+    private boolean hasChatSelected() {
         return selectedChannel > 0 || selectedConversation > 0;
     }
 
@@ -73,7 +79,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         selectedChannel = userManagerPreferences.getSelectedChannel();
         selectedConversation = userManagerPreferences.getSelectedConversation();
         updateUI();
-        if (hasChatSelected()){
+        if (hasChatSelected()) {
             subscribe();
             messagesListContainer.setEnabled(true);
             onRefresh();
@@ -81,34 +87,34 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         unsubscribe();
         super.onDestroy();
     }
 
-    private void subscribe(){
+    private void subscribe() {
         FirebaseMessaging.getInstance().subscribeToTopic(getTopic());
     }
 
-    private void unsubscribe(){
-        if (hasChatSelected()){
+    private void unsubscribe() {
+        if (hasChatSelected()) {
             FirebaseMessaging.getInstance().unsubscribeFromTopic(getTopic());
         }
     }
 
-    private String getTopic(){
-        if (selectedChannel > 0){
+    private String getTopic() {
+        if (selectedChannel > 0) {
             return "channel_" + selectedChannel;
         }
 
-        if (selectedConversation > 0){
+        if (selectedConversation > 0) {
             return "conversation_" + selectedConversation;
         }
 
         return "";
     }
 
-    private void setUpUI(){
+    private void setUpUI() {
         messagesListContainer = findViewById(R.id.chatMessagesListContainer);
         newMessageContainer = findViewById(R.id.newMessageContainer);
         noChannelContainer = findViewById(R.id.noChannelContainer);
@@ -116,8 +122,8 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         setUpNewMessageUI();
     }
 
-    private void updateUI(){
-        if (hasChatSelected()){
+    private void updateUI() {
+        if (hasChatSelected()) {
             messagesListContainer.setVisibility(View.VISIBLE);
             newMessageContainer.setVisibility(View.VISIBLE);
             noChannelContainer.setVisibility(View.INVISIBLE);
@@ -142,7 +148,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         messagesListContainer.setOnRefreshListener(this);
     }
 
-    private void setUpNewMessageUI(){
+    private void setUpNewMessageUI() {
         newMessageText = findViewById(R.id.newMessageText);
 
         ImageView sendMessageButton = findViewById(R.id.sendMessageButton);
@@ -188,8 +194,8 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         });
     }
 
-    private void onSelectedTextTypeChanged(){
-        if (selectedTextType.equals(Message.TYPE_TEXT)){
+    private void onSelectedTextTypeChanged() {
+        if (selectedTextType.equals(Message.TYPE_TEXT)) {
             newMessageText.setHint(R.string.new_message_text_hint);
         } else {
             newMessageText.setHint(R.string.new_message_code_hint);
@@ -200,7 +206,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     }
 
     @Override
-    public void onRefresh(){
+    public void onRefresh() {
         int offset = messagesAdapter.getItemCount();
         messagesListContainer.setRefreshing(true);
 
@@ -208,7 +214,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
             @Override
             public void onResponseSuccess(List<Message> messages) {
                 messagesListContainer.setRefreshing(false);
-                if (messages.size() > 0){
+                if (messages.size() > 0) {
                     messagesAdapter.addOlderMessages(messages);
                     messagesList.scrollToPosition(messages.size() - 1);
                 } else if (messagesAdapter.getItemCount() > 0) {
@@ -232,7 +238,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         });
     }
 
-    private void sendMessage(Message message){
+    private void sendMessage(Message message) {
         message.channelId = selectedChannel;
         message.conversationId = selectedConversation;
         messageService.createMessage(message, new Client<Void>() {
@@ -256,7 +262,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
 
     private void sendTextMessage() {
         String messageText = newMessageText.getText().toString();
-        if (messageText.equals("")){
+        if (messageText.equals("")) {
             return;
         }
 
@@ -278,23 +284,23 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == ImagePicker.PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null ) {
+        if (requestCode == ImagePicker.PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
             Uri imagePath = ImagePicker.getFilePath(data);
             new FirebaseStorageService().uploadLocalImage(this, imagePath);
-        } else if(requestCode == FilePicker.PICK_FILE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null ) {
+        } else if (requestCode == FilePicker.PICK_FILE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
             try {
                 Uri filePath = FilePicker.getFilePath(data);
                 new FirebaseStorageService().uploadLocalFile(this, filePath);
-            } catch (Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 onFileUploadError(ex);
             }
         }
     }
 
-    private void setOrganizationWelcome(){
+    private void setOrganizationWelcome() {
         final TextView welcome = findViewById(R.id.organizationWelcome);
         new OrganizationService().getOrganizationProfile(userManagerPreferences.getSelectedOrganization(), new Client<Organization>() {
             @Override
