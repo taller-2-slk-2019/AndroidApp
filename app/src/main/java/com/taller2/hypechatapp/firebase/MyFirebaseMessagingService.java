@@ -7,10 +7,12 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.taller2.hypechatapp.model.Channel;
+import com.taller2.hypechatapp.model.Conversation;
 import com.taller2.hypechatapp.model.Message;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.notifications.NewChannelInvitationNotification;
+import com.taller2.hypechatapp.notifications.NewConversationInvitationNotification;
 import com.taller2.hypechatapp.notifications.NewOrganizationInvitationNotification;
 import com.taller2.hypechatapp.notifications.UserMentionedNotification;
 
@@ -52,6 +54,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     Log.d(TAG, "handling new channel invitation");
                     handleChannelInvitation(data.get("channel"));
                     break;
+                case "conversation_invitation":
+                    Log.d(TAG, "handling new conversation invitation");
+                    handleConversationInvitation(data.get("conversation"), data.get("user"));
+                    break;
             }
         }
 
@@ -82,5 +88,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Channel channel = gson.fromJson(data, Channel.class);
         new NewChannelInvitationNotification(this, channel).send();
         EventBus.getDefault().post(channel);
+    }
+
+    private void handleConversationInvitation(String conversationData, String userData) {
+        Conversation conversation = gson.fromJson(conversationData, Conversation.class);
+        User user = gson.fromJson(userData, User.class);
+        new NewConversationInvitationNotification(this, conversation, user).send();
+        EventBus.getDefault().post(conversation);
     }
 }

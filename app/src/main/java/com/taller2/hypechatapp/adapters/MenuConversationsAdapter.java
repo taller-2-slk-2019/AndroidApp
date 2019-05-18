@@ -49,4 +49,9 @@ public class MenuConversationsAdapter extends RecyclerView.Adapter<MenuConversat
     public List<Conversation> getConversations() {
         return data;
     }
+
+    public void add(Conversation conversation) {
+        data.add(conversation);
+        notifyDataSetChanged();
+    }
 }
