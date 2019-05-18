@@ -20,16 +20,14 @@ import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.IMenuItemsClick;
-import com.taller2.hypechatapp.adapters.PublicChannelsAdapter;
+import com.taller2.hypechatapp.adapters.MenuChannelsAdapter;
 import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.model.Conversation;
 import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.network.model.ChannelInvitationRequest;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PublicChannelsActivity extends AppCompatActivity implements IMenuItemsClick {
@@ -37,25 +35,21 @@ public class PublicChannelsActivity extends AppCompatActivity implements IMenuIt
     private ChannelService channelService;
     protected UserManagerPreferences userManagerPreferences;
 
-    private PublicChannelsAdapter channelsAdapter;
+    private MenuChannelsAdapter channelsAdapter;
     private ProgressBar loadingView;
     private RecyclerView publicChannelsRecyclerView;
     private SearchView searchView;
-
-    private List<Channel> channelsList = new ArrayList<>();
-    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_public_channels);
 
-        userId=getIntent().getIntExtra("userId",0);
-
         channelService=new ChannelService();
         userManagerPreferences = new UserManagerPreferences(this);
 
         setUpUI();
+        setUpRecyclerView();
         getPublicChannels();
 
     }
@@ -67,8 +61,11 @@ public class PublicChannelsActivity extends AppCompatActivity implements IMenuIt
             @Override
             public void onResponseSuccess(List<Channel> channels) {
                 loadingView.setVisibility(View.INVISIBLE);
-                channelsList=channels;
-                setUpRecyclerView();
+                if(channels.isEmpty()){
+                    findViewById(R.id.public_channels_empty_text_view).setVisibility(View.VISIBLE);
+                } else {
+                    channelsAdapter.setChannels(channels);
+                }
             }
 
             @Override
@@ -88,8 +85,7 @@ public class PublicChannelsActivity extends AppCompatActivity implements IMenuIt
 
     private void setUpRecyclerView() {
         publicChannelsRecyclerView = findViewById(R.id.public_channels_list);
-        channelsAdapter = new PublicChannelsAdapter(channelsList,this);
-        channelsAdapter.setChannels(channelsList);
+        channelsAdapter = new MenuChannelsAdapter(this);
         publicChannelsRecyclerView.setAdapter(channelsAdapter);
         publicChannelsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         publicChannelsRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -105,9 +101,7 @@ public class PublicChannelsActivity extends AppCompatActivity implements IMenuIt
     @Override
     public void onChannelClick(final Channel channel) {
         loadingView.setVisibility(View.VISIBLE);
-        ChannelInvitationRequest request=new ChannelInvitationRequest();
-        request.userId=String.valueOf(userId);
-        channelService.addUserToChannel(channel.getId(), request, new Client<Void>(){
+        channelService.addUserToChannel(channel.getId(), new Client<Void>(){
 
             @Override
             public void onResponseSuccess(Void responseBody) {
@@ -121,6 +115,7 @@ public class PublicChannelsActivity extends AppCompatActivity implements IMenuIt
 
             @Override
             public void onResponseError(boolean connectionError, String errorMessage) {
+                loadingView.setVisibility(View.INVISIBLE);
                 Toast.makeText(getContext(), "Ocurrió un error al intentar acceder al canal público." +
                         " Intente más tarde.", Toast.LENGTH_LONG).show();
             }

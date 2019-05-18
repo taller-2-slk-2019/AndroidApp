@@ -103,7 +103,7 @@
 
     <!-- Public channels -->
     <string name="public_channels_label">Canales Públicos</string>
-    <string name="public_channels_empty_message">No hay canales públicos en esta Organización</string>
+    <string name="public_channels_empty_message">No hay canales públicos en esta Organización a los que no pertenezcas</string>
     <string name="action_search">Search</string>
     <string name="search_hint">Escribe el nombre</string>
 
