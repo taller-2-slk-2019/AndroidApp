@@ -7,4 +7,6 @@ public interface UserListActionListener {
     void onUserDeleted(User user);
 
     void onUserRoleChanged(User user, String selectedRole);
+
+    void onUserSelected(User user);
 }

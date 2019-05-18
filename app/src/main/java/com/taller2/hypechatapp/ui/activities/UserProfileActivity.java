@@ -24,6 +24,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class UserProfileActivity extends AppCompatActivity {
+    public static final String USER_ID_KEY = "USER_ID_KEY";
+
     private UserService userService;
     private TextInputEditText name, username;
     private TextView email;
@@ -82,7 +84,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
             @Override
             public Context getContext() {
-                 return UserProfileActivity.this;
+                return UserProfileActivity.this;
             }
         });
 
@@ -126,7 +128,7 @@ public class UserProfileActivity extends AppCompatActivity {
         String separator = "";
 
         StringBuilder sb = new StringBuilder();
-        for (String organizationName: organizations) {
+        for (String organizationName : organizations) {
             sb.append(separator);
             sb.append(organizationName);
             separator = "\n";
