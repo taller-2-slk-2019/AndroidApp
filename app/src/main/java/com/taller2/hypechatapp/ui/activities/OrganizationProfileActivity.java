@@ -158,7 +158,8 @@ public class OrganizationProfileActivity extends AppCompatActivity {
     }
 
     private void showUsersList() {
-        // TODO do something
+        Intent intent = new Intent(this, UsersListActivity.class);
+        startActivity(intent);
     }
 
     private void showUsersMap() {

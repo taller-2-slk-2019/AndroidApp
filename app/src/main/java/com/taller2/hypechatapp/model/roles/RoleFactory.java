@@ -1,5 +1,9 @@
 package com.taller2.hypechatapp.model.roles;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class RoleFactory {
 
     public static final String ROLE_CREATOR = "creator";
@@ -19,4 +23,8 @@ public class RoleFactory {
         throw new IllegalArgumentException();
     }
 
+    public static List<String> getRolesList() {
+        return new ArrayList<>(
+                Arrays.asList(ROLE_CREATOR, ROLE_MODERATOR, ROLE_MEMBER));
+    }
 }
