@@ -101,5 +101,11 @@
     <string name="image_picker_error">Debe seleccionar una imagen!</string>
     <string name="fail_getting_info">No se pudo obtener toda la información</string>
 
+    <!-- Public channels -->
+    <string name="public_channels_label">Canales Públicos</string>
+    <string name="public_channels_empty_message">No hay canales públicos en esta Organización a los que no pertenezcas</string>
+    <string name="action_search">Search</string>
+    <string name="search_hint">Escribe el nombre</string>
+
 
 </resources>
