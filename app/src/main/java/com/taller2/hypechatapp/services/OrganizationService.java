@@ -131,4 +131,19 @@ public class OrganizationService extends RestService {
                     }
                 });
     }
+
+    public void removeUser(int organizationId, int userId, final Client client) {
+        organizationApi.removeUser(organizationId, userId, FirebaseAuthService.getCurrentUserToken())
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        manageSuccessResponse(response, SERVICE_TAG, client);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        manageFailure(SERVICE_TAG, t, client);
+                    }
+                });
+    }
 }

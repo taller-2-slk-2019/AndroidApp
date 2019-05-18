@@ -95,8 +95,28 @@ public class UsersListActivity extends AppCompatActivity implements UserListActi
     }
 
     @Override
-    public void onUserDeleted(User user) {
+    public void onUserDeleted(final User user) {
+        showLoading();
+        organizationService.removeUser(preferences.getSelectedOrganization(),
+                user.getId(), new Client<Void>() {
+                    @Override
+                    public void onResponseSuccess(Void responseBody) {
+                        hideLoading();
+                        usersAdapter.removeUser(user);
+                        Toast.makeText(getContext(), "Usuario eliminado", Toast.LENGTH_LONG).show();
+                    }
 
+                    @Override
+                    public void onResponseError(boolean connectionError, String errorMessage) {
+                        hideLoading();
+                        Toast.makeText(getContext(), "No se pudo eliminar el usuario", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public Context getContext() {
+                        return UsersListActivity.this;
+                    }
+                });
     }
 
     @Override

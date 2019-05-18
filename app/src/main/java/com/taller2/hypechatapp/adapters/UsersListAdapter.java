@@ -45,4 +45,9 @@ public class UsersListAdapter extends RecyclerView.Adapter<ListUserViewHolder> {
         this.users = users;
         notifyDataSetChanged();
     }
+
+    public void removeUser(User user) {
+        users.remove(user);
+        notifyDataSetChanged();
+    }
 }

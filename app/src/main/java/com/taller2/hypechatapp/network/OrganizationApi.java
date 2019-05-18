@@ -10,6 +10,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -45,4 +46,9 @@ public interface OrganizationApi {
                               @Path("userId") int userId,
                               @Query("userToken") String userToken,
                               @Body RoleRequest role);
+
+    @DELETE("/organizations/{id}/users/{userId}")
+    Call<Void> removeUser(@Path("id") int organizationId,
+                              @Path("userId") int userId,
+                              @Query("userToken") String userToken);
 }

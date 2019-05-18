@@ -57,7 +57,18 @@ public class ListUserViewHolder extends RecyclerView.ViewHolder {
         this.user = user;
         userName.setText(user.getName());
         PicassoLoader.load(context, user.getPicture(), profile);
+        initializeRolesSpinner();
+    }
 
+    private void deleteButtonClick() {
+        listener.onUserDeleted(user);
+    }
+
+    private void roleChanged(String selectedRole) {
+        listener.onUserRoleChanged(user, selectedRole);
+    }
+
+    private void initializeRolesSpinner() {
         String userRole = RoleTranslator.translateToSpanish(user.getRole());
         rolesSpinner.setSelection(((ArrayAdapter) rolesSpinner.getAdapter()).getPosition(userRole), false);
 
@@ -73,13 +84,5 @@ public class ListUserViewHolder extends RecyclerView.ViewHolder {
                 // do nothing
             }
         });
-    }
-
-    private void deleteButtonClick() {
-        listener.onUserDeleted(user);
-    }
-
-    private void roleChanged(String selectedRole) {
-        listener.onUserRoleChanged(user, selectedRole);
     }
 }
