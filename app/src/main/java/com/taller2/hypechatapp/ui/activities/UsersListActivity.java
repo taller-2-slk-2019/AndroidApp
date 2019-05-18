@@ -101,6 +101,25 @@ public class UsersListActivity extends AppCompatActivity implements UserListActi
 
     @Override
     public void onUserRoleChanged(User user, String selectedRole) {
+        showLoading();
+        organizationService.updateUserRole(preferences.getSelectedOrganization(),
+                user.getId(), selectedRole, new Client<Void>() {
+                    @Override
+                    public void onResponseSuccess(Void responseBody) {
+                        hideLoading();
+                        Toast.makeText(getContext(), "Rol actualizado", Toast.LENGTH_LONG).show();
+                    }
 
+                    @Override
+                    public void onResponseError(boolean connectionError, String errorMessage) {
+                        hideLoading();
+                        Toast.makeText(getContext(), "No se pudo actualizar el rol", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public Context getContext() {
+                        return UsersListActivity.this;
+                    }
+                });
     }
 }

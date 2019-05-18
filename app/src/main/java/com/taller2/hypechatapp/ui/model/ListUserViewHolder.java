@@ -59,7 +59,7 @@ public class ListUserViewHolder extends RecyclerView.ViewHolder {
         PicassoLoader.load(context, user.getPicture(), profile);
 
         String userRole = RoleTranslator.translateToSpanish(user.getRole());
-        rolesSpinner.setSelection(((ArrayAdapter) rolesSpinner.getAdapter()).getPosition(userRole));
+        rolesSpinner.setSelection(((ArrayAdapter) rolesSpinner.getAdapter()).getPosition(userRole), false);
 
         rolesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

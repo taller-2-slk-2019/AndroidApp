@@ -3,6 +3,7 @@ package com.taller2.hypechatapp.network;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.model.AcceptInvitationRequest;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
+import com.taller2.hypechatapp.network.model.RoleRequest;
 import com.taller2.hypechatapp.network.model.UserInvitationRequest;
 
 import java.util.List;
@@ -38,4 +39,10 @@ public interface OrganizationApi {
     Call<Void> updateOrganization(@Path("id") int organizationId,
                                   @Query("userToken") String userToken,
                                   @Body Organization organization);
+
+    @PUT("/organizations/{id}/users/{userId}")
+    Call<Void> updateUserRole(@Path("id") int organizationId,
+                              @Path("userId") int userId,
+                              @Query("userToken") String userToken,
+                              @Body RoleRequest role);
 }

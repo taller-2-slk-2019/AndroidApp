@@ -7,6 +7,7 @@ import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.OrganizationApi;
 import com.taller2.hypechatapp.network.model.AcceptInvitationRequest;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
+import com.taller2.hypechatapp.network.model.RoleRequest;
 import com.taller2.hypechatapp.network.model.UserInvitationRequest;
 
 import java.util.List;
@@ -113,5 +114,21 @@ public class OrganizationService extends RestService {
                 manageFailure(SERVICE_TAG, t, client);
             }
         });
+    }
+
+    public void updateUserRole(int organizationId, int userId, String role, final Client client) {
+        RoleRequest roleRequest = new RoleRequest(role);
+        organizationApi.updateUserRole(organizationId, userId, FirebaseAuthService.getCurrentUserToken(), roleRequest)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        manageSuccessResponse(response, SERVICE_TAG, client);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        manageFailure(SERVICE_TAG, t, client);
+                    }
+                });
     }
 }
