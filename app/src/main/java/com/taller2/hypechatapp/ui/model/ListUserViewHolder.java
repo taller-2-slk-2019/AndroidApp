@@ -2,6 +2,7 @@ package com.taller2.hypechatapp.ui.model;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import com.taller2.hypechatapp.adapters.UserListActionListener;
 import com.taller2.hypechatapp.components.PicassoLoader;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.model.roles.RoleFactory;
+import com.taller2.hypechatapp.model.roles.RoleTranslator;
 
 import java.util.List;
 
@@ -46,23 +48,31 @@ public class ListUserViewHolder extends RecyclerView.ViewHolder {
         });
 
         roles = RoleFactory.getRolesList();
-        rolesSpinner.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, roles));
+        rolesSpinner.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, roles));
     }
 
     public void setUser(User user) {
-        //rolesSpinner.setOnItemClickListener(null);
+        rolesSpinner.setOnItemSelectedListener(null);
 
         this.user = user;
         userName.setText(user.getName());
         PicassoLoader.load(context, user.getPicture(), profile);
 
-        /*rolesSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        String userRole = RoleTranslator.translateToSpanish(user.getRole());
+        rolesSpinner.setSelection(((ArrayAdapter) rolesSpinner.getAdapter()).getPosition(userRole));
+
+        rolesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String selectedRole = roles.get(position);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String selectedRole = RoleTranslator.translateToEnglish(roles.get(position));
                 roleChanged(selectedRole);
             }
-        });*/
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                // do nothing
+            }
+        });
     }
 
     private void deleteButtonClick() {
