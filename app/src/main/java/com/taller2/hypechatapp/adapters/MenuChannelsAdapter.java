@@ -73,8 +73,6 @@ public class MenuChannelsAdapter extends RecyclerView.Adapter<MenuChannelItemVie
                     List<Channel> filteredList = new ArrayList<>();
                     for (Channel channel : data) {
 
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
                         if (channel.getName().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(channel);
                         }
