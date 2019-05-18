@@ -12,9 +12,12 @@ import android.widget.TextView;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.UserListActionListener;
 import com.taller2.hypechatapp.components.PicassoLoader;
+import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.User;
+import com.taller2.hypechatapp.model.roles.Role;
 import com.taller2.hypechatapp.model.roles.RoleFactory;
 import com.taller2.hypechatapp.model.roles.RoleTranslator;
+import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 
 import java.util.List;
 
@@ -29,18 +32,21 @@ public class ListUserViewHolder extends RecyclerView.ViewHolder {
     private UserListActionListener listener;
     private User user;
     private Context context;
+    private UserManagerPreferences prefs;
     private List<String> roles;
+    private Button deleteButton;
 
     public ListUserViewHolder(@NonNull View itemView, UserListActionListener listener) {
         super(itemView);
         context = itemView.getContext();
+        prefs = new UserManagerPreferences(context);
         this.listener = listener;
         userName = itemView.findViewById(R.id.username);
         profile = itemView.findViewById(R.id.profile_image_view);
         rolesSpinner = itemView.findViewById(R.id.rolesSpinner);
 
-        Button button = itemView.findViewById(R.id.deleteUserButton);
-        button.setOnClickListener(new View.OnClickListener() {
+        deleteButton = itemView.findViewById(R.id.deleteUserButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 deleteButtonClick();
@@ -58,6 +64,7 @@ public class ListUserViewHolder extends RecyclerView.ViewHolder {
         userName.setText(user.getName());
         PicassoLoader.load(context, user.getPicture(), profile);
         initializeRolesSpinner();
+        checkUserRole();
     }
 
     private void deleteButtonClick() {
@@ -84,5 +91,13 @@ public class ListUserViewHolder extends RecyclerView.ViewHolder {
                 // do nothing
             }
         });
+    }
+
+    private void checkUserRole() {
+        Role role = RoleFactory.getRole(prefs.getOrganizationRole());
+        boolean isCurrentUser = user.getEmail().equals(FirebaseAuthService.getCurrentUser().getEmail());
+
+        deleteButton.setVisibility(role.hasUsersPermissions() && !isCurrentUser ? View.VISIBLE : View.GONE);
+        rolesSpinner.setEnabled(role.hasOrganizationPermissions() && !isCurrentUser);
     }
 }
