@@ -1,6 +1,7 @@
 package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -41,6 +42,12 @@ public class ChannelsListActivity extends BaseActivity implements ChannelListAct
         setUpView();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getChannels();
+    }
+
     private void setUpView() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -54,8 +61,6 @@ public class ChannelsListActivity extends BaseActivity implements ChannelListAct
 
         channelsAdapter = new ChannelsListAdapter(this);
         rvUsers.setAdapter(channelsAdapter);
-
-        getChannels();
     }
 
     private void getChannels() {
@@ -94,34 +99,32 @@ public class ChannelsListActivity extends BaseActivity implements ChannelListAct
             public void onConfirm() {
                 showLoading();
                 channelService.deleteChannel(channel.getId(), new Client<Void>() {
-                            @Override
-                            public void onResponseSuccess(Void responseBody) {
-                                hideLoading();
-                                channelsAdapter.removeChannel(channel);
-                                Toast.makeText(getContext(), "Canal eliminado", Toast.LENGTH_LONG).show();
-                            }
+                    @Override
+                    public void onResponseSuccess(Void responseBody) {
+                        hideLoading();
+                        channelsAdapter.removeChannel(channel);
+                        Toast.makeText(getContext(), "Canal eliminado", Toast.LENGTH_LONG).show();
+                    }
 
-                            @Override
-                            public void onResponseError(boolean connectionError, String errorMessage) {
-                                hideLoading();
-                                Toast.makeText(getContext(), "No se pudo eliminar el canal", Toast.LENGTH_LONG).show();
-                            }
+                    @Override
+                    public void onResponseError(boolean connectionError, String errorMessage) {
+                        hideLoading();
+                        Toast.makeText(getContext(), "No se pudo eliminar el canal", Toast.LENGTH_LONG).show();
+                    }
 
-                            @Override
-                            public Context getContext() {
-                                return ChannelsListActivity.this;
-                            }
-                        });
+                    @Override
+                    public Context getContext() {
+                        return ChannelsListActivity.this;
+                    }
+                });
             }
         });
     }
 
     @Override
     public void onChannelSelected(Channel channel) {
-        /*Intent intent = new Intent(this, UserProfileActivity.class);
-        if (!FirebaseAuthService.isCurrentUser(user)) {
-            intent.putExtra(UserProfileActivity.USER_ID_KEY, user.getId());
-        }
-        startActivity(intent);*/
+        Intent intent = new Intent(this, ChannelProfileActivity.class);
+        intent.putExtra(ChannelProfileActivity.CHANNEL_ID_KEY, channel.getId());
+        startActivity(intent);
     }
 }

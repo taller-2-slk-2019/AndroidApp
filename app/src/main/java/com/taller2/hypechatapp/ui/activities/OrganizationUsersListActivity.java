@@ -44,6 +44,12 @@ public class OrganizationUsersListActivity extends BaseActivity implements UserL
         setUpView();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUsers();
+    }
+
     private void setUpView() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -56,8 +62,6 @@ public class OrganizationUsersListActivity extends BaseActivity implements UserL
 
         usersAdapter = new OrganizationUsersListAdapter(this);
         rvUsers.setAdapter(usersAdapter);
-
-        getUsers();
     }
 
     private void getUsers() {

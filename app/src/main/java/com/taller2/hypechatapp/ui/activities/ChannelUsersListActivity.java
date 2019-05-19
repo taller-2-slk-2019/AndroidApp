@@ -48,6 +48,12 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
         setUpView();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUsers();
+    }
+
     private void setUpView() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,8 +67,6 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
 
         usersAdapter = new ChannelUsersListAdapter(this);
         rvUsers.setAdapter(usersAdapter);
-
-        getUsers();
     }
 
     private void checkUsersCount() {

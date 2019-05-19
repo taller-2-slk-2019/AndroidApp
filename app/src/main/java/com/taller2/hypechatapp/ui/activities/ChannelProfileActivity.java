@@ -22,9 +22,13 @@ import androidx.appcompat.widget.Toolbar;
 
 public class ChannelProfileActivity extends BaseActivity {
 
+    public static final String CHANNEL_ID_KEY = "CHANNEL_ID_KEY";
+
     private ChannelService channelService;
     private TextInputEditText name, description, welcome, type;
     private UserManagerPreferences preferences;
+    private int channelId = 0;
+    private boolean currentChannelShown = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,13 @@ public class ChannelProfileActivity extends BaseActivity {
 
         preferences = new UserManagerPreferences(this);
         channelService = new ChannelService();
+
+        if (getIntent().getExtras() != null) {
+            channelId = getIntent().getExtras().getInt(CHANNEL_ID_KEY, 0);
+            currentChannelShown = false;
+        } else {
+            channelId = preferences.getSelectedChannel();
+        }
 
         setUpView();
     }
@@ -59,7 +70,7 @@ public class ChannelProfileActivity extends BaseActivity {
 
     private void initializeChannel() {
         showLoading();
-        channelService.getChannelInfo(preferences.getSelectedChannel(), new Client<Channel>() {
+        channelService.getChannelInfo(channelId, new Client<Channel>() {
             @Override
             public void onResponseSuccess(Channel responseBody) {
                 setChannel(responseBody);
@@ -103,6 +114,7 @@ public class ChannelProfileActivity extends BaseActivity {
                 abandonChannel();
             }
         });
+        abandonChannelButton.setVisibility(currentChannelShown ? View.VISIBLE : View.GONE);
 
         FloatingActionButton editButton = findViewById(R.id.channelEditButton);
         if (!RoleFactory.getRole(preferences.getOrganizationRole()).hasChannelsPermissions()) {
@@ -118,8 +130,7 @@ public class ChannelProfileActivity extends BaseActivity {
 
     private void showChannelUsers() {
         Intent intent = new Intent(this, ChannelUsersListActivity.class);
-        intent.putExtra(ChannelUsersListActivity.CHANNEL_ID_KEY, preferences.getSelectedChannel());
-        //TODO refactor to allow non selected channel edition
+        intent.putExtra(ChannelUsersListActivity.CHANNEL_ID_KEY, channelId);
         startActivity(intent);
     }
 
@@ -155,8 +166,7 @@ public class ChannelProfileActivity extends BaseActivity {
 
     private void editChannel() {
         Intent intent = new Intent(this, CreateChannelActivity.class);
-        intent.putExtra(CreateChannelActivity.CHANNEL_ID_KEY, preferences.getSelectedChannel());
-        //TODO refactor to allow non selected channel edition
+        intent.putExtra(CreateChannelActivity.CHANNEL_ID_KEY, channelId);
         startActivity(intent);
     }
 }
