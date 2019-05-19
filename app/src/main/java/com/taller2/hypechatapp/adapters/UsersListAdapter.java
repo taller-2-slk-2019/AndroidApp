@@ -1,10 +1,5 @@
 package com.taller2.hypechatapp.adapters;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.ui.model.ListUserViewHolder;
 
@@ -14,20 +9,13 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class UsersListAdapter extends RecyclerView.Adapter<ListUserViewHolder> {
+public abstract class UsersListAdapter extends RecyclerView.Adapter<ListUserViewHolder> {
 
-    private UserListActionListener listener;
+    protected UserListActionListener listener;
     private List<User> users = new ArrayList<>();
 
     public UsersListAdapter(UserListActionListener listener) {
         this.listener = listener;
-    }
-
-    @NonNull
-    @Override
-    public ListUserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_list_holder, parent, false);
-        return new ListUserViewHolder(view, listener);
     }
 
     @Override

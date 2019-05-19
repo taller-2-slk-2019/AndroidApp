@@ -2,9 +2,12 @@ package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
+import com.taller2.hypechatapp.adapters.OrganizationUsersListAdapter;
 import com.taller2.hypechatapp.adapters.UserListActionListener;
 import com.taller2.hypechatapp.adapters.UsersListAdapter;
 import com.taller2.hypechatapp.model.User;
@@ -27,6 +30,7 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
     private ChannelService channelService;
     private OrganizationService organizationService;
     private UserManagerPreferences preferences;
+    private TextView noUsersText;
     private int channelId;
 
     @Override
@@ -51,15 +55,20 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
         setSupportActionBar(toolbar);
 
         loading = findViewById(R.id.loading);
+        noUsersText = findViewById(R.id.noUsersText);
 
         RecyclerView rvUsers = findViewById(R.id.users_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         rvUsers.setLayoutManager(layoutManager);
 
-        usersAdapter = new UsersListAdapter(this);
+        usersAdapter = new OrganizationUsersListAdapter(this);
         rvUsers.setAdapter(usersAdapter);
 
         getUsers();
+    }
+
+    private void checkUsersCount() {
+        noUsersText.setVisibility(usersAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     private void getUsers() {
@@ -69,6 +78,7 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
             @Override
             public void onResponseSuccess(List<User> users) {
                 usersAdapter.setUsers(users);
+                checkUsersCount();
                 hideLoading();
             }
 

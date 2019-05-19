@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
+import com.taller2.hypechatapp.adapters.OrganizationUsersListAdapter;
 import com.taller2.hypechatapp.adapters.UserListActionListener;
 import com.taller2.hypechatapp.adapters.UsersListAdapter;
 import com.taller2.hypechatapp.components.DialogConfirm;
@@ -53,7 +54,7 @@ public class OrganizationUsersListActivity extends BaseActivity implements UserL
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         rvUsers.setLayoutManager(layoutManager);
 
-        usersAdapter = new UsersListAdapter(this);
+        usersAdapter = new OrganizationUsersListAdapter(this);
         rvUsers.setAdapter(usersAdapter);
 
         getUsers();
