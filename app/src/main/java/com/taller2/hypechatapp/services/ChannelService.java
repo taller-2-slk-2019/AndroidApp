@@ -41,6 +41,11 @@ public class ChannelService extends RestService {
                 .enqueue(new NetworkCallback<Channel>(SERVICE_TAG, client));
     }
 
+    public void editChannel(int channelId, ChannelRequest channelRequest, final Client client) {
+        channelApi.editChannel(channelId, FirebaseAuthService.getCurrentUserToken(), channelRequest)
+                .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
+    }
+
     public void addUserToChannel(Integer channelId, final Client client) {
         channelApi.addUserToChannel(channelId, FirebaseAuthService.getCurrentUserToken())
                 .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));

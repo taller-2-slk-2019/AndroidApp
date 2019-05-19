@@ -39,6 +39,8 @@
     <string name="hint_example_channel_name">Ej: #clientes</string>
     <string name="channel_privacy_open">Abierto</string>
     <string name="channel_privacy_closed">Cerrado</string>
+    <string name="title_channel_edit">Editar canal</string>
+    <string name="channel_edit">Editar</string>
 
     <!-- conversations creation view -->
     <string name="no_conversations_msg">No hay usuarios con quien conversar… Enviá invitaciones para agregar a tus colegas y amigos!</string>
@@ -106,7 +108,7 @@
     <string name="action_search">Search</string>
     <string name="search_hint">Escribe el nombre</string>
 
-    <!-- Public channels -->
+    <!-- Channel profile -->
     <string name="channel_profile_title">Información del canal</string>
 
 

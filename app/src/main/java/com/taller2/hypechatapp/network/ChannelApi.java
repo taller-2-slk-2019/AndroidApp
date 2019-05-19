@@ -10,6 +10,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -25,6 +26,11 @@ public interface ChannelApi {
 
     @POST("/channels")
     Call<Channel> createChannel(@Query("userToken") String userToken, @Body ChannelRequest channel);
+
+    @PUT("/channels/{id}")
+    Call<Void> editChannel(@Path("id") Integer channelId,
+                           @Query("userToken") String userToken,
+                           @Body ChannelRequest channel);
 
     @POST("/channels/{channelId}/users")
     Call<Void> addUserToChannel(@Path("channelId") Integer channelId, @Query("userToken") String userToken);

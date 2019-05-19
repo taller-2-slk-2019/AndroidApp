@@ -18,7 +18,6 @@ import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.model.ChannelRequest;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
-import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 
 import androidx.appcompat.widget.Toolbar;
@@ -50,10 +49,16 @@ public class CreateChannelActivity extends BaseActivity {
 
         setUpView();
         addUIBehaviour();
+        if (channelId > 0) {
+            setChannel();
+        }
     }
 
     private void setUpView() {
         Toolbar toolbar = findViewById(R.id.toolbar_create_channel);
+        if (channelId > 0) {
+            toolbar.setTitle(getString(R.string.title_channel_edit));
+        }
         setSupportActionBar(toolbar);
 
         channelName = findViewById(R.id.edit_channel_name);
@@ -69,9 +74,9 @@ public class CreateChannelActivity extends BaseActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    ((EditText)v).setHint(getString(R.string.hint_example_channel_name));
+                    ((EditText) v).setHint(getString(R.string.hint_example_channel_name));
                 } else {
-                    ((EditText)v).setHint("");
+                    ((EditText) v).setHint("");
                 }
             }
         });
@@ -80,9 +85,9 @@ public class CreateChannelActivity extends BaseActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    ((EditText)v).setHint(getString(R.string.hint_about_channel));
+                    ((EditText) v).setHint(getString(R.string.hint_about_channel));
                 } else {
-                    ((EditText)v).setHint("");
+                    ((EditText) v).setHint("");
                 }
             }
         });
@@ -91,9 +96,9 @@ public class CreateChannelActivity extends BaseActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    ((EditText)v).setHint(getString(R.string.hint_regards_channel));
+                    ((EditText) v).setHint(getString(R.string.hint_regards_channel));
                 } else {
-                    ((EditText)v).setHint("");
+                    ((EditText) v).setHint("");
                 }
             }
         });
@@ -109,6 +114,9 @@ public class CreateChannelActivity extends BaseActivity {
             }
         });
 
+        if (channelId > 0) {
+            btnCreate.setText(R.string.channel_edit);
+        }
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,36 +127,83 @@ public class CreateChannelActivity extends BaseActivity {
 
                 showLoading();
                 ChannelRequest channelRequest = createRequest();
-                channelService.createChannel(channelRequest, new Client<Channel>() {
-                    @Override
-                    public void onResponseSuccess(Channel responseBody) {
-                        hideLoading();
-                        Toast.makeText(getContext(), "Woow! Canal creado", Toast.LENGTH_LONG).show();
-                        preferences.saveSelectedChannel(responseBody.getId());
-                        Intent intent = new Intent(CreateChannelActivity.this, ChatActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                    }
+                if (channelId > 0){
+                    editChannel(channelRequest);
+                } else {
+                    createChannel(channelRequest);
+                }
+            }
+        });
+    }
 
-                    @Override
-                    public void onResponseError(boolean connectionError, String errorMessage) {
-                        hideLoading();
-                        if (connectionError) {
-                            String textToShow = "No fue posible crear un canal. Intente más tarde.";
-                            Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
-                        } else {
-                            channelName.setError("El nombre del canal ya existe");
-                            channelName.requestFocus();
-                        }
-                    }
+    private void editChannel(ChannelRequest channelRequest) {
+        channelService.editChannel(channelId, channelRequest, new Client<Void>() {
+            @Override
+            public void onResponseSuccess(Void responseBody) {
+                hideLoading();
+                Toast.makeText(getContext(), "Woow! Canal editado", Toast.LENGTH_LONG).show();
+            }
 
-                    @Override
-                    public Context getContext() {
-                        return CreateChannelActivity.this;
-                    }
-                });
+            @Override
+            public void onResponseError(boolean connectionError, String errorMessage) {
+                hideLoading();
+                showError(connectionError);
+            }
 
+            @Override
+            public Context getContext() {
+                return CreateChannelActivity.this;
+            }
+        });
+    }
+
+    private void createChannel(ChannelRequest channelRequest) {
+        channelService.createChannel(channelRequest, new Client<Channel>() {
+            @Override
+            public void onResponseSuccess(Channel responseBody) {
+                hideLoading();
+                Toast.makeText(getContext(), "Woow! Canal creado", Toast.LENGTH_LONG).show();
+                preferences.saveSelectedChannel(responseBody.getId());
+                Intent intent = new Intent(CreateChannelActivity.this, ChatActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onResponseError(boolean connectionError, String errorMessage) {
+                hideLoading();
+                showError(connectionError);
+            }
+
+            @Override
+            public Context getContext() {
+                return CreateChannelActivity.this;
+            }
+        });
+    }
+
+    private void setChannel() {
+        showLoading();
+        channelService.getChannelInfo(channelId, new Client<Channel>() {
+            @Override
+            public void onResponseSuccess(Channel channel) {
+                channelName.setText(channel.getName());
+                description.setText(channel.getDescription());
+                welcome.setText(channel.getWelcome());
+                channelPrivacy.setChecked(channel.getIsPublic());
+                hideLoading();
+            }
+
+            @Override
+            public void onResponseError(boolean connectionError, String errorMessage) {
+                Toast.makeText(getContext(), "No se pudo obtener la información del canal", Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+            @Override
+            public Context getContext() {
+                return CreateChannelActivity.this;
             }
         });
     }
@@ -181,5 +236,15 @@ public class CreateChannelActivity extends BaseActivity {
         channelRequest.organizationId = preferences.getSelectedOrganization();
 
         return channelRequest;
+    }
+
+    private void showError(boolean connectionError) {
+        if (connectionError) {
+            String textToShow = "No fue posible crear un canal. Intente más tarde.";
+            Toast.makeText(this, textToShow, Toast.LENGTH_LONG).show();
+        } else {
+            channelName.setError("El nombre del canal ya existe");
+            channelName.requestFocus();
+        }
     }
 }
