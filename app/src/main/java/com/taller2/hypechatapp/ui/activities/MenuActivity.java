@@ -173,7 +173,10 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
         Integer selectedOrganizationPosition = getSelectedOrganizationPosition(organizations);
         organizationsSpinner.setSelection(selectedOrganizationPosition);
-        userManagerPreferences.saveSelectedOrganization(organizations.get(selectedOrganizationPosition).getId());
+
+        Organization selectedOrganization = organizations.get(selectedOrganizationPosition);
+        userManagerPreferences.saveSelectedOrganization(selectedOrganization.getId());
+        userManagerPreferences.saveOrganizationRole(selectedOrganization.getRole());
     }
 
     private Integer getSelectedOrganizationPosition(List<Organization> organizations) {
@@ -412,10 +415,11 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         // new organization selected
-        Integer selectedOrganization = ((Organization) parent.getSelectedItem()).getId();
+        Organization selectedOrganization = (Organization) parent.getSelectedItem();
         Integer preferenceOrganization = userManagerPreferences.getSelectedOrganization();
-        if (!selectedOrganization.equals(preferenceOrganization)) {
-            userManagerPreferences.saveSelectedOrganization(selectedOrganization);
+        if (!selectedOrganization.getId().equals(preferenceOrganization)) {
+            userManagerPreferences.saveSelectedOrganization(selectedOrganization.getId());
+            userManagerPreferences.saveOrganizationRole(selectedOrganization.getRole());
             finish();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 startActivity(getIntent(),

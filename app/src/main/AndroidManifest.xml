@@ -58,8 +58,16 @@
             android:label="@string/user_profile_title"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activities.EditOrganizationActivity"
+            android:label="@string/organization_profile_title"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activities.OrganizationProfileActivity"
             android:label="@string/organization_profile_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.UsersListActivity"
+            android:label="@string/users_list_title"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.activities.ChooseLocationActivity" />
 

@@ -2,6 +2,8 @@
 package com.taller2.hypechatapp.model;
 
 
+import com.taller2.hypechatapp.model.roles.RoleFactory;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class User implements Serializable {
     public String createdAt;
     public String updatedAt;
     public List<Organization> organizations;
+    public UserOrganizations userOrganizations;
 
     public Integer getId() {
         return id;
@@ -97,6 +100,13 @@ public class User implements Serializable {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getRole() {
+        if (userOrganizations != null) {
+            return userOrganizations.getRole();
+        }
+        return RoleFactory.ROLE_MEMBER;
     }
 
 }

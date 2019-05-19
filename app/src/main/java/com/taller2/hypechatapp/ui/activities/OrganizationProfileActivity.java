@@ -14,6 +14,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.components.PicassoLoader;
 import com.taller2.hypechatapp.model.Organization;
+import com.taller2.hypechatapp.model.roles.Role;
+import com.taller2.hypechatapp.model.roles.RoleFactory;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.OrganizationService;
@@ -46,14 +48,6 @@ public class OrganizationProfileActivity extends AppCompatActivity {
         profilePicture = findViewById(R.id.organizationProfileImage);
         loading = findViewById(R.id.loading);
         initializeButtons();
-
-        FloatingActionButton editButton = findViewById(R.id.organizationProfileEdit);
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editOrganization();
-            }
-        });
     }
 
     @Override
@@ -100,13 +94,28 @@ public class OrganizationProfileActivity extends AppCompatActivity {
     }
 
     private void editOrganization() {
-        //TODO do something
+        Intent intent = new Intent(this, EditOrganizationActivity.class);
+        startActivity(intent);
     }
 
     private void initializeButtons() {
+        Role role = RoleFactory.getRole(prefs.getOrganizationRole());
+
+        // Edit organization
+        FloatingActionButton editButton = findViewById(R.id.organizationProfileEdit);
+        if (!role.hasOrganizationPermissions()) {
+            editButton.hide();
+        }
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editOrganization();
+            }
+        });
+
         // Send invitations
         Button sendInvitationsButton = findViewById(R.id.sendInvitationsButton);
-        //TODO show or hide button depending on role
+        sendInvitationsButton.setVisibility(role.hasUsersPermissions() ? View.VISIBLE : View.GONE);
         sendInvitationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,7 +143,7 @@ public class OrganizationProfileActivity extends AppCompatActivity {
 
         // Channels
         Button channelsButton = findViewById(R.id.showChannelsButton);
-        //TODO show or hide button depending on role
+        channelsButton.setVisibility(role.hasChannelsPermissions() ? View.VISIBLE : View.GONE);
         channelsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,7 +158,8 @@ public class OrganizationProfileActivity extends AppCompatActivity {
     }
 
     private void showUsersList() {
-        // TODO do something
+        Intent intent = new Intent(this, UsersListActivity.class);
+        startActivity(intent);
     }
 
     private void showUsersMap() {

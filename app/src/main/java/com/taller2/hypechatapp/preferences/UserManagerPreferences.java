@@ -17,6 +17,7 @@ public class UserManagerPreferences {
 
     // All Shared Preferences Keys
     private static final String KEY_ORGANIZATION_SELECTED = "organizationSelected";
+    private static final String KEY_ORGANIZATION_ROLE = "organizationRole";
     private static final String KEY_CHANNEL_SELECTED = "channelSelected";
     private static final String KEY_CONVERSATION_SELECTED = "conversationSelected";
 
@@ -27,6 +28,11 @@ public class UserManagerPreferences {
 
     public void saveSelectedOrganization(Integer organizationId) {
         editor.putInt(KEY_ORGANIZATION_SELECTED, organizationId);
+        editor.commit();
+    }
+
+    public void saveOrganizationRole(String role) {
+        editor.putString(KEY_ORGANIZATION_ROLE, role);
         editor.commit();
     }
 
@@ -44,6 +50,10 @@ public class UserManagerPreferences {
 
     public Integer getSelectedOrganization() {
         return pref.getInt(KEY_ORGANIZATION_SELECTED, DEFAULT_ID);
+    }
+
+    public String getOrganizationRole() {
+        return pref.getString(KEY_ORGANIZATION_ROLE, "");
     }
 
     public Integer getSelectedChannel() {

@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.FirebaseApiService;
 
@@ -17,19 +18,23 @@ import androidx.annotation.NonNull;
 
 public class FirebaseAuthService {
 
-    public static FirebaseUser getCurrentUser(){
+    public static FirebaseUser getCurrentUser() {
         return FirebaseAuth.getInstance().getCurrentUser();
     }
 
-    public static boolean isUserLoggedIn(){
+    public static boolean isCurrentUser(User user) {
+        return getCurrentUser().getEmail().equals(user.getEmail());
+    }
+
+    public static boolean isUserLoggedIn() {
         return FirebaseAuthService.getCurrentUser() != null;
     }
 
-    public static String getCurrentUserToken(){
+    public static String getCurrentUserToken() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    public static void logOut(final Context context){
+    public static void logOut(final Context context) {
         if (isUserLoggedIn()) {
             FirebaseInstanceId.getInstance().getInstanceId()
                     .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -51,7 +56,7 @@ public class FirebaseAuthService {
         FirebaseAuth.getInstance().signOut();
     }
 
-    public static void logIn(final Context context){
+    public static void logIn(final Context context) {
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
@@ -68,7 +73,7 @@ public class FirebaseAuthService {
                 });
     }
 
-    private static Client<Void> getFCMTokenClient(final Context context, final String action){
+    private static Client<Void> getFCMTokenClient(final Context context, final String action) {
         return new Client<Void>() {
             @Override
             public void onResponseSuccess(Void responseBody) {

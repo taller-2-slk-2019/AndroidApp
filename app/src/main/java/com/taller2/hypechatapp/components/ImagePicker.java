@@ -90,4 +90,8 @@ public class ImagePicker {
         errorText.setVisibility(valid ? View.INVISIBLE : View.VISIBLE);
         return valid;
     }
+
+    public void showPicker() {
+        pickImage.setVisibility(View.VISIBLE);
+    }
 }
