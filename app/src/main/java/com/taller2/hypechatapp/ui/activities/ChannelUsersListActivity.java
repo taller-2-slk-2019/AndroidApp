@@ -11,10 +11,11 @@ import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.ChannelUsersListAdapter;
 import com.taller2.hypechatapp.adapters.UserListActionListener;
 import com.taller2.hypechatapp.adapters.UsersListAdapter;
+import com.taller2.hypechatapp.components.DialogConfirm;
+import com.taller2.hypechatapp.components.DialogService;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
 
 import java.util.List;
@@ -29,7 +30,6 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
 
     private UsersListAdapter usersAdapter;
     private ChannelService channelService;
-    private UserManagerPreferences preferences;
     private TextView noUsersText;
     private int channelId;
 
@@ -44,7 +44,6 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
         }
 
         channelService = new ChannelService();
-        preferences = new UserManagerPreferences(this);
 
         setUpView();
     }
@@ -97,32 +96,32 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
 
     @Override
     public void onUserDeleted(final User user) {
-        /*DialogService.showConfirmDialog(this, "Seguro que desea eliminar al usuario del canal?", new DialogConfirm() {
+        DialogService.showConfirmDialog(this, "Seguro que desea eliminar al usuario del canal?", new DialogConfirm() {
             @Override
             public void onConfirm() {
                 showLoading();
-                organizationService.removeUser(preferences.getSelectedOrganization(),
-                        user.getId(), new Client<Void>() {
-                            @Override
-                            public void onResponseSuccess(Void responseBody) {
-                                hideLoading();
-                                usersAdapter.removeUser(user);
-                                Toast.makeText(getContext(), "Usuario eliminado", Toast.LENGTH_LONG).show();
-                            }
+                channelService.removeUser(channelId, user.getId(), new Client<Void>() {
+                    @Override
+                    public void onResponseSuccess(Void responseBody) {
+                        hideLoading();
+                        usersAdapter.removeUser(user);
+                        checkUsersCount();
+                        Toast.makeText(getContext(), "Usuario eliminado", Toast.LENGTH_LONG).show();
+                    }
 
-                            @Override
-                            public void onResponseError(boolean connectionError, String errorMessage) {
-                                hideLoading();
-                                Toast.makeText(getContext(), "No se pudo eliminar el usuario", Toast.LENGTH_LONG).show();
-                            }
+                    @Override
+                    public void onResponseError(boolean connectionError, String errorMessage) {
+                        hideLoading();
+                        Toast.makeText(getContext(), "No se pudo eliminar el usuario", Toast.LENGTH_LONG).show();
+                    }
 
-                            @Override
-                            public Context getContext() {
-                                return ChannelUsersListActivity.this;
-                            }
-                        });
+                    @Override
+                    public Context getContext() {
+                        return ChannelUsersListActivity.this;
+                    }
+                });
             }
-        });*/
+        });
     }
 
     @Override

@@ -41,4 +41,9 @@ public interface ChannelApi {
 
     @DELETE("/channels/{channelId}/users")
     Call<Void> abandonChannel(@Path("channelId") Integer channelId, @Query("userToken") String userToken);
+
+    @DELETE("/channels/{channelId}/users/{userId}")
+    Call<Void> removeUser(@Path("channelId") Integer channelId,
+                          @Path("userId") Integer userId,
+                          @Query("userToken") String userToken);
 }

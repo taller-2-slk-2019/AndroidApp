@@ -61,4 +61,9 @@ public class ChannelService extends RestService {
         channelApi.abandonChannel(channelId, FirebaseAuthService.getCurrentUserToken())
                 .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
     }
+
+    public void removeUser(Integer channelId, Integer userId, final Client client) {
+        channelApi.removeUser(channelId, userId, FirebaseAuthService.getCurrentUserToken())
+                .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
+    }
 }
