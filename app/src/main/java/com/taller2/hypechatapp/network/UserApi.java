@@ -21,6 +21,9 @@ public interface UserApi {
     @GET("/users/profile")
     Call<User> getUser(@Query("userToken") String userToken);
 
+    @GET("/users/{id}")
+    Call<User> getUserProfile(@Path("id") int userId);
+
     @GET("/users")
     Call<List<User>> getUsersByOrganization(@Query("organizationId") Integer organizationId);
 
@@ -38,6 +41,9 @@ public interface UserApi {
 
     @GET("/users/statistics")
     Call<UserStatistics> getStatistics(@Query("userToken") String userToken);
+
+    @GET("/users/{id}/statistics")
+    Call<UserStatistics> getUserStatistics(@Path("id") int userId);
 
     @DELETE("/users/invitations/{invitationToken}")
     Call<Void> rejectInvitation(@Path("invitationToken") String invitationToken);

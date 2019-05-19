@@ -72,9 +72,8 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
             @Override
             public void onResponseSuccess(List<User> users) {
                 List<User> filteredUsers = new ArrayList<>();
-                String currentUserEmail = FirebaseAuthService.getCurrentUser().getEmail();
                 for (User user: users){
-                    if (!user.getEmail().equals(currentUserEmail)){
+                    if (!FirebaseAuthService.isCurrentUser(user)){
                         filteredUsers.add(user);
                     }
                 }
