@@ -94,7 +94,8 @@ public class OrganizationProfileActivity extends AppCompatActivity {
     }
 
     private void editOrganization() {
-        //TODO do something
+        Intent intent = new Intent(this, EditOrganizationActivity.class);
+        startActivity(intent);
     }
 
     private void initializeButtons() {
@@ -157,7 +158,8 @@ public class OrganizationProfileActivity extends AppCompatActivity {
     }
 
     private void showUsersList() {
-        // TODO do something
+        Intent intent = new Intent(this, UsersListActivity.class);
+        startActivity(intent);
     }
 
     private void showUsersMap() {

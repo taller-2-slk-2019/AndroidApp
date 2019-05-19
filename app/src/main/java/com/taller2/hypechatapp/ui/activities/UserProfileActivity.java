@@ -24,6 +24,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class UserProfileActivity extends AppCompatActivity {
+    public static final String USER_ID_KEY = "USER_ID_KEY";
+
     private UserService userService;
     private TextInputEditText name, username;
     private TextView email;
@@ -32,12 +34,17 @@ public class UserProfileActivity extends AppCompatActivity {
     private String imageUrl;
     private TextView msgSent, organizations;
     private ProgressBar loading;
+    private int userId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         userService = new UserService();
+
+        if (getIntent().getExtras() != null) {
+            userId = getIntent().getExtras().getInt(USER_ID_KEY, 0);
+        }
 
         setUpUI();
     }
@@ -56,6 +63,9 @@ public class UserProfileActivity extends AppCompatActivity {
         profilePicture = findViewById(R.id.profile_image_view);
 
         editProfileAction = findViewById(R.id.floating_btn_edit);
+        if (userId > 0) {
+            editProfileAction.hide();
+        }
         editProfileAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +78,7 @@ public class UserProfileActivity extends AppCompatActivity {
         organizations = findViewById(R.id.txt_organizations);
         updateUserInfo();
 
-        userService.getStatistics(new Client<UserStatistics>() {
+        userService.getStatistics(userId, new Client<UserStatistics>() {
             @Override
             public void onResponseSuccess(UserStatistics stats) {
                 msgSent.setText(String.valueOf(stats.messagesSent));
@@ -82,7 +92,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
             @Override
             public Context getContext() {
-                 return UserProfileActivity.this;
+                return UserProfileActivity.this;
             }
         });
 
@@ -95,7 +105,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void updateUserInfo() {
-        userService.getUser(new Client<User>() {
+        userService.getUser(userId, new Client<User>() {
 
             @Override
             public void onResponseSuccess(User responseBody) {
@@ -126,7 +136,7 @@ public class UserProfileActivity extends AppCompatActivity {
         String separator = "";
 
         StringBuilder sb = new StringBuilder();
-        for (String organizationName: organizations) {
+        for (String organizationName : organizations) {
             sb.append(separator);
             sb.append(organizationName);
             separator = "\n";
