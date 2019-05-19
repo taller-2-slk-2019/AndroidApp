@@ -63,10 +63,9 @@
 
     <!-- organization profile view -->
     <string name="organization_profile_title">Perfil de la organización</string>
-    <string name="description_organization_profile">Descripción: </string>
-    <string name="name_organization_profile">Nombre de la organización: </string>
-    <string name="welcome_organization_profile">Mensaje de bienvenida: </string>
-    <string name="update_organization_information_button">ACTUALIZAR\nINFORMACIÓN</string>
+    <string name="description_organization_profile">Descripción</string>
+    <string name="welcome_organization_profile">Mensaje de bienvenida</string>
+    <string name="users_list_title">Lista de usuarios</string>
 
     <!-- login and register view -->
     <string name="facebook_app_id">318283042209713</string>

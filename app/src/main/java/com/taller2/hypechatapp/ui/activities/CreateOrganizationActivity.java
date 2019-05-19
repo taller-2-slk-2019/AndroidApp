@@ -54,7 +54,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
     }
 
     private void setUpInitials() {
-        organizationService=new OrganizationService();
+        organizationService = new OrganizationService();
     }
 
     private void setUpFragment(@Nullable Bundle savedInstanceState) {
@@ -74,8 +74,8 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
 
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
-            organizationRequest=new OrganizationRequest();
-            getIntent().putExtra("organizationRequest",organizationRequest);
+            organizationRequest = new OrganizationRequest();
+            getIntent().putExtra("organizationRequest", organizationRequest);
             createOrganizationStepOneFragment.setArguments(getIntent().getExtras());
 
             // Add the fragment to the 'fragment_container' FrameLayout
@@ -87,8 +87,8 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
 
     @Override
     public void onNextButtonClick(OrganizationRequest organizationRequest, Uri filePath) {
-        this.filePath=filePath;
-        this.organizationRequest=organizationRequest;
+        this.filePath = filePath;
+        this.organizationRequest = organizationRequest;
         // Create fragment and give it an argument for the selected article
         createOrganizationStepTwoFragment = new CreateOrganizationStepTwoFragment();
         getIntent().putExtra("organizationRequest", this.organizationRequest);
@@ -109,13 +109,13 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
     @Override
     public void onAttachFragment(Fragment fragment) {
         super.onAttachFragment(fragment);
-        if(fragment instanceof CreateOrganizationStepOneFragment){
-            CreateOrganizationStepOneFragment createOrganizationStepOneFragment=(CreateOrganizationStepOneFragment) fragment;
+        if (fragment instanceof CreateOrganizationStepOneFragment) {
+            CreateOrganizationStepOneFragment createOrganizationStepOneFragment = (CreateOrganizationStepOneFragment) fragment;
             createOrganizationStepOneFragment.setOnNextButtonClickListener(this);
         }
 
-        if(fragment instanceof CreateOrganizationStepTwoFragment){
-            CreateOrganizationStepTwoFragment createOrganizationStepTwoFragment=(CreateOrganizationStepTwoFragment) fragment;
+        if (fragment instanceof CreateOrganizationStepTwoFragment) {
+            CreateOrganizationStepTwoFragment createOrganizationStepTwoFragment = (CreateOrganizationStepTwoFragment) fragment;
             createOrganizationStepTwoFragment.setOnFinishButtonClickListener(this);
         }
     }
@@ -128,9 +128,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         if (fragments != null) {
             for (Fragment f : fragments) {
-                if(f instanceof CreateOrganizationStepOneFragment){
-                    f.onActivityResult(requestCode, resultCode, data);
-                }
+                f.onActivityResult(requestCode, resultCode, data);
             }
         }
     }
@@ -141,7 +139,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
         loadingView.setVisibility(View.VISIBLE);
         ScreenDisablerHelper.disableScreenTouch(getWindow());
 
-        this.organizationRequest=organizationRequest;
+        this.organizationRequest = organizationRequest;
 
         //First, we want to upload the image to Firebase, then we can create the organization
         uploadProfileImage();
@@ -150,7 +148,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
 
     private void createNewOrganization(OrganizationRequest newOrganization) {
 
-        organizationService.createOrganization(newOrganization, new Client<Organization>(){
+        organizationService.createOrganization(newOrganization, new Client<Organization>() {
 
             @Override
             public void onResponseSuccess(Organization organization) {
@@ -168,7 +166,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
             public void onResponseError(boolean connectionError, String errorMessage) {
                 loadingView.setVisibility(View.INVISIBLE);
                 ScreenDisablerHelper.enableScreenTouch(getWindow());
-                String textToShow="No fue posible crear una organización. Intente más tarde.";
+                String textToShow = "No fue posible crear una organización. Intente más tarde.";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
             }
 
@@ -194,14 +192,14 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
         finish();
     }
 
-    private void uploadProfileImage(){
+    private void uploadProfileImage() {
         FirebaseStorageService storage = new FirebaseStorageService();
         storage.uploadLocalImage(this, filePath);
     }
 
     @Override
     public void onBackPressed() {
-        filePath=null;
+        filePath = null;
         super.onBackPressed();
     }
 }
