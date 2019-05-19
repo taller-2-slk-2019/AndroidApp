@@ -19,9 +19,12 @@ public interface ChannelApi {
                                     @Query("userToken") String userToken,
                                     @Query("userIsMember") Boolean userIsMember);
 
+    @GET("/channels/{id}")
+    Call<Channel> getChannelInfo(@Path("id") Integer channelId);
+
     @POST("/channels")
     Call<Channel> createChannel(@Query("userToken") String userToken, @Body ChannelRequest channel);
 
     @POST("/channels/{channelId}/users")
-    Call<Void> addUserToChannel(@Path("channelId")Integer channelId, @Query("userToken") String userToken);
+    Call<Void> addUserToChannel(@Path("channelId") Integer channelId, @Query("userToken") String userToken);
 }

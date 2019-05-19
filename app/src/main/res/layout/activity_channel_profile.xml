@@ -52,8 +52,10 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/channel_name"
+            style="@style/CreationForm.TextInputLayout.Text.Profile"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:focusable="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -72,8 +74,10 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/channel_description"
+            style="@style/CreationForm.TextInputLayout.Text.Profile"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:focusable="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -92,8 +96,10 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/channel_welcome"
+            style="@style/CreationForm.TextInputLayout.Text.Profile"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:focusable="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -112,8 +118,10 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/channel_type"
+            style="@style/CreationForm.TextInputLayout.Text.Profile"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:focusable="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <include

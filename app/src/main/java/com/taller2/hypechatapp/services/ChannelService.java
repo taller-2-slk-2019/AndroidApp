@@ -25,7 +25,7 @@ public class ChannelService extends RestService {
     }
 
     public void getChannelsByOrganizationAndUser(Integer organizationId, final Client client) {
-        channelApi.getChannels(organizationId, FirebaseAuthService.getCurrentUserToken(),Boolean.TRUE).enqueue(new Callback<List<Channel>>() {
+        channelApi.getChannels(organizationId, FirebaseAuthService.getCurrentUserToken(), Boolean.TRUE).enqueue(new Callback<List<Channel>>() {
             @Override
             public void onResponse(Call<List<Channel>> call, Response<List<Channel>> response) {
                 manageSuccessResponse(response, SERVICE_TAG, client);
@@ -38,8 +38,22 @@ public class ChannelService extends RestService {
         });
     }
 
+    public void getChannelInfo(Integer channelId, final Client client) {
+        channelApi.getChannelInfo(channelId).enqueue(new Callback<Channel>() {
+            @Override
+            public void onResponse(Call<Channel> call, Response<Channel> response) {
+                manageSuccessResponse(response, SERVICE_TAG, client);
+            }
+
+            @Override
+            public void onFailure(Call<Channel> call, Throwable t) {
+                manageFailure(SERVICE_TAG, t, client);
+            }
+        });
+    }
+
     public void getPublicChannelsByOrganizationAndUser(Integer organizationId, final Client client) {
-        channelApi.getChannels(organizationId, FirebaseAuthService.getCurrentUserToken(),Boolean.FALSE).enqueue(new Callback<List<Channel>>() {
+        channelApi.getChannels(organizationId, FirebaseAuthService.getCurrentUserToken(), Boolean.FALSE).enqueue(new Callback<List<Channel>>() {
             @Override
             public void onResponse(Call<List<Channel>> call, Response<List<Channel>> response) {
                 manageSuccessResponse(response, SERVICE_TAG, client);
@@ -67,7 +81,7 @@ public class ChannelService extends RestService {
     }
 
     public void addUserToChannel(Integer channelId, final Client client) {
-        channelApi.addUserToChannel(channelId,FirebaseAuthService.getCurrentUserToken()).enqueue(new Callback<Void>() {
+        channelApi.addUserToChannel(channelId, FirebaseAuthService.getCurrentUserToken()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 manageSuccessResponse(response, SERVICE_TAG, client);
