@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
@@ -23,11 +21,10 @@ import com.taller2.hypechatapp.ui.fragments.CreateOrganizationStepTwoFragment;
 import java.util.List;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-public class CreateOrganizationActivity extends AppCompatActivity implements
+public class CreateOrganizationActivity extends BaseActivity implements
         CreateOrganizationStepOneFragment.OnNextButtonClickListener,
         CreateOrganizationStepTwoFragment.OnFinishButtonClickListener, FirebaseStorageUploadInterface {
 
@@ -36,7 +33,6 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
     private Uri filePath = null;
     private CreateOrganizationStepOneFragment createOrganizationStepOneFragment;
     private CreateOrganizationStepTwoFragment createOrganizationStepTwoFragment;
-    private ProgressBar loadingView;
     private UserManagerPreferences preferences;
 
     @Override
@@ -50,7 +46,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
     }
 
     private void setUpUI() {
-        loadingView = findViewById(R.id.loading);
+        loading = findViewById(R.id.loading);
     }
 
     private void setUpInitials() {
@@ -136,8 +132,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
     @Override
     public void onFinishButtonClick(OrganizationRequest organizationRequest) {
 
-        loadingView.setVisibility(View.VISIBLE);
-        ScreenDisablerHelper.disableScreenTouch(getWindow());
+        showLoading();
 
         this.organizationRequest = organizationRequest;
 
@@ -152,8 +147,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
 
             @Override
             public void onResponseSuccess(Organization organization) {
-                loadingView.setVisibility(View.INVISIBLE);
-                ScreenDisablerHelper.enableScreenTouch(getWindow());
+                hideLoading();
                 Toast.makeText(getContext(), "Woow! Organización creada", Toast.LENGTH_LONG).show();
                 preferences.saveSelectedOrganization(organization.getId());
                 Intent intent = new Intent(CreateOrganizationActivity.this, ChatActivity.class);
@@ -164,8 +158,7 @@ public class CreateOrganizationActivity extends AppCompatActivity implements
 
             @Override
             public void onResponseError(boolean connectionError, String errorMessage) {
-                loadingView.setVisibility(View.INVISIBLE);
-                ScreenDisablerHelper.enableScreenTouch(getWindow());
+                hideLoading();
                 String textToShow = "No fue posible crear una organización. Intente más tarde.";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
             }

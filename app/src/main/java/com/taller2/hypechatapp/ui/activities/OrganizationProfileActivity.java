@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,14 +18,10 @@ import com.taller2.hypechatapp.model.roles.RoleFactory;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.OrganizationService;
-import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class OrganizationProfileActivity extends AppCompatActivity {
+public class OrganizationProfileActivity extends BaseActivity {
     private OrganizationService organizationService;
     private TextView name, description, welcomeMessage;
-    private ProgressBar loading;
     private ImageView profilePicture;
     private UserManagerPreferences prefs;
 
@@ -81,16 +76,6 @@ public class OrganizationProfileActivity extends AppCompatActivity {
                 return OrganizationProfileActivity.this;
             }
         });
-    }
-
-    private void showLoading() {
-        loading.setVisibility(View.VISIBLE);
-        ScreenDisablerHelper.disableScreenTouch(getWindow());
-    }
-
-    private void hideLoading() {
-        loading.setVisibility(View.GONE);
-        ScreenDisablerHelper.enableScreenTouch(getWindow());
     }
 
     private void editOrganization() {
