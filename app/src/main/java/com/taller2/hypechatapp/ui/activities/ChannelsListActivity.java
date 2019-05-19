@@ -92,27 +92,26 @@ public class ChannelsListActivity extends BaseActivity implements ChannelListAct
         DialogService.showConfirmDialog(this, "Seguro que desea eliminar el canal?", new DialogConfirm() {
             @Override
             public void onConfirm() {
-                /*showLoading();
-                channeService.removeUser(preferences.getSelectedOrganization(),
-                        user.getId(), new Client<Void>() {
+                showLoading();
+                channelService.deleteChannel(channel.getId(), new Client<Void>() {
                             @Override
                             public void onResponseSuccess(Void responseBody) {
                                 hideLoading();
-                                usersAdapter.removeUser(user);
-                                Toast.makeText(getContext(), "Usuario eliminado", Toast.LENGTH_LONG).show();
+                                channelsAdapter.removeChannel(channel);
+                                Toast.makeText(getContext(), "Canal eliminado", Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public void onResponseError(boolean connectionError, String errorMessage) {
                                 hideLoading();
-                                Toast.makeText(getContext(), "No se pudo eliminar el usuario", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), "No se pudo eliminar el canal", Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public Context getContext() {
                                 return ChannelsListActivity.this;
                             }
-                        });*/
+                        });
             }
         });
     }
