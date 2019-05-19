@@ -93,4 +93,18 @@ public class ChannelService extends RestService {
             }
         });
     }
+
+    public void abandonChannel(Integer channelId, final Client client) {
+        channelApi.abandonChannel(channelId, FirebaseAuthService.getCurrentUserToken()).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                manageSuccessResponse(response, SERVICE_TAG, client);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                manageFailure(SERVICE_TAG, t, client);
+            }
+        });
+    }
 }

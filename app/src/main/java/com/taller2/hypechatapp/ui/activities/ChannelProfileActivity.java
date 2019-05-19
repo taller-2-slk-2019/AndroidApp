@@ -1,6 +1,7 @@
 package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -127,7 +128,28 @@ public class ChannelProfileActivity extends AppCompatActivity {
     }
 
     private void abandonChannel() {
-        //TODO do something
+        showLoading();
+        channelService.abandonChannel(preferences.getSelectedChannel(), new Client<Void>() {
+            @Override
+            public void onResponseSuccess(Void responseBody) {
+                hideLoading();
+                Toast.makeText(getContext(), "Has abandonado el canal: " + name.getText(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getContext(), ChatActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onResponseError(boolean connectionError, String errorMessage) {
+                hideLoading();
+                Toast.makeText(getContext(), "No se pudo abandonar el canal", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public Context getContext() {
+                return ChannelProfileActivity.this;
+            }
+        });
     }
 
     private void editChannel() {

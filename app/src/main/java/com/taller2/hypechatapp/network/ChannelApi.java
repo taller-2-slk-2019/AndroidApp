@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -27,4 +28,7 @@ public interface ChannelApi {
 
     @POST("/channels/{channelId}/users")
     Call<Void> addUserToChannel(@Path("channelId") Integer channelId, @Query("userToken") String userToken);
+
+    @DELETE("/channels/{channelId}/users")
+    Call<Void> abandonChannel(@Path("channelId") Integer channelId, @Query("userToken") String userToken);
 }
