@@ -25,6 +25,7 @@ public class DialogService {
                         listener.onConfirm();
                     }
                 })
+                .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
 }
