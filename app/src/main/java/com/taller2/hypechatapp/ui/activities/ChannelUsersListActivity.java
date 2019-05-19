@@ -16,7 +16,9 @@ import com.taller2.hypechatapp.components.DialogConfirm;
 import com.taller2.hypechatapp.components.DialogService;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.User;
+import com.taller2.hypechatapp.model.roles.RoleFactory;
 import com.taller2.hypechatapp.network.Client;
+import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
 
 import java.util.List;
@@ -32,6 +34,7 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
     private UsersListAdapter usersAdapter;
     private ChannelService channelService;
     private TextView noUsersText;
+    private UserManagerPreferences prefs;
     private int channelId;
 
     @Override
@@ -45,6 +48,7 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
         }
 
         channelService = new ChannelService();
+        prefs = new UserManagerPreferences(this);
 
         setUpView();
     }
@@ -70,7 +74,9 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
         rvUsers.setAdapter(usersAdapter);
 
         FloatingActionButton addUserButton = findViewById(R.id.addUserButton);
-        addUserButton.show();
+        if (RoleFactory.getRole(prefs.getOrganizationRole()).hasChannelsPermissions()) {
+            addUserButton.show();
+        }
         addUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
