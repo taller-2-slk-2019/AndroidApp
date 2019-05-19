@@ -8,6 +8,8 @@ import android.widget.Toast;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.UserListActionListener;
 import com.taller2.hypechatapp.adapters.UsersListAdapter;
+import com.taller2.hypechatapp.components.DialogConfirm;
+import com.taller2.hypechatapp.components.DialogService;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
@@ -83,27 +85,32 @@ public class UsersListActivity extends BaseActivity implements UserListActionLis
 
     @Override
     public void onUserDeleted(final User user) {
-        showLoading();
-        organizationService.removeUser(preferences.getSelectedOrganization(),
-                user.getId(), new Client<Void>() {
-                    @Override
-                    public void onResponseSuccess(Void responseBody) {
-                        hideLoading();
-                        usersAdapter.removeUser(user);
-                        Toast.makeText(getContext(), "Usuario eliminado", Toast.LENGTH_LONG).show();
-                    }
+        DialogService.showConfirmDialog(this, "Seguro que desea eliminar al usuario de la organización?", new DialogConfirm() {
+            @Override
+            public void onConfirm() {
+                showLoading();
+                organizationService.removeUser(preferences.getSelectedOrganization(),
+                        user.getId(), new Client<Void>() {
+                            @Override
+                            public void onResponseSuccess(Void responseBody) {
+                                hideLoading();
+                                usersAdapter.removeUser(user);
+                                Toast.makeText(getContext(), "Usuario eliminado", Toast.LENGTH_LONG).show();
+                            }
 
-                    @Override
-                    public void onResponseError(boolean connectionError, String errorMessage) {
-                        hideLoading();
-                        Toast.makeText(getContext(), "No se pudo eliminar el usuario", Toast.LENGTH_LONG).show();
-                    }
+                            @Override
+                            public void onResponseError(boolean connectionError, String errorMessage) {
+                                hideLoading();
+                                Toast.makeText(getContext(), "No se pudo eliminar el usuario", Toast.LENGTH_LONG).show();
+                            }
 
-                    @Override
-                    public Context getContext() {
-                        return UsersListActivity.this;
-                    }
-                });
+                            @Override
+                            public Context getContext() {
+                                return UsersListActivity.this;
+                            }
+                        });
+            }
+        });
     }
 
     @Override
