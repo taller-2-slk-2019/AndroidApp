@@ -64,4 +64,9 @@ public class OrganizationService extends RestService {
         organizationApi.removeUser(organizationId, userId, FirebaseAuthService.getCurrentUserToken())
                 .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
     }
+
+    public void abandonOrganization(int organizationId, final Client client) {
+        organizationApi.abandonOrganization(organizationId, FirebaseAuthService.getCurrentUserToken())
+                .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
+    }
 }
