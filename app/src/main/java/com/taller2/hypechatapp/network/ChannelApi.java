@@ -22,6 +22,9 @@ public interface ChannelApi {
                                     @Query("userToken") String userToken,
                                     @Query("userIsMember") Boolean userIsMember);
 
+    @GET("/channels")
+    Call<List<Channel>> getAllOrganizationChannels(@Query("organizationId") Integer organizationId);
+
     @GET("/channels/{id}")
     Call<Channel> getChannelInfo(@Path("id") Integer channelId);
 

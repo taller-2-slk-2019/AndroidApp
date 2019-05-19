@@ -78,6 +78,10 @@
             android:name=".ui.activities.ChannelUsersListActivity"
             android:label="@string/channel_users_list_title"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.ChannelsListActivity"
+            android:label="@string/channel_list_title"
+            android:screenOrientation="portrait" />
         <activity android:name=".ui.activities.ChooseLocationActivity" />
 
         <meta-data

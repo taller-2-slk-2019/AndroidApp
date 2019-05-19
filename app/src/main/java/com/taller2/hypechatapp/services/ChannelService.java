@@ -27,6 +27,11 @@ public class ChannelService extends RestService {
                 .enqueue(new NetworkCallback<List<Channel>>(SERVICE_TAG, client));
     }
 
+    public void getAllOrganizationChannels(Integer organizationId, final Client client) {
+        channelApi.getAllOrganizationChannels(organizationId)
+                .enqueue(new NetworkCallback<List<Channel>>(SERVICE_TAG, client));
+    }
+
     public void getChannelUsers(Integer channelId, final Client client) {
         channelApi.getChannelUsers(channelId)
                 .enqueue(new NetworkCallback<List<User>>(SERVICE_TAG, client));

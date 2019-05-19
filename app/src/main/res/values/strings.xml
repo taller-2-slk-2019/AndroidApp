@@ -68,6 +68,7 @@
     <string name="description_organization_profile">Descripción</string>
     <string name="welcome_organization_profile">Mensaje de bienvenida</string>
     <string name="organization_users_list_title">Usuarios de la organización</string>
+    <string name="channel_list_title">Lista de Canales</string>
 
     <!-- login and register view -->
     <string name="facebook_app_id">318283042209713</string>

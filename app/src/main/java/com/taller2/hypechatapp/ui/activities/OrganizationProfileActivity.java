@@ -193,7 +193,8 @@ public class OrganizationProfileActivity extends BaseActivity {
     }
 
     private void showChannels() {
-        // TODO do something
+        Intent intent = new Intent(this, ChannelsListActivity.class);
+        startActivity(intent);
     }
 
 }
