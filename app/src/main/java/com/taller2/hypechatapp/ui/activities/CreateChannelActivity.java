@@ -20,6 +20,8 @@ import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
 import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 
+import org.greenrobot.eventbus.EventBus;
+
 import androidx.appcompat.widget.Toolbar;
 
 public class CreateChannelActivity extends BaseActivity {
@@ -127,7 +129,7 @@ public class CreateChannelActivity extends BaseActivity {
 
                 showLoading();
                 ChannelRequest channelRequest = createRequest();
-                if (channelId > 0){
+                if (channelId > 0) {
                     editChannel(channelRequest);
                 } else {
                     createChannel(channelRequest);
@@ -142,6 +144,7 @@ public class CreateChannelActivity extends BaseActivity {
             public void onResponseSuccess(Void responseBody) {
                 hideLoading();
                 Toast.makeText(getContext(), "Woow! Canal editado", Toast.LENGTH_LONG).show();
+                EventBus.getDefault().post(getChannel());
             }
 
             @Override
@@ -236,6 +239,16 @@ public class CreateChannelActivity extends BaseActivity {
         channelRequest.organizationId = preferences.getSelectedOrganization();
 
         return channelRequest;
+    }
+
+    private Channel getChannel() {
+        Channel channel = new Channel();
+        channel.setId(channelId);
+        channel.setName(channelName.getText().toString());
+        channel.setDescription(description.getText().toString());
+        channel.setIsPublic(channelPrivacy.isChecked());
+        channel.setWelcome(welcome.getText().toString());
+        return channel;
     }
 
     private void showError(boolean connectionError) {

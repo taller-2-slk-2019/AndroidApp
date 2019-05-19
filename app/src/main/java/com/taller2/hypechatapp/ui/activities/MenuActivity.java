@@ -158,6 +158,9 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onJoinChannelEvent(Channel channel) {
         channelsAdapter.add(channel);
+        if (channel.getId().equals(userManagerPreferences.getSelectedChannel())){
+            toolbar.setTitle(channel.getName());
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

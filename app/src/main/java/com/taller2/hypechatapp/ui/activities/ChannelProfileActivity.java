@@ -35,6 +35,11 @@ public class ChannelProfileActivity extends BaseActivity {
 
         setUpView();
     }
+    @Override
+    public void onResume(){
+        super.onResume();
+        initializeChannel();
+    }
 
     private void setUpView() {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -47,7 +52,6 @@ public class ChannelProfileActivity extends BaseActivity {
         loading = findViewById(R.id.loading);
 
         setUpButtons();
-        initializeChannel();
     }
 
     private void initializeChannel() {
