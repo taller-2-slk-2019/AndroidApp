@@ -1,6 +1,7 @@
 package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.UserListActionListener;
 import com.taller2.hypechatapp.adapters.UsersListAdapter;
+import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
@@ -141,5 +143,14 @@ public class UsersListActivity extends AppCompatActivity implements UserListActi
                         return UsersListActivity.this;
                     }
                 });
+    }
+
+    @Override
+    public void onUserSelected(User user) {
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        if (!FirebaseAuthService.isCurrentUser(user)) {
+            intent.putExtra(UserProfileActivity.USER_ID_KEY, user.getId());
+        }
+        startActivity(intent);
     }
 }

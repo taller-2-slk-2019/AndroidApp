@@ -44,14 +44,21 @@ public class ListUserViewHolder extends RecyclerView.ViewHolder {
         userName = itemView.findViewById(R.id.username);
         profile = itemView.findViewById(R.id.profile_image_view);
         rolesSpinner = itemView.findViewById(R.id.rolesSpinner);
-
         deleteButton = itemView.findViewById(R.id.deleteUserButton);
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 deleteButtonClick();
             }
         });
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userSelected();
+            }
+        });
+
 
         roles = RoleFactory.getRolesList();
         rolesSpinner.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, roles));
@@ -75,6 +82,10 @@ public class ListUserViewHolder extends RecyclerView.ViewHolder {
         listener.onUserRoleChanged(user, selectedRole);
     }
 
+    private void userSelected() {
+        listener.onUserSelected(user);
+    }
+
     private void initializeRolesSpinner() {
         String userRole = RoleTranslator.translateToSpanish(user.getRole());
         rolesSpinner.setSelection(((ArrayAdapter) rolesSpinner.getAdapter()).getPosition(userRole), false);
@@ -95,7 +106,7 @@ public class ListUserViewHolder extends RecyclerView.ViewHolder {
 
     private void checkUserRole() {
         Role role = RoleFactory.getRole(prefs.getOrganizationRole());
-        boolean isCurrentUser = user.getEmail().equals(FirebaseAuthService.getCurrentUser().getEmail());
+        boolean isCurrentUser = FirebaseAuthService.isCurrentUser(user);
 
         deleteButton.setVisibility(role.hasUsersPermissions() && !isCurrentUser ? View.VISIBLE : View.GONE);
         rolesSpinner.setEnabled(role.hasOrganizationPermissions() && !isCurrentUser);
