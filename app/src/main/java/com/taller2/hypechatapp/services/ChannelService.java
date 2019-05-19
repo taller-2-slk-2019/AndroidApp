@@ -3,6 +3,7 @@ package com.taller2.hypechatapp.services;
 
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.Channel;
+import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.ChannelApi;
 import com.taller2.hypechatapp.network.Client;
@@ -24,6 +25,11 @@ public class ChannelService extends RestService {
     public void getChannelsByOrganizationAndUser(Integer organizationId, final Client client) {
         channelApi.getChannels(organizationId, FirebaseAuthService.getCurrentUserToken(), Boolean.TRUE)
                 .enqueue(new NetworkCallback<List<Channel>>(SERVICE_TAG, client));
+    }
+
+    public void getChannelUsers(Integer channelId, final Client client) {
+        channelApi.getChannelUsers(channelId)
+                .enqueue(new NetworkCallback<List<User>>(SERVICE_TAG, client));
     }
 
     public void getChannelInfo(Integer channelId, final Client client) {

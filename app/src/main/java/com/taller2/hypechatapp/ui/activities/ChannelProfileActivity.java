@@ -117,7 +117,10 @@ public class ChannelProfileActivity extends BaseActivity {
     }
 
     private void showChannelUsers() {
-        //TODO do something
+        Intent intent = new Intent(this, ChannelUsersListActivity.class);
+        intent.putExtra(ChannelUsersListActivity.CHANNEL_ID_KEY, preferences.getSelectedChannel());
+        //TODO refactor to allow non selected channel edition
+        startActivity(intent);
     }
 
     private void abandonChannel() {

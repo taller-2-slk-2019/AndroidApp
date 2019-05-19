@@ -184,7 +184,7 @@ public class OrganizationProfileActivity extends BaseActivity {
     }
 
     private void showUsersList() {
-        Intent intent = new Intent(this, UsersListActivity.class);
+        Intent intent = new Intent(this, OrganizationUsersListActivity.class);
         startActivity(intent);
     }
 

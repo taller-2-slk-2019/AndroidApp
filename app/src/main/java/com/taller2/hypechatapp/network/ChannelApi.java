@@ -1,6 +1,7 @@
 package com.taller2.hypechatapp.network;
 
 import com.taller2.hypechatapp.model.Channel;
+import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.model.ChannelRequest;
 
 import java.util.List;
@@ -31,6 +32,9 @@ public interface ChannelApi {
     Call<Void> editChannel(@Path("id") Integer channelId,
                            @Query("userToken") String userToken,
                            @Body ChannelRequest channel);
+
+    @GET("/channels/{channelId}/users")
+    Call<List<User>> getChannelUsers(@Path("channelId") Integer channelId);
 
     @POST("/channels/{channelId}/users")
     Call<Void> addUserToChannel(@Path("channelId") Integer channelId, @Query("userToken") String userToken);
