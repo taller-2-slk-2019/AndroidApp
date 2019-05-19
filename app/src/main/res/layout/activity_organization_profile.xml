@@ -102,12 +102,26 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toTopOf="@+id/organizationAbandon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@mipmap/baseline_edit_white_18" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/organizationAbandon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
         android:clickable="true"
         android:focusable="true"
+        app:backgroundTint="@android:color/holo_red_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@mipmap/baseline_edit_white_18" />
+        app:srcCompat="@drawable/ic_door_white" />
 
     <include
         android:id="@+id/include4"
