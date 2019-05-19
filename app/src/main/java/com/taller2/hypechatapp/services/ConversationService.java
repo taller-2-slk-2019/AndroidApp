@@ -5,13 +5,10 @@ import com.taller2.hypechatapp.model.Conversation;
 import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.ConversationApi;
+import com.taller2.hypechatapp.network.NetworkCallback;
 import com.taller2.hypechatapp.network.model.ConversationRequest;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ConversationService extends RestService {
 
@@ -24,30 +21,12 @@ public class ConversationService extends RestService {
     }
 
     public void getConversationsByOrganizationAndUser(Integer organizationId, final Client client) {
-        conversationApi.getConversations(organizationId, FirebaseAuthService.getCurrentUserToken()).enqueue(new Callback<List<Conversation>>() {
-            @Override
-            public void onResponse(Call<List<Conversation>> call, Response<List<Conversation>> response) {
-                manageSuccessResponse(response, SERVICE_TAG, client);
-            }
-
-            @Override
-            public void onFailure(Call<List<Conversation>> call, Throwable t) {
-                manageFailure(SERVICE_TAG, t, client);
-            }
-        });
+        conversationApi.getConversations(organizationId, FirebaseAuthService.getCurrentUserToken())
+                .enqueue(new NetworkCallback<List<Conversation>>(SERVICE_TAG, client));
     }
 
     public void createConversation(ConversationRequest conversation, final Client client) {
-        conversationApi.createConversation(FirebaseAuthService.getCurrentUserToken(), conversation).enqueue(new Callback<Conversation>() {
-            @Override
-            public void onResponse(Call<Conversation> call, Response<Conversation> response) {
-                manageSuccessResponse(response, SERVICE_TAG, client);
-            }
-
-            @Override
-            public void onFailure(Call<Conversation> call, Throwable t) {
-                manageFailure(SERVICE_TAG, t, client);
-            }
-        });
+        conversationApi.createConversation(FirebaseAuthService.getCurrentUserToken(), conversation)
+                .enqueue(new NetworkCallback<Conversation>(SERVICE_TAG, client));
     }
 }
