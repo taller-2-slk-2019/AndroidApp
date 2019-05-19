@@ -112,6 +112,7 @@
     <!-- Channel profile -->
     <string name="channel_profile_title">Información del canal</string>
     <string name="channel_users_list_title">Usuarios del canal</string>
+    <string name="channel_new_users_list_title">Agregar usuarios al canal</string>
 
 
 </resources>
