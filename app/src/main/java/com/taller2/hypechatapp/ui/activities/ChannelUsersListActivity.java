@@ -1,20 +1,21 @@
 package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
-import com.taller2.hypechatapp.adapters.OrganizationUsersListAdapter;
+import com.taller2.hypechatapp.adapters.ChannelUsersListAdapter;
 import com.taller2.hypechatapp.adapters.UserListActionListener;
 import com.taller2.hypechatapp.adapters.UsersListAdapter;
+import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
-import com.taller2.hypechatapp.services.OrganizationService;
 
 import java.util.List;
 
@@ -28,7 +29,6 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
 
     private UsersListAdapter usersAdapter;
     private ChannelService channelService;
-    private OrganizationService organizationService;
     private UserManagerPreferences preferences;
     private TextView noUsersText;
     private int channelId;
@@ -43,7 +43,6 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
             channelId = getIntent().getExtras().getInt(CHANNEL_ID_KEY, 0);
         }
 
-        organizationService = new OrganizationService();
         channelService = new ChannelService();
         preferences = new UserManagerPreferences(this);
 
@@ -61,7 +60,7 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         rvUsers.setLayoutManager(layoutManager);
 
-        usersAdapter = new OrganizationUsersListAdapter(this);
+        usersAdapter = new ChannelUsersListAdapter(this);
         rvUsers.setAdapter(usersAdapter);
 
         getUsers();
@@ -128,34 +127,15 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
 
     @Override
     public void onUserRoleChanged(User user, String selectedRole) {
-        /*showLoading();
-        organizationService.updateUserRole(preferences.getSelectedOrganization(),
-                user.getId(), selectedRole, new Client<Void>() {
-                    @Override
-                    public void onResponseSuccess(Void responseBody) {
-                        hideLoading();
-                        Toast.makeText(getContext(), "Rol actualizado", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onResponseError(boolean connectionError, String errorMessage) {
-                        hideLoading();
-                        Toast.makeText(getContext(), "No se pudo actualizar el rol", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public Context getContext() {
-                        return ChannelUsersListActivity.this;
-                    }
-                });*/
+        // Do nothing
     }
 
     @Override
     public void onUserSelected(User user) {
-        /*Intent intent = new Intent(this, UserProfileActivity.class);
+        Intent intent = new Intent(this, UserProfileActivity.class);
         if (!FirebaseAuthService.isCurrentUser(user)) {
             intent.putExtra(UserProfileActivity.USER_ID_KEY, user.getId());
         }
-        startActivity(intent);*/
+        startActivity(intent);
     }
 }
