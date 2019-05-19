@@ -89,7 +89,7 @@ public class OrganizationUsersListActivity extends BaseActivity implements UserL
     }
 
     @Override
-    public void onUserDeleted(final User user) {
+    public void onUserAction(final User user) {
         DialogService.showConfirmDialog(this, "Seguro que desea eliminar al usuario de la organización?", new DialogConfirm() {
             @Override
             public void onConfirm() {
