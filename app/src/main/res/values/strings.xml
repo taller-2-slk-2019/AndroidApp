@@ -106,5 +106,8 @@
     <string name="action_search">Search</string>
     <string name="search_hint">Escribe el nombre</string>
 
+    <!-- Public channels -->
+    <string name="channel_profile_title">Información del canal</string>
+
 
 </resources>

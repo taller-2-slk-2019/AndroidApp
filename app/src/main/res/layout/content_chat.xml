@@ -41,6 +41,19 @@ tools:showIn="@layout/app_bar_main">
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="visible">
 
+        <ImageView
+            android:id="@+id/channelInfoButton"
+            android:layout_width="50dp"
+            android:layout_height="0dp"
+            android:layout_weight="0"
+            android:clickable="true"
+            android:src="@drawable/ic_info"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+            app:layout_constraintHorizontal_bias="0.88"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout"
+            app:layout_constraintTop_toTopOf="@+id/linearLayout" />
+
         <EditText
             android:id="@+id/newMessageText"
             android:layout_width="0dp"

@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,13 +29,11 @@ import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
-import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
-public class RegisterActivity extends AppCompatActivity implements FirebaseStorageUploadInterface {
+public class RegisterActivity extends BaseActivity implements FirebaseStorageUploadInterface {
 
     private TextView email;
     private TextView password;
@@ -47,7 +44,6 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
     private ImagePicker imagePicker;
 
     private TextView errorText;
-    private ProgressBar loading;
 
     private FirebaseAuth mAuth;
     private UserService userService;
@@ -84,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
                 if (!validateUserInput())
                     return;
 
-                loading();
+                showLoading();
                 registerFirebaseUser();
             }
         });
@@ -161,10 +157,9 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
         finish();
     }
 
-    private void loading() {
-        loading.setVisibility(View.VISIBLE);
-        ScreenDisablerHelper.disableScreenTouch(getWindow());
+    protected void showLoading() {
         errorText.setVisibility(View.INVISIBLE);
+        super.showLoading();
     }
 
     private void showError(boolean firebase, boolean connectionError) {
@@ -177,13 +172,11 @@ public class RegisterActivity extends AppCompatActivity implements FirebaseStora
             Toast.makeText(this, R.string.error_register_connection, Toast.LENGTH_LONG).show();
         }
 
-
         enableRegisterEdition();
     }
 
     private void enableRegisterEdition() {
-        loading.setVisibility(View.INVISIBLE);
-        ScreenDisablerHelper.enableScreenTouch(getWindow());
+        hideLoading();
         FirebaseAuthService.logOut(this);
     }
 

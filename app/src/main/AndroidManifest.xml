@@ -67,6 +67,10 @@
             android:label="@string/organization_profile_title"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activities.ChannelProfileActivity"
+            android:label="@string/channel_profile_title"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activities.UsersListActivity"
             android:label="@string/users_list_title"
             android:screenOrientation="portrait" />
@@ -111,13 +115,15 @@
             android:name=".ui.activities.ReceivedInvitationsActivity"
             android:label="@string/received_invitations_label"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activities.WelcomeActivity" />
+        <activity
+            android:name=".ui.activities.WelcomeActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.activities.PublicChannelsActivity"
+        <activity
+            android:name=".ui.activities.PublicChannelsActivity"
             android:label="@string/public_channels_label"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />

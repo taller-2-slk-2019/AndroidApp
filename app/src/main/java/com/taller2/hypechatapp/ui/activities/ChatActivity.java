@@ -45,6 +45,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
     private String selectedTextType = Message.TYPE_TEXT;
     private ImageView sendTextButton;
     private ImageView sendCodeButton;
+    private ImageView channelInfoButton;
 
     private MessageService messageService;
 
@@ -118,6 +119,14 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
         messagesListContainer = findViewById(R.id.chatMessagesListContainer);
         newMessageContainer = findViewById(R.id.newMessageContainer);
         noChannelContainer = findViewById(R.id.noChannelContainer);
+        channelInfoButton = findViewById(R.id.channelInfoButton);
+        channelInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatActivity.this, ChannelProfileActivity.class);
+                startActivity(intent);
+            }
+        });
         setUpMessagesListUI();
         setUpNewMessageUI();
     }
@@ -127,6 +136,7 @@ public class ChatActivity extends MenuActivity implements SwipeRefreshLayout.OnR
             messagesListContainer.setVisibility(View.VISIBLE);
             newMessageContainer.setVisibility(View.VISIBLE);
             noChannelContainer.setVisibility(View.INVISIBLE);
+            channelInfoButton.setVisibility(selectedChannel > 0 ? View.VISIBLE : View.GONE);
         } else {
             messagesListContainer.setVisibility(View.INVISIBLE);
             newMessageContainer.setVisibility(View.INVISIBLE);

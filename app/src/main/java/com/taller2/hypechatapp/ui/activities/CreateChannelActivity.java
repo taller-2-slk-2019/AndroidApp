@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -22,17 +21,18 @@ import com.taller2.hypechatapp.services.ChannelService;
 import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class CreateChannelActivity extends AppCompatActivity {
+public class CreateChannelActivity extends BaseActivity {
+
+    public static final String CHANNEL_ID_KEY = "CHANNEL_ID_KEY";
 
     private ChannelService channelService;
     private TextInputEditText channelName, description, welcome;
     private Switch channelPrivacy;
     private Button btnCreate;
-    private ProgressBar loading;
     private UserManagerPreferences preferences;
+    private int channelId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,10 @@ public class CreateChannelActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_create_channel);
         findViewById(R.id.layoutContainer).setOnTouchListener(new OnViewTouchListener());
+
+        if (getIntent().getExtras() != null) {
+            channelId = getIntent().getExtras().getInt(CHANNEL_ID_KEY, 0);
+        }
 
         preferences = new UserManagerPreferences(this);
         channelService = new ChannelService();
@@ -113,14 +117,12 @@ public class CreateChannelActivity extends AppCompatActivity {
                     return;
                 }
 
-                loading.setVisibility(View.VISIBLE);
-                ScreenDisablerHelper.disableScreenTouch(getWindow());
+                showLoading();
                 ChannelRequest channelRequest = createRequest();
                 channelService.createChannel(channelRequest, new Client<Channel>() {
                     @Override
                     public void onResponseSuccess(Channel responseBody) {
-                        loading.setVisibility(View.INVISIBLE);
-                        ScreenDisablerHelper.enableScreenTouch(getWindow());
+                        hideLoading();
                         Toast.makeText(getContext(), "Woow! Canal creado", Toast.LENGTH_LONG).show();
                         preferences.saveSelectedChannel(responseBody.getId());
                         Intent intent = new Intent(CreateChannelActivity.this, ChatActivity.class);
@@ -131,8 +133,7 @@ public class CreateChannelActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponseError(boolean connectionError, String errorMessage) {
-                        loading.setVisibility(View.INVISIBLE);
-                        ScreenDisablerHelper.enableScreenTouch(getWindow());
+                        hideLoading();
                         if (connectionError) {
                             String textToShow = "No fue posible crear un canal. Intente más tarde.";
                             Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();

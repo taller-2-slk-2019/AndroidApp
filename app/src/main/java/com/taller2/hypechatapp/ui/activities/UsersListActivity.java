@@ -3,8 +3,6 @@ package com.taller2.hypechatapp.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
@@ -16,21 +14,18 @@ import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.OrganizationService;
 import com.taller2.hypechatapp.services.UserService;
-import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class UsersListActivity extends AppCompatActivity implements UserListActionListener {
+public class UsersListActivity extends BaseActivity implements UserListActionListener {
 
     private UsersListAdapter usersAdapter;
     private UserService userService;
     private OrganizationService organizationService;
-    private ProgressBar loading;
     private UserManagerPreferences preferences;
 
     @Override
@@ -84,16 +79,6 @@ public class UsersListActivity extends AppCompatActivity implements UserListActi
                 return UsersListActivity.this;
             }
         });
-    }
-
-    private void showLoading() {
-        loading.setVisibility(View.VISIBLE);
-        ScreenDisablerHelper.disableScreenTouch(getWindow());
-    }
-
-    private void hideLoading() {
-        loading.setVisibility(View.INVISIBLE);
-        ScreenDisablerHelper.enableScreenTouch(getWindow());
     }
 
     @Override
