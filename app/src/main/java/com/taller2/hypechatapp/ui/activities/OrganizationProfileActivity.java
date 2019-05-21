@@ -29,6 +29,7 @@ public class OrganizationProfileActivity extends AppCompatActivity {
     private ProgressBar loading;
     private ImageView profilePicture;
     private UserManagerPreferences prefs;
+    private Organization organization;
 
 
     @Override
@@ -61,6 +62,7 @@ public class OrganizationProfileActivity extends AppCompatActivity {
         organizationService.getOrganizationProfile(prefs.getSelectedOrganization(), new Client<Organization>() {
             @Override
             public void onResponseSuccess(Organization responseBody) {
+                organization=responseBody;
                 hideLoading();
                 name.setText(responseBody.getName());
                 description.setText(responseBody.getDescription());
@@ -163,7 +165,10 @@ public class OrganizationProfileActivity extends AppCompatActivity {
     }
 
     private void showUsersMap() {
-        // TODO do something
+
+        Intent intent = new Intent(this, UsersLocationActivity.class);
+        intent.putExtra("organization",organization);
+        startActivity(intent);
     }
 
     private void showChannels() {
