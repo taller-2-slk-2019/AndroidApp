@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,10 +19,9 @@ import com.taller2.hypechatapp.services.UserService;
 
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class UserProfileActivity extends AppCompatActivity {
+public class UserProfileActivity extends BaseActivity {
     public static final String USER_ID_KEY = "USER_ID_KEY";
 
     private UserService userService;
@@ -33,7 +31,6 @@ public class UserProfileActivity extends AppCompatActivity {
     private ImageView profilePicture;
     private String imageUrl;
     private TextView msgSent, organizations;
-    private ProgressBar loading;
     private int userId = 0;
 
     @Override
@@ -55,7 +52,7 @@ public class UserProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         loading = findViewById(R.id.loading);
-        loading.setVisibility(View.VISIBLE);
+        showLoading();
 
         name = findViewById(R.id.name_profile);
         username = findViewById(R.id.username_profile);
@@ -114,7 +111,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 email.setText(responseBody.getEmail());
                 imageUrl = responseBody.getPicture();
                 PicassoLoader.load(getApplicationContext(), String.format("%s?type=large", imageUrl), R.drawable.default_user, profilePicture);
-                loading.setVisibility(View.INVISIBLE);
+                hideLoading();
             }
 
             @Override

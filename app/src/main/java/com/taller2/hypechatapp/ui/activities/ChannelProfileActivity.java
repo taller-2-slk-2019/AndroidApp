@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -16,16 +15,13 @@ import com.taller2.hypechatapp.model.roles.RoleFactory;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
-import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class ChannelProfileActivity extends AppCompatActivity {
+public class ChannelProfileActivity extends BaseActivity {
 
     private ChannelService channelService;
     private TextInputEditText name, description, welcome, type;
-    private ProgressBar loading;
     private UserManagerPreferences preferences;
 
     @Override
@@ -52,16 +48,6 @@ public class ChannelProfileActivity extends AppCompatActivity {
 
         setUpButtons();
         initializeChannel();
-    }
-
-    private void showLoading() {
-        loading.setVisibility(View.VISIBLE);
-        ScreenDisablerHelper.disableScreenTouch(getWindow());
-    }
-
-    private void hideLoading() {
-        loading.setVisibility(View.GONE);
-        ScreenDisablerHelper.enableScreenTouch(getWindow());
     }
 
     private void initializeChannel() {
@@ -153,6 +139,9 @@ public class ChannelProfileActivity extends AppCompatActivity {
     }
 
     private void editChannel() {
-        //TODO do something
+        Intent intent = new Intent(this, CreateChannelActivity.class);
+        intent.putExtra(CreateChannelActivity.CHANNEL_ID_KEY, preferences.getSelectedChannel());
+        //TODO refactor to allow non selected channel edition
+        startActivity(intent);
     }
 }

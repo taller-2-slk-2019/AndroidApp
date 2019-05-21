@@ -10,7 +10,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,16 +23,14 @@ import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
-import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 
 import java.util.Arrays;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class EditUserProfileActivity extends AppCompatActivity implements FirebaseStorageUploadInterface {
+public class EditUserProfileActivity extends BaseActivity implements FirebaseStorageUploadInterface {
     private UserService userService;
     private TextInputEditText name, username;
     private TextView email;
@@ -43,7 +40,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
     private ImagePicker imagePicker;
     private Uri filePath;
     private String imageUrl;
-    private ProgressBar loading;
     private List<String> currentUserValues;
 
     @Override
@@ -61,7 +57,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
         setSupportActionBar(toolbar);
 
         loading = findViewById(R.id.loading);
-        loading.setVisibility(View.VISIBLE);
+        showLoading();
 
         name = findViewById(R.id.name_profile);
         username = findViewById(R.id.username_profile);
@@ -69,7 +65,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
         profilePicture = findViewById(R.id.profile_image_view);
         editImage = findViewById(R.id.floating_btn_edit);
 
-        imagePicker =  new ImagePicker(this, editImage, profilePicture, null);
+        imagePicker = new ImagePicker(this, editImage, profilePicture, null);
         updateUserBtn = findViewById(R.id.btn_update_user);
         updateUserBtn.setEnabled(false);
 
@@ -88,7 +84,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
                 updateUserBtn.setEnabled(false);
                 updatePreviousValues();
 
-                loading.setVisibility(View.INVISIBLE);
+                hideLoading();
             }
 
             @Override
@@ -109,7 +105,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
             @Override
             public void onClick(View v) {
                 if (isValidForm(username, name)) {
-                    showLoading(true);
+                    showLoading();
                     if (filePath != null) {
                         uploadProfileImage();
                     } else {
@@ -151,7 +147,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
         userService.updateUser(userRequest, new Client<Void>() {
             @Override
             public void onResponseSuccess(Void nothing) {
-                showLoading(false);
+                hideLoading();
                 updateUserBtn.setEnabled(false);
                 updatePreviousValues();
                 Toast.makeText(getContext(), "Usuario actualizado ok!", Toast.LENGTH_LONG).show();
@@ -165,7 +161,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
                     username.setError("El nombre de usuario ya existe");
                     username.requestFocus();
                 }
-                showLoading(false);
+                hideLoading();
             }
 
             @Override
@@ -203,31 +199,20 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
         Toast.makeText(this, "Error subiendo la imágen", Toast.LENGTH_LONG).show();
     }
 
-    private void showLoading(boolean isLoading) {
-        if (isLoading) {
-            loading.setVisibility(View.VISIBLE);
-            ScreenDisablerHelper.disableScreenTouch(getWindow());
-            imagePicker.disable();
-        } else {
-            loading.setVisibility(View.INVISIBLE);
-            ScreenDisablerHelper.enableScreenTouch(getWindow());
-            imagePicker.enable();
-
-
-        }
-    }
-
-
     public class ChangesDetection implements TextWatcher {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
 
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) { }
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (currentUserValues != null && !currentUserValues.contains(s.toString())) { updateUserBtn.setEnabled(true); }
+            if (currentUserValues != null && !currentUserValues.contains(s.toString())) {
+                updateUserBtn.setEnabled(true);
+            }
         }
     }
 }

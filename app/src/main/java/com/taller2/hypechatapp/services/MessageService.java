@@ -5,12 +5,9 @@ import com.taller2.hypechatapp.model.Message;
 import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.MessageApi;
+import com.taller2.hypechatapp.network.NetworkCallback;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MessageService extends RestService {
 
@@ -23,31 +20,13 @@ public class MessageService extends RestService {
     }
 
     public void getChatMessages(Integer channelId, Integer conversationId, Integer offset, final Client client) {
-        messagesApi.getChannelMessages(channelId, conversationId, offset).enqueue(new Callback<List<Message>>() {
-            @Override
-            public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
-                manageSuccessResponse(response, SERVICE_TAG, client);
-            }
-
-            @Override
-            public void onFailure(Call<List<Message>> call, Throwable t) {
-                manageFailure(SERVICE_TAG, t, client);
-            }
-        });
+        messagesApi.getChannelMessages(channelId, conversationId, offset)
+                .enqueue(new NetworkCallback<List<Message>>(SERVICE_TAG, client));
     }
 
     public void createMessage(Message message, final Client client) {
-        messagesApi.createMessage(FirebaseAuthService.getCurrentUserToken(), message).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                manageSuccessResponse(response, SERVICE_TAG, client);
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                manageFailure(SERVICE_TAG, t, client);
-            }
-        });
+        messagesApi.createMessage(FirebaseAuthService.getCurrentUserToken(), message)
+                .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
     }
 
 }
