@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,13 +30,11 @@ import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
-import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private CallbackManager callbackManager;
     private FirebaseAuth mAuth;
@@ -45,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText emailText;
     private TextInputEditText passwordText;
-    private ProgressBar loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
             if (!validateUserInput()) {
                 return;
             }
-            loading();
+            showLoading();
             firebaseNormalLogin();
             }
         });
@@ -96,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         fbLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loading();
+                showLoading();
             }
         });
 
@@ -130,15 +126,9 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void loading(){
+    protected void showLoading(){
         passwordText.setError(null);
-        loading.setVisibility(View.VISIBLE);
-        ScreenDisablerHelper.disableScreenTouch(getWindow());
-    }
-
-    private void hideLoading(){
-        loading.setVisibility(View.INVISIBLE);
-        ScreenDisablerHelper.enableScreenTouch(getWindow());
+        super.showLoading();
     }
 
     private void showError(boolean facebookError){

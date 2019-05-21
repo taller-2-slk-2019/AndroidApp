@@ -1,12 +1,5 @@
 package com.taller2.hypechatapp.ui.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
@@ -27,16 +19,20 @@ import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
 
-
 import java.util.List;
 
-public class PublicChannelsActivity extends AppCompatActivity implements IMenuItemsClick {
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+public class PublicChannelsActivity extends BaseActivity implements IMenuItemsClick {
 
     private ChannelService channelService;
     protected UserManagerPreferences userManagerPreferences;
 
     private MenuChannelsAdapter channelsAdapter;
-    private ProgressBar loadingView;
     private RecyclerView publicChannelsRecyclerView;
     private SearchView searchView;
 
@@ -55,12 +51,12 @@ public class PublicChannelsActivity extends AppCompatActivity implements IMenuIt
     }
 
     private void getPublicChannels() {
-        loadingView.setVisibility(View.VISIBLE);
+        showLoading();
 
         channelService.getPublicChannelsByOrganizationAndUser(userManagerPreferences.getSelectedOrganization(), new Client<List<Channel>>() {
             @Override
             public void onResponseSuccess(List<Channel> channels) {
-                loadingView.setVisibility(View.INVISIBLE);
+                hideLoading();
                 if(channels.isEmpty()){
                     findViewById(R.id.public_channels_empty_text_view).setVisibility(View.VISIBLE);
                 } else {
@@ -70,7 +66,7 @@ public class PublicChannelsActivity extends AppCompatActivity implements IMenuIt
 
             @Override
             public void onResponseError(boolean connectionError, String errorMessage) {
-                loadingView.setVisibility(View.INVISIBLE);
+                hideLoading();
                 String textToShow="No fue posible obtener los canales. Intente más tarde.";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
                 finish();
@@ -95,17 +91,17 @@ public class PublicChannelsActivity extends AppCompatActivity implements IMenuIt
         Toolbar toolbar = findViewById(R.id.toolbar_public_channels);
         setSupportActionBar(toolbar);
 
-        loadingView = findViewById(R.id.loading);
+        loading = findViewById(R.id.loading);
     }
 
     @Override
     public void onChannelClick(final Channel channel) {
-        loadingView.setVisibility(View.VISIBLE);
+        showLoading();
         channelService.addUserToChannel(channel.getId(), new Client<Void>(){
 
             @Override
             public void onResponseSuccess(Void responseBody) {
-                loadingView.setVisibility(View.INVISIBLE);
+                hideLoading();
                 userManagerPreferences.saveSelectedChannel(channel.getId());
                 Intent intent = new Intent(PublicChannelsActivity.this, ChatActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -115,7 +111,7 @@ public class PublicChannelsActivity extends AppCompatActivity implements IMenuIt
 
             @Override
             public void onResponseError(boolean connectionError, String errorMessage) {
-                loadingView.setVisibility(View.INVISIBLE);
+                hideLoading();
                 Toast.makeText(getContext(), "Ocurrió un error al intentar acceder al canal público." +
                         " Intente más tarde.", Toast.LENGTH_LONG).show();
             }
