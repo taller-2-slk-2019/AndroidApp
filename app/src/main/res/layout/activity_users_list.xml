@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.OrganizationUsersListActivity">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addUserButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_plus_fab"
+        tools:visibility="visible" />
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/layout_toolbar"
         android:layout_width="match_parent"

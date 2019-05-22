@@ -7,18 +7,13 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.taller2.hypechatapp.R;
-import com.taller2.hypechatapp.adapters.ChannelUsersListAdapter;
+import com.taller2.hypechatapp.adapters.ChannelNewUsersListAdapter;
 import com.taller2.hypechatapp.adapters.UserListActionListener;
 import com.taller2.hypechatapp.adapters.UsersListAdapter;
-import com.taller2.hypechatapp.components.DialogConfirm;
-import com.taller2.hypechatapp.components.DialogService;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.User;
-import com.taller2.hypechatapp.model.roles.RoleFactory;
 import com.taller2.hypechatapp.network.Client;
-import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
 
 import java.util.List;
@@ -27,14 +22,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ChannelUsersListActivity extends BaseActivity implements UserListActionListener {
+public class ChannelNewUsersListActivity extends BaseActivity implements UserListActionListener {
 
     public static final String CHANNEL_ID_KEY = "CHANNEL_ID_KEY";
 
     private UsersListAdapter usersAdapter;
     private ChannelService channelService;
     private TextView noUsersText;
-    private UserManagerPreferences prefs;
     private int channelId;
 
     @Override
@@ -48,7 +42,6 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
         }
 
         channelService = new ChannelService();
-        prefs = new UserManagerPreferences(this);
 
         setUpView();
     }
@@ -70,21 +63,8 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         rvUsers.setLayoutManager(layoutManager);
 
-        usersAdapter = new ChannelUsersListAdapter(this);
+        usersAdapter = new ChannelNewUsersListAdapter(this);
         rvUsers.setAdapter(usersAdapter);
-
-        FloatingActionButton addUserButton = findViewById(R.id.addUserButton);
-        if (RoleFactory.getRole(prefs.getOrganizationRole()).hasChannelsPermissions()) {
-            addUserButton.show();
-        }
-        addUserButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ChannelUsersListActivity.this, ChannelNewUsersListActivity.class);
-                intent.putExtra(ChannelNewUsersListActivity.CHANNEL_ID_KEY, channelId);
-                startActivity(intent);
-            }
-        });
     }
 
     private void checkUsersCount() {
@@ -94,7 +74,7 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
     private void getUsers() {
         showLoading();
 
-        channelService.getChannelUsers(channelId, new Client<List<User>>() {
+        channelService.getChannelNewUsers(channelId, new Client<List<User>>() {
             @Override
             public void onResponseSuccess(List<User> users) {
                 usersAdapter.setUsers(users);
@@ -105,43 +85,38 @@ public class ChannelUsersListActivity extends BaseActivity implements UserListAc
             @Override
             public void onResponseError(boolean connectionError, String errorMessage) {
                 hideLoading();
-                String textToShow = "No se pudo obtener los usuarios del canal";
+                String textToShow = "No se pudo obtener los usuarios de la organización";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
             }
 
             @Override
             public Context getContext() {
-                return ChannelUsersListActivity.this;
+                return ChannelNewUsersListActivity.this;
             }
         });
     }
 
     @Override
     public void onUserAction(final User user) {
-        DialogService.showConfirmDialog(this, "Seguro que desea eliminar al usuario del canal?", new DialogConfirm() {
+        showLoading();
+        channelService.addUserToChannel(channelId, user.getId(), new Client<Void>() {
             @Override
-            public void onConfirm() {
-                showLoading();
-                channelService.removeUser(channelId, user.getId(), new Client<Void>() {
-                    @Override
-                    public void onResponseSuccess(Void responseBody) {
-                        hideLoading();
-                        usersAdapter.removeUser(user);
-                        checkUsersCount();
-                        Toast.makeText(getContext(), "Usuario eliminado", Toast.LENGTH_LONG).show();
-                    }
+            public void onResponseSuccess(Void responseBody) {
+                hideLoading();
+                usersAdapter.removeUser(user);
+                checkUsersCount();
+                Toast.makeText(getContext(), "Usuario agregado al canal", Toast.LENGTH_LONG).show();
+            }
 
-                    @Override
-                    public void onResponseError(boolean connectionError, String errorMessage) {
-                        hideLoading();
-                        Toast.makeText(getContext(), "No se pudo eliminar el usuario", Toast.LENGTH_LONG).show();
-                    }
+            @Override
+            public void onResponseError(boolean connectionError, String errorMessage) {
+                hideLoading();
+                Toast.makeText(getContext(), "No se pudo agregar al usuario", Toast.LENGTH_LONG).show();
+            }
 
-                    @Override
-                    public Context getContext() {
-                        return ChannelUsersListActivity.this;
-                    }
-                });
+            @Override
+            public Context getContext() {
+                return ChannelNewUsersListActivity.this;
             }
         });
     }

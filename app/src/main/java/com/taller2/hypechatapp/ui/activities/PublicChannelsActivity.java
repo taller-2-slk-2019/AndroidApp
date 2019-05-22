@@ -97,7 +97,7 @@ public class PublicChannelsActivity extends BaseActivity implements IMenuItemsCl
     @Override
     public void onChannelClick(final Channel channel) {
         showLoading();
-        channelService.addUserToChannel(channel.getId(), new Client<Void>(){
+        channelService.joinChannel(channel.getId(), new Client<Void>(){
 
             @Override
             public void onResponseSuccess(Void responseBody) {

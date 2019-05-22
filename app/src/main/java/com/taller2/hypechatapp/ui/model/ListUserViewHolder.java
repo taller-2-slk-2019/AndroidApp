@@ -23,21 +23,29 @@ public abstract class ListUserViewHolder extends RecyclerView.ViewHolder {
     protected User user;
     protected Context context;
     protected UserManagerPreferences prefs;
-    protected Button deleteButton;
+    protected Button actionButton;
 
-    public ListUserViewHolder(@NonNull View itemView, UserListActionListener listener) {
+    public ListUserViewHolder(@NonNull View itemView, UserListActionListener listener, Action action) {
         super(itemView);
         context = itemView.getContext();
         prefs = new UserManagerPreferences(context);
         this.listener = listener;
         userName = itemView.findViewById(R.id.username);
         profile = itemView.findViewById(R.id.profile_image_view);
-        deleteButton = itemView.findViewById(R.id.deleteUserButton);
+        switch (action) {
+            case ADD:
+                actionButton = itemView.findViewById(R.id.addUserButton);
+                break;
+            case DELETE:
+                actionButton = itemView.findViewById(R.id.deleteUserButton);
+                break;
+        }
 
-        deleteButton.setOnClickListener(new View.OnClickListener() {
+        actionButton.setVisibility(View.VISIBLE);
+        actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteButtonClick();
+                actionButtonClick();
             }
         });
         profile.setOnClickListener(new View.OnClickListener() {
@@ -57,11 +65,15 @@ public abstract class ListUserViewHolder extends RecyclerView.ViewHolder {
 
     protected abstract void bindUser(User user);
 
-    private void deleteButtonClick() {
-        listener.onUserDeleted(user);
+    private void actionButtonClick() {
+        listener.onUserAction(user);
     }
 
     private void userSelected() {
         listener.onUserSelected(user);
+    }
+
+    enum Action {
+        DELETE, ADD
     }
 }

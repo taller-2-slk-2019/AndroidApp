@@ -23,7 +23,7 @@ public class OrganizationListUserViewHolder extends ListUserViewHolder {
     private List<String> roles;
 
     public OrganizationListUserViewHolder(@NonNull View itemView, UserListActionListener listener) {
-        super(itemView, listener);
+        super(itemView, listener, Action.DELETE);
         rolesSpinner = itemView.findViewById(R.id.rolesSpinner);
         rolesSpinner.setVisibility(View.VISIBLE);
 
@@ -64,7 +64,7 @@ public class OrganizationListUserViewHolder extends ListUserViewHolder {
         Role role = RoleFactory.getRole(prefs.getOrganizationRole());
         boolean isCurrentUser = FirebaseAuthService.isCurrentUser(user);
 
-        deleteButton.setVisibility(role.hasUsersPermissions() && !isCurrentUser ? View.VISIBLE : View.GONE);
+        actionButton.setVisibility(role.hasUsersPermissions() && !isCurrentUser ? View.VISIBLE : View.GONE);
         rolesSpinner.setEnabled(role.hasOrganizationPermissions() && !isCurrentUser);
     }
 }

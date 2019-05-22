@@ -9,6 +9,7 @@ import com.taller2.hypechatapp.network.ChannelApi;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.network.NetworkCallback;
 import com.taller2.hypechatapp.network.model.ChannelRequest;
+import com.taller2.hypechatapp.network.model.UserIdRequest;
 
 import java.util.List;
 
@@ -37,6 +38,11 @@ public class ChannelService extends RestService {
                 .enqueue(new NetworkCallback<List<User>>(SERVICE_TAG, client));
     }
 
+    public void getChannelNewUsers(Integer channelId, final Client client) {
+        channelApi.getChannelNewUsers(channelId)
+                .enqueue(new NetworkCallback<List<User>>(SERVICE_TAG, client));
+    }
+
     public void getChannelInfo(Integer channelId, final Client client) {
         channelApi.getChannelInfo(channelId)
                 .enqueue(new NetworkCallback<Channel>(SERVICE_TAG, client));
@@ -57,8 +63,14 @@ public class ChannelService extends RestService {
                 .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
     }
 
-    public void addUserToChannel(Integer channelId, final Client client) {
-        channelApi.addUserToChannel(channelId, FirebaseAuthService.getCurrentUserToken())
+    public void joinChannel(Integer channelId, final Client client) {
+        channelApi.joinChannel(channelId, FirebaseAuthService.getCurrentUserToken())
+                .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
+    }
+
+    public void addUserToChannel(Integer channelId, Integer userId, final Client client) {
+        UserIdRequest req = new UserIdRequest(userId);
+        channelApi.addUserToChannel(channelId, FirebaseAuthService.getCurrentUserToken(), req)
                 .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
     }
 
