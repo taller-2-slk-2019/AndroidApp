@@ -10,6 +10,8 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.taller2.hypechatapp.R;
+import com.taller2.hypechatapp.components.DialogConfirm;
+import com.taller2.hypechatapp.components.DialogService;
 import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.model.roles.RoleFactory;
 import com.taller2.hypechatapp.network.Client;
@@ -35,8 +37,9 @@ public class ChannelProfileActivity extends BaseActivity {
 
         setUpView();
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         initializeChannel();
     }
@@ -118,26 +121,31 @@ public class ChannelProfileActivity extends BaseActivity {
     }
 
     private void abandonChannel() {
-        showLoading();
-        channelService.abandonChannel(preferences.getSelectedChannel(), new Client<Void>() {
+        DialogService.showConfirmDialog(this, "Seguro que desea abandonar el canal?", new DialogConfirm() {
             @Override
-            public void onResponseSuccess(Void responseBody) {
-                hideLoading();
-                Toast.makeText(getContext(), "Has abandonado el canal: " + name.getText(), Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getContext(), ChatActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
+            public void onConfirm() {
+                showLoading();
+                channelService.abandonChannel(preferences.getSelectedChannel(), new Client<Void>() {
+                    @Override
+                    public void onResponseSuccess(Void responseBody) {
+                        hideLoading();
+                        Toast.makeText(getContext(), "Has abandonado el canal: " + name.getText(), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getContext(), ChatActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
 
-            @Override
-            public void onResponseError(boolean connectionError, String errorMessage) {
-                hideLoading();
-                Toast.makeText(getContext(), "No se pudo abandonar el canal", Toast.LENGTH_LONG).show();
-            }
+                    @Override
+                    public void onResponseError(boolean connectionError, String errorMessage) {
+                        hideLoading();
+                        Toast.makeText(getContext(), "No se pudo abandonar el canal", Toast.LENGTH_LONG).show();
+                    }
 
-            @Override
-            public Context getContext() {
-                return ChannelProfileActivity.this;
+                    @Override
+                    public Context getContext() {
+                        return ChannelProfileActivity.this;
+                    }
+                });
             }
         });
     }
