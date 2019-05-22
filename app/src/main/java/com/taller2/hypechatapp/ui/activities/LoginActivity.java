@@ -1,12 +1,15 @@
 package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +21,7 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.FirebaseNetworkException;
@@ -32,9 +36,11 @@ import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
 import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
+import com.taller2.hypechatapp.ui.listeners.CustomDialogListener;
 import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
@@ -63,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setNormalLogin(){
-        Button loginButton = findViewById(R.id.login_button);
+        final Button loginButton = findViewById(R.id.login_button);
         emailText = findViewById(R.id.email_text);
         passwordText = findViewById(R.id.password_text);
 
@@ -73,6 +79,32 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        TextView forgotPassword = findViewById(R.id.forgot_account_text);
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                builder.setTitle(getString(R.string.input_email_recovery));
+
+                final EditText input = new EditText(LoginActivity.this);
+                input.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                builder.setView(input);
+
+                builder.setPositiveButton(getString(R.string.send_email_recovery), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // logic moved in CustomDialogListener
+                    }
+                });
+
+                AlertDialog dialog = builder.show();
+
+                Button dialogButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                dialogButton.setOnClickListener(new CustomDialogListener(dialog, input));
             }
         });
 
