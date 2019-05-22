@@ -4,16 +4,14 @@ import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.Client;
+import com.taller2.hypechatapp.network.NetworkCallback;
 import com.taller2.hypechatapp.network.OrganizationApi;
 import com.taller2.hypechatapp.network.model.AcceptInvitationRequest;
 import com.taller2.hypechatapp.network.model.OrganizationRequest;
+import com.taller2.hypechatapp.network.model.RoleRequest;
 import com.taller2.hypechatapp.network.model.UserInvitationRequest;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class OrganizationService extends RestService {
 
@@ -25,77 +23,45 @@ public class OrganizationService extends RestService {
         this.organizationApi = ApiClient.getInstance().getOrganizationClient();
     }
 
-    public void getOrganizationProfile(Integer organizationId, final Client client){
-        organizationApi.getOrganizationProfile(organizationId).enqueue(new Callback<Organization>() {
-            @Override
-            public void onResponse(Call<Organization> call, Response<Organization> response) {
-                manageSuccessResponse(response,SERVICE_TAG,client);
-            }
-
-            @Override
-            public void onFailure(Call<Organization> call, Throwable t) {
-                manageFailure(SERVICE_TAG,t,client);
-            }
-        });
+    public void getOrganizationProfile(Integer organizationId, final Client client) {
+        organizationApi.getOrganizationProfile(organizationId)
+                .enqueue(new NetworkCallback<Organization>(SERVICE_TAG, client));
     }
 
-    public void createOrganization(OrganizationRequest organizationRequest, final Client client){
-        organizationApi.createOrganization(FirebaseAuthService.getCurrentUserToken(), organizationRequest).enqueue(new Callback<Organization>(){
-
-            @Override
-            public void onResponse(Call<Organization> call, Response<Organization> response) {
-                manageSuccessResponse(response,SERVICE_TAG,client);
-            }
-
-            @Override
-            public void onFailure(Call<Organization> call, Throwable t) {
-                manageFailure(SERVICE_TAG,t,client);
-            }
-        });
+    public void createOrganization(OrganizationRequest organizationRequest, final Client client) {
+        organizationApi.createOrganization(FirebaseAuthService.getCurrentUserToken(), organizationRequest)
+                .enqueue(new NetworkCallback<Organization>(SERVICE_TAG, client));
     }
 
-    public void getOrganizationsByUser(final Client client){
+    public void getOrganizationsByUser(final Client client) {
         String userToken = FirebaseAuthService.getCurrentUserToken();
-        organizationApi.getOrganizationsByUser(userToken).enqueue(new Callback<List<Organization>>() {
-            @Override
-            public void onResponse(Call<List<Organization>> call, Response<List<Organization>> response) {
-                manageSuccessResponse(response, this.getClass().getSimpleName(), client);
-            }
-
-            @Override
-            public void onFailure(Call<List<Organization>> call, Throwable t) {
-                manageFailure(this.getClass().getSimpleName(), t, client);
-            }
-        });
+        organizationApi.getOrganizationsByUser(userToken)
+                .enqueue(new NetworkCallback<List<Organization>>(SERVICE_TAG, client));
     }
 
-    public void inviteUsers(Integer organizationId, UserInvitationRequest userInvitationRequest, final Client client){
-        organizationApi.inviteUsers(organizationId,userInvitationRequest).enqueue(new Callback<List<String>>(){
-
-            @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                manageSuccessResponse(response,SERVICE_TAG,client);
-            }
-
-            @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
-                manageFailure(SERVICE_TAG,t,client);
-            }
-        });
+    public void inviteUsers(Integer organizationId, UserInvitationRequest userInvitationRequest, final Client client) {
+        organizationApi.inviteUsers(organizationId, userInvitationRequest, FirebaseAuthService.getCurrentUserToken())
+                .enqueue(new NetworkCallback<List<String>>(SERVICE_TAG, client));
     }
 
-    public void acceptInvitation(AcceptInvitationRequest acceptInvitationRequest, final Client client){
-        organizationApi.acceptInvitation(acceptInvitationRequest).enqueue(new Callback<Void>(){
+    public void acceptInvitation(AcceptInvitationRequest acceptInvitationRequest, final Client client) {
+        organizationApi.acceptInvitation(acceptInvitationRequest)
+                .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
+    }
 
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                manageSuccessResponse(response,SERVICE_TAG,client);
-            }
+    public void updateOrganization(int organizationId, Organization organization, final Client client) {
+        organizationApi.updateOrganization(organizationId, FirebaseAuthService.getCurrentUserToken(), organization)
+                .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
+    }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                manageFailure(SERVICE_TAG,t,client);
-            }
-        });
+    public void updateUserRole(int organizationId, int userId, String role, final Client client) {
+        RoleRequest roleRequest = new RoleRequest(role);
+        organizationApi.updateUserRole(organizationId, userId, FirebaseAuthService.getCurrentUserToken(), roleRequest)
+                .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
+    }
+
+    public void removeUser(int organizationId, int userId, final Client client) {
+        organizationApi.removeUser(organizationId, userId, FirebaseAuthService.getCurrentUserToken())
+                .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
     }
 }

@@ -1,10 +1,12 @@
 
 package com.taller2.hypechatapp.model;
 
-import java.io.Serializable;
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.taller2.hypechatapp.model.roles.RoleFactory;
+
+import java.io.Serializable;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 
@@ -148,5 +150,12 @@ public class Organization implements Serializable {
     @Override
     public String toString() {
         return name;
+    }
+
+    public String getRole() {
+        if (userOrganizations != null) {
+            return userOrganizations.getRole();
+        }
+        return RoleFactory.ROLE_MEMBER;
     }
 }

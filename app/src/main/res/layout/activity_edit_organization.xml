@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/layout_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="150sp"
+        android:background="@drawable/register_bg"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_edit_profile"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/editOrganizationImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:elevation="10dp"
+        android:src="@drawable/default_user"
+        app:civ_border_color="@color/whiteHype"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editOrganizationNameLayout"
+        style="@style/CreationForm.TextInputLayout.Profile"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/hint_organization_name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_toolbar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editOrganizationName"
+            style="@style/CreationForm.TextInputLayout.Text.Profile" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editOrganizationDescriptionLayout"
+        style="@style/CreationForm.TextInputLayout.Profile"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/hint_organization_description"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editOrganizationNameLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editOrganizationDescription"
+            style="@style/CreationForm.TextInputLayout.Text.Profile" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editOrganizationWelcomeLayout"
+        style="@style/CreationForm.TextInputLayout.Profile"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/organization_welcome_message_hint"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editOrganizationDescriptionLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editOrganizationWelcome"
+            style="@style/CreationForm.TextInputLayout.Text.Profile" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <include
+        android:id="@+id/location_picker"
+        layout="@layout/location_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editOrganizationWelcomeLayout" />
+
+    <Button
+        android:id="@+id/editOrganizationUpdateButton"
+        style="@style/ButtonPrimaryAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:text="@string/btn_update_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/location_picker" />
+
+    <include
+        layout="@layout/progress_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/editOrganizationEditImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        app:elevation="100dp"
+        app:fabSize="mini"
+        app:layout_constraintEnd_toStartOf="@+id/editOrganizationImage"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toEndOf="@+id/editOrganizationImage"
+        app:layout_constraintTop_toTopOf="@+id/editOrganizationImage"
+        app:srcCompat="@mipmap/baseline_edit_white_18" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.taller2.hypechatapp.R;
@@ -18,22 +17,19 @@ import com.taller2.hypechatapp.network.model.ConversationRequest;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ConversationService;
 import com.taller2.hypechatapp.services.UserService;
-import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CreateConversationActivity extends AppCompatActivity implements IUserClick {
+public class CreateConversationActivity extends BaseActivity implements IUserClick {
 
     private NewConversationUsersAdapter usersAdapter;
     private UserService userService;
     private ConversationService conversationService;
-    private ProgressBar loading;
     private UserManagerPreferences preferences;
 
     @Override
@@ -66,15 +62,14 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
     }
 
     private void getUsers(){
-        loading.setVisibility(View.VISIBLE);
+        showLoading();
 
         userService.getUsersByOrganization(preferences.getSelectedOrganization(), new Client<List<User>>() {
             @Override
             public void onResponseSuccess(List<User> users) {
                 List<User> filteredUsers = new ArrayList<>();
-                String currentUserEmail = FirebaseAuthService.getCurrentUser().getEmail();
                 for (User user: users){
-                    if (!user.getEmail().equals(currentUserEmail)){
+                    if (!FirebaseAuthService.isCurrentUser(user)){
                         filteredUsers.add(user);
                     }
                 }
@@ -85,13 +80,12 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
                     usersAdapter.setUsers(filteredUsers);
                 }
 
-                loading.setVisibility(View.INVISIBLE);
-                ScreenDisablerHelper.enableScreenTouch(getWindow());
+                hideLoading();
             }
 
             @Override
             public void onResponseError(boolean connectionError, String errorMessage) {
-                loading.setVisibility(View.INVISIBLE);
+                hideLoading();
                 String textToShow = "No se pudo obtener los usuarios de la organización";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
             }
@@ -105,8 +99,7 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
 
     @Override
     public void onUserClick(final User user) {
-        loading.setVisibility(View.VISIBLE);
-        ScreenDisablerHelper.disableScreenTouch(getWindow());
+        showLoading();
 
         ConversationRequest conversation = new ConversationRequest();
         conversation.organizationId = preferences.getSelectedOrganization();
@@ -115,8 +108,7 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
         conversationService.createConversation(conversation, new Client<Conversation>() {
             @Override
             public void onResponseSuccess(Conversation response) {
-                loading.setVisibility(View.INVISIBLE);
-                ScreenDisablerHelper.enableScreenTouch(getWindow());
+                hideLoading();
                 Toast.makeText(getContext(), "Woow! Conversación iniciada con " + user.getName(), Toast.LENGTH_LONG).show();
                 preferences.saveSelectedConversation(response.id);
                 Intent intent = new Intent(CreateConversationActivity.this, ChatActivity.class);
@@ -127,8 +119,7 @@ public class CreateConversationActivity extends AppCompatActivity implements IUs
 
             @Override
             public void onResponseError(boolean connectionError, String errorMessage) {
-                loading.setVisibility(View.INVISIBLE);
-                ScreenDisablerHelper.enableScreenTouch(getWindow());
+                hideLoading();
                 String textToShow = "No fue posible iniciar una conversación. Intente más tarde.";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
             }
