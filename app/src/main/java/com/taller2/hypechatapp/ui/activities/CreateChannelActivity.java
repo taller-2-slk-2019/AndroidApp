@@ -150,7 +150,7 @@ public class CreateChannelActivity extends BaseActivity {
             @Override
             public void onResponseError(boolean connectionError, String errorMessage) {
                 hideLoading();
-                showError(connectionError);
+                showError(connectionError, true);
             }
 
             @Override
@@ -176,7 +176,7 @@ public class CreateChannelActivity extends BaseActivity {
             @Override
             public void onResponseError(boolean connectionError, String errorMessage) {
                 hideLoading();
-                showError(connectionError);
+                showError(connectionError, false);
             }
 
             @Override
@@ -251,9 +251,14 @@ public class CreateChannelActivity extends BaseActivity {
         return channel;
     }
 
-    private void showError(boolean connectionError) {
+    private void showError(boolean connectionError, boolean edit) {
         if (connectionError) {
-            String textToShow = "No fue posible crear un canal. Intente más tarde.";
+            String textToShow = "No fue posible %1$s el canal. Intente más tarde.";
+            if (edit){
+                textToShow = String.format(textToShow, "editar");
+            } else {
+                textToShow = String.format(textToShow, "crear");
+            }
             Toast.makeText(this, textToShow, Toast.LENGTH_LONG).show();
         } else {
             channelName.setError("El nombre del canal ya existe");
