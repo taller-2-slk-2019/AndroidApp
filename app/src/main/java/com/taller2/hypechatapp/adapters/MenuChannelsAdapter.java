@@ -62,14 +62,22 @@ public class MenuChannelsAdapter extends RecyclerView.Adapter<MenuChannelItemVie
     }
 
     private void addOrReplaceChannel(List<Channel> list, Channel channel) {
+        int index = getChannelIndex(list, channel);
+        if (index >= 0) {
+            list.remove(index);
+            list.add(index, channel);
+        } else {
+            list.add(channel);
+        }
+    }
+
+    private int getChannelIndex(List<Channel> list, Channel channel) {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getId().equals(channel.getId())) {
-                list.remove(i);
-                list.add(i, channel);
-                return;
+                return i;
             }
         }
-        list.add(channel);
+        return -1;
     }
 
     @Override
