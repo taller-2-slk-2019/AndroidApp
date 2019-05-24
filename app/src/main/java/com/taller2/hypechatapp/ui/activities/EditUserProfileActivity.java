@@ -37,7 +37,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class EditUserProfileActivity extends BaseActivity implements FirebaseStorageUploadInterface {
@@ -182,32 +181,7 @@ public class EditUserProfileActivity extends BaseActivity implements FirebaseSto
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Log.d(this.getClass().getName(), "Password updated");
-
-                                            userService.updateUser(userRequest, new Client<Void>() {
-                                                @Override
-                                                public void onResponseSuccess(Void nothing) {
-                                                    hideLoading();
-                                                    updateUserBtn.setEnabled(false);
-                                                    updatePreviousValues();
-                                                    Toast.makeText(getContext(), "Usuario actualizado ok!", Toast.LENGTH_LONG).show();
-                                                }
-
-                                                @Override
-                                                public void onResponseError(boolean connectionError, String errorMessage) {
-                                                    if (connectionError) {
-                                                        Toast.makeText(getContext(), "Error al actualizar usuario", Toast.LENGTH_LONG).show();
-                                                    } else {
-                                                        username.setError("El nombre de usuario ya existe");
-                                                        username.requestFocus();
-                                                    }
-                                                    hideLoading();
-                                                }
-
-                                                @Override
-                                                public Context getContext() {
-                                                    return EditUserProfileActivity.this;
-                                                }
-                                            });
+                                            updateUser(userRequest);
 
                                         } else {
                                             Toast.makeText(EditUserProfileActivity.this, "Error: la nueva contraseña debe tener 8 caracteres", Toast.LENGTH_LONG).show();
@@ -221,8 +195,38 @@ public class EditUserProfileActivity extends BaseActivity implements FirebaseSto
                             }
                         }
                     });
+        } else {
+            updateUser(userRequest);
         }
 
+    }
+
+    private void updateUser(User userRequest) {
+        userService.updateUser(userRequest, new Client<Void>() {
+            @Override
+            public void onResponseSuccess(Void nothing) {
+                hideLoading();
+                updateUserBtn.setEnabled(false);
+                updatePreviousValues();
+                Toast.makeText(getContext(), "Usuario actualizado ok!", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onResponseError(boolean connectionError, String errorMessage) {
+                if (connectionError) {
+                    Toast.makeText(getContext(), "Error al actualizar usuario", Toast.LENGTH_LONG).show();
+                } else {
+                    username.setError("El nombre de usuario ya existe");
+                    username.requestFocus();
+                }
+                hideLoading();
+            }
+
+            @Override
+            public Context getContext() {
+                return EditUserProfileActivity.this;
+            }
+        });
     }
 
     @Override
@@ -257,7 +261,7 @@ public class EditUserProfileActivity extends BaseActivity implements FirebaseSto
         String passwordStr = password.getText().toString();
         String newPasswordStr = newPassword.getText().toString();
 
-        return !passwordStr.isEmpty() && !newPasswordStr.isEmpty();
+        return !newPasswordStr.isEmpty();
     }
 
 

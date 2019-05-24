@@ -98,7 +98,7 @@
         style="@style/CreationForm.TextInputLayout.Profile"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Contraseña"
+        android:hint="Contraseña actual"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
