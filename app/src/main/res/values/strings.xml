@@ -102,6 +102,11 @@
     <!-- Other -->
     <string name="image_picker_error">Debe seleccionar una imagen!</string>
     <string name="fail_getting_info">No se pudo obtener toda la información</string>
+    <string name="input_email_recovery">Ingrese su email para reiniciar la contraseña:</string>
+    <string name="send_email_recovery">Enviar correo</string>
+    <string name="invalid_email_recovery">El email ingresado no existe</string>
+    <string name="email_sent_to">Se envió un correo a:</string>
+    <string name="wrong_format">Formato inválido</string>
 
     <!-- Public channels -->
     <string name="public_channels_label">Canales Públicos</string>

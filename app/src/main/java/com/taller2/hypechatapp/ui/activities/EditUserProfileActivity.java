@@ -7,14 +7,22 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.components.ImagePicker;
 import com.taller2.hypechatapp.components.PicassoLoader;
@@ -28,11 +36,13 @@ import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class EditUserProfileActivity extends BaseActivity implements FirebaseStorageUploadInterface {
     private UserService userService;
-    private TextInputEditText name, username;
+    private TextInputEditText name, username, password, newPassword;
     private TextView email;
     private FloatingActionButton editImage;
     private ImageView profilePicture;
@@ -64,6 +74,8 @@ public class EditUserProfileActivity extends BaseActivity implements FirebaseSto
         email = findViewById(R.id.txt_user_email);
         profilePicture = findViewById(R.id.profile_image_view);
         editImage = findViewById(R.id.floating_btn_edit);
+        password = findViewById(R.id.password_text);
+        newPassword = findViewById(R.id.password_text_confirm);
 
         imagePicker = new ImagePicker(this, editImage, profilePicture, null);
         updateUserBtn = findViewById(R.id.btn_update_user);
@@ -117,6 +129,8 @@ public class EditUserProfileActivity extends BaseActivity implements FirebaseSto
 
         name.addTextChangedListener(new ChangesDetection());
         username.addTextChangedListener(new ChangesDetection());
+        password.addTextChangedListener(new ChangesDetection());
+        newPassword.addTextChangedListener(new ChangesDetection());
     }
 
     private boolean isValidForm(TextInputEditText username, TextInputEditText name) {
@@ -130,6 +144,14 @@ public class EditUserProfileActivity extends BaseActivity implements FirebaseSto
             return false;
         }
 
+        String passwordStr = password.getText().toString();
+        String newPasswordStr = newPassword.getText().toString();
+
+        if ((passwordStr.isEmpty() && !newPasswordStr.isEmpty()) || (!passwordStr.isEmpty() && newPasswordStr.isEmpty())) {
+            password.setError("Debe completar Contraseña y Nueva contraseña.");
+            return false;
+        }
+
         return true;
     }
 
@@ -138,37 +160,68 @@ public class EditUserProfileActivity extends BaseActivity implements FirebaseSto
     }
 
     private void updateUser() {
-        User userRequest = new User();
+        final User userRequest = new User();
         userRequest.setName(name.getText().toString());
         userRequest.setUsername(username.getText().toString());
         userRequest.setPicture(imageUrl);
         username.setError(null);
 
-        userService.updateUser(userRequest, new Client<Void>() {
-            @Override
-            public void onResponseSuccess(Void nothing) {
-                hideLoading();
-                updateUserBtn.setEnabled(false);
-                updatePreviousValues();
-                Toast.makeText(getContext(), "Usuario actualizado ok!", Toast.LENGTH_LONG).show();
-            }
+        if (isChangePasswordOk(password, newPassword)) {
 
-            @Override
-            public void onResponseError(boolean connectionError, String errorMessage) {
-                if (connectionError) {
-                    Toast.makeText(getContext(), "Error al actualizar usuario", Toast.LENGTH_LONG).show();
-                } else {
-                    username.setError("El nombre de usuario ya existe");
-                    username.requestFocus();
-                }
-                hideLoading();
-            }
+            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            AuthCredential credential = EmailAuthProvider
+                    .getCredential(user.getEmail(), password.getText().toString());
 
-            @Override
-            public Context getContext() {
-                return EditUserProfileActivity.this;
-            }
-        });
+            user.reauthenticate(credential)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                user.updatePassword(newPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d(this.getClass().getName(), "Password updated");
+
+                                            userService.updateUser(userRequest, new Client<Void>() {
+                                                @Override
+                                                public void onResponseSuccess(Void nothing) {
+                                                    hideLoading();
+                                                    updateUserBtn.setEnabled(false);
+                                                    updatePreviousValues();
+                                                    Toast.makeText(getContext(), "Usuario actualizado ok!", Toast.LENGTH_LONG).show();
+                                                }
+
+                                                @Override
+                                                public void onResponseError(boolean connectionError, String errorMessage) {
+                                                    if (connectionError) {
+                                                        Toast.makeText(getContext(), "Error al actualizar usuario", Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        username.setError("El nombre de usuario ya existe");
+                                                        username.requestFocus();
+                                                    }
+                                                    hideLoading();
+                                                }
+
+                                                @Override
+                                                public Context getContext() {
+                                                    return EditUserProfileActivity.this;
+                                                }
+                                            });
+
+                                        } else {
+                                            Toast.makeText(EditUserProfileActivity.this, "Error: la nueva contraseña debe tener 8 caracteres", Toast.LENGTH_LONG).show();
+                                            hideLoading();
+                                        }
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(EditUserProfileActivity.this, "Error: la constraseña ingresada es incorrecta", Toast.LENGTH_LONG).show();
+                                hideLoading();
+                            }
+                        }
+                    });
+        }
 
     }
 
@@ -198,6 +251,15 @@ public class EditUserProfileActivity extends BaseActivity implements FirebaseSto
     public void onFileUploadError(Exception exception) {
         Toast.makeText(this, "Error subiendo la imágen", Toast.LENGTH_LONG).show();
     }
+
+
+    private boolean isChangePasswordOk(EditText password, EditText newPassword) {
+        String passwordStr = password.getText().toString();
+        String newPasswordStr = newPassword.getText().toString();
+
+        return !passwordStr.isEmpty() && !newPasswordStr.isEmpty();
+    }
+
 
     public class ChangesDetection implements TextWatcher {
         @Override

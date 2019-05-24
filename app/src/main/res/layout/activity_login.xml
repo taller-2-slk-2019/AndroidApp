@@ -108,6 +108,36 @@
         app:layout_constraintStart_toEndOf="@+id/label_no_account_text"
         app:layout_constraintTop_toBottomOf="@+id/login_button_facebook" />
 
+    <TextView
+        android:id="@+id/label_forgot_account_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="110dp"
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="48dp"
+        android:gravity="center_horizontal"
+        android:singleLine="false"
+        android:text="Olvidaste tus contraseña?"
+        android:textColor="@color/whiteHype"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_button_facebook"
+        tools:text="Olvidaste tus contraseña?" />
+
+    <TextView
+        android:id="@+id/forgot_account_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="13dp"
+        android:clickable="true"
+        android:text="Cambiala"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold|italic"
+        app:layout_constraintStart_toEndOf="@+id/label_forgot_account_text"
+        app:layout_constraintTop_toBottomOf="@+id/no_account_text" />
+
     <include
         layout="@layout/progress_bar"
         android:layout_width="match_parent"
