@@ -61,20 +61,20 @@ public class CreateConversationActivity extends BaseActivity implements IUserCli
         getUsers();
     }
 
-    private void getUsers(){
+    private void getUsers() {
         showLoading();
 
         userService.getUsersByOrganization(preferences.getSelectedOrganization(), new Client<List<User>>() {
             @Override
             public void onResponseSuccess(List<User> users) {
                 List<User> filteredUsers = new ArrayList<>();
-                for (User user: users){
-                    if (!FirebaseAuthService.isCurrentUser(user)){
+                for (User user : users) {
+                    if (!FirebaseAuthService.isCurrentUser(user)) {
                         filteredUsers.add(user);
                     }
                 }
 
-                if (filteredUsers.isEmpty()){
+                if (filteredUsers.isEmpty()) {
                     findViewById(R.id.create_conversation_no_users).setVisibility(View.VISIBLE);
                 } else {
                     usersAdapter.setUsers(filteredUsers);

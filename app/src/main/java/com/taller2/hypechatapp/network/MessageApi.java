@@ -14,8 +14,8 @@ public interface MessageApi {
 
     @GET("/messages")
     Call<List<Message>> getChannelMessages(@Query("channelId") Integer channelId,
-                                    @Query("conversationId") Integer conversationId,
-                                    @Query("offset") Integer offset);
+                                           @Query("conversationId") Integer conversationId,
+                                           @Query("offset") Integer offset);
 
     @POST("/messages")
     Call<Void> createMessage(@Query("userToken") String userToken, @Body Message message);

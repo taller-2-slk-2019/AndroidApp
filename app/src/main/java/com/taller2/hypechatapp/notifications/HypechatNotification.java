@@ -22,7 +22,7 @@ public abstract class HypechatNotification {
     protected Context context;
     private String channelName;
 
-    public HypechatNotification(Context context){
+    public HypechatNotification(Context context) {
         channelName = context.getString(R.string.app_name);
         initChannels(context);
         this.context = context;
@@ -30,7 +30,7 @@ public abstract class HypechatNotification {
 
     private Bitmap getLargeIcon() {
         Drawable icon = AppCompatResources.getDrawable(context, R.mipmap.ic_launcher_round);
-        return ((BitmapDrawable)icon).getBitmap();
+        return ((BitmapDrawable) icon).getBitmap();
     }
 
     private void setActivityToOpen() {
@@ -39,7 +39,7 @@ public abstract class HypechatNotification {
         notif.setContentIntent(pendingIntent);
     }
 
-    private void createNotification(){
+    private void createNotification() {
         notif = new NotificationCompat.Builder(context, channelName);
 
         notif.setSmallIcon(R.drawable.ic_chat_white);
@@ -54,10 +54,10 @@ public abstract class HypechatNotification {
         setActivityToOpen();
     }
 
-    public void send(){
+    public void send() {
         createNotification();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify((int)System.currentTimeMillis(), notif.build());
+        notificationManager.notify((int) System.currentTimeMillis(), notif.build());
     }
 
 
@@ -81,7 +81,7 @@ public abstract class HypechatNotification {
 
     protected abstract String getContent();
 
-    protected Intent getIntent(){
+    protected Intent getIntent() {
         return new Intent(context, LoginActivity.class);
     }
 

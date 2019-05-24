@@ -22,7 +22,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 public class ChooseLocationActivity extends FragmentActivity
-        implements OnMapReadyCallback, GoogleMap.OnMapClickListener{
+        implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private LatLng startLocation;
@@ -39,9 +39,9 @@ public class ChooseLocationActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_location);
 
-        startLocation=getIntent().getParcelableExtra("startLocation");
-        if(startLocation==null){
-            startLocation=new LatLng(-34.6131500,-58.3772300);;
+        startLocation = getIntent().getParcelableExtra("startLocation");
+        if (startLocation == null) {
+            startLocation = new LatLng(-34.6131500, -58.3772300);
         }
 
         setUpUi();
@@ -57,7 +57,7 @@ public class ChooseLocationActivity extends FragmentActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ChooseLocationActivity.this, CreateOrganizationActivity.class);
-                intent.putExtra("selectedLocation",marker.getPosition());
+                intent.putExtra("selectedLocation", marker.getPosition());
                 setResult(STEP_CODE, intent);
                 finish();
             }
@@ -67,8 +67,8 @@ public class ChooseLocationActivity extends FragmentActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        map=googleMap;
-        marker=map.addMarker(new MarkerOptions().position(startLocation));
+        map = googleMap;
+        marker = map.addMarker(new MarkerOptions().position(startLocation));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 startLocation, DEFAULT_ZOOM));
 
@@ -87,7 +87,7 @@ public class ChooseLocationActivity extends FragmentActivity
     @Override
     public void onMapClick(LatLng point) {
         map.clear();
-        marker=map.addMarker(new MarkerOptions().position(point));
+        marker = map.addMarker(new MarkerOptions().position(point));
         marker.hideInfoWindow();
     }
 
@@ -148,7 +148,7 @@ public class ChooseLocationActivity extends FragmentActivity
                 map.setMyLocationEnabled(false);
                 map.getUiSettings().setMyLocationButtonEnabled(false);
             }
-        } catch (SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }

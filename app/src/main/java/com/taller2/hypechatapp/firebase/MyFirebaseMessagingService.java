@@ -37,7 +37,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Map<String, String> data = remoteMessage.getData();
             String type = data.get("type");
 
-            switch(type){
+            switch (type) {
                 case "new_message":
                     Log.d(TAG, "handling new message");
                     handleNewMessage(data.get("message"));

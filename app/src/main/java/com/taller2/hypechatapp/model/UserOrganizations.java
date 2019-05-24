@@ -1,4 +1,3 @@
-
 package com.taller2.hypechatapp.model;
 
 import com.google.gson.annotations.Expose;

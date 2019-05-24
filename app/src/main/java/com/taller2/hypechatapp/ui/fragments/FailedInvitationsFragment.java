@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.FailedInvitationsAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -29,9 +28,9 @@ public class FailedInvitationsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        returnView=inflater.inflate(R.layout.fragment_failed_invitations, container, false);
+        returnView = inflater.inflate(R.layout.fragment_failed_invitations, container, false);
 
-        failedInvitations=getArguments().getStringArrayList("failedInvitations");
+        failedInvitations = getArguments().getStringArrayList("failedInvitations");
 
         setUpUI();
         return returnView;

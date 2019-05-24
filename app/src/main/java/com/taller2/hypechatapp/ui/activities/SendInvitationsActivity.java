@@ -1,10 +1,5 @@
 package com.taller2.hypechatapp.ui.activities;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.os.Bundle;
 
 import com.taller2.hypechatapp.R;
@@ -13,6 +8,11 @@ import com.taller2.hypechatapp.ui.fragments.SendInvitationsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class SendInvitationsActivity extends AppCompatActivity implements SendInvitationsFragment.OnSendButtonClickListener {
 
@@ -55,8 +55,8 @@ public class SendInvitationsActivity extends AppCompatActivity implements SendIn
     @Override
     public void onAttachFragment(Fragment fragment) {
         super.onAttachFragment(fragment);
-        if(fragment instanceof SendInvitationsFragment){
-            SendInvitationsFragment sendInvitationsFragment=(SendInvitationsFragment) fragment;
+        if (fragment instanceof SendInvitationsFragment) {
+            SendInvitationsFragment sendInvitationsFragment = (SendInvitationsFragment) fragment;
             sendInvitationsFragment.setOnSendButtonClickListener(this);
         }
 
@@ -65,7 +65,7 @@ public class SendInvitationsActivity extends AppCompatActivity implements SendIn
     @Override
     public void onSendButtonClick(List<String> failedInvitations) {
 
-        failedInvitationsFragment=new FailedInvitationsFragment();
+        failedInvitationsFragment = new FailedInvitationsFragment();
         getIntent().putStringArrayListExtra("failedInvitations", new ArrayList<>(failedInvitations));
         failedInvitationsFragment.setArguments(getIntent().getExtras());
 
@@ -73,7 +73,7 @@ public class SendInvitationsActivity extends AppCompatActivity implements SendIn
 
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack so the user can navigate back
-        transaction.replace(R.id.fragment_container_frame_layout,failedInvitationsFragment );
+        transaction.replace(R.id.fragment_container_frame_layout, failedInvitationsFragment);
         transaction.addToBackStack(null);
 
         // Commit the transaction

@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 
 public class OrganizationUsersListAdapter extends UsersListAdapter {
 
-
     public OrganizationUsersListAdapter(UserListActionListener listener) {
         super(listener);
     }

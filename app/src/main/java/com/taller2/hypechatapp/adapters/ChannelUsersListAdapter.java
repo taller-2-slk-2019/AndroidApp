@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 
 public class ChannelUsersListAdapter extends UsersListAdapter {
 
-
     public ChannelUsersListAdapter(UserListActionListener listener) {
         super(listener);
     }

@@ -17,7 +17,7 @@ public class MessageCodeViewHolder extends MessageViewHolder {
     }
 
     @Override
-    protected void initialize(View view){
+    protected void initialize(View view) {
         messageText = view.findViewById(R.id.message_code);
     }
 

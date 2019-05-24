@@ -26,7 +26,7 @@ public class NewOrganizationInvitationNotification extends HypechatNotification 
     }
 
     @Override
-    protected Intent getIntent(){
+    protected Intent getIntent() {
         return new Intent(context, ReceivedInvitationsActivity.class);
     }
 }

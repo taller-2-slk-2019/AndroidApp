@@ -49,7 +49,7 @@ public class OrganizationSpinnerAdapter extends ArrayAdapter<Organization> {
         View spinnerRow = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
 
         TextView label = spinnerRow.findViewById(android.R.id.text1);
-        label.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+        label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         label.setText(String.format("%s", model != null ? model.getName() : ""));
 
         return spinnerRow;

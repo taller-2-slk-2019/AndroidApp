@@ -41,7 +41,7 @@ public class PublicChannelsActivity extends BaseActivity implements IMenuItemsCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_public_channels);
 
-        channelService=new ChannelService();
+        channelService = new ChannelService();
         userManagerPreferences = new UserManagerPreferences(this);
 
         setUpUI();
@@ -57,7 +57,7 @@ public class PublicChannelsActivity extends BaseActivity implements IMenuItemsCl
             @Override
             public void onResponseSuccess(List<Channel> channels) {
                 hideLoading();
-                if(channels.isEmpty()){
+                if (channels.isEmpty()) {
                     findViewById(R.id.public_channels_empty_text_view).setVisibility(View.VISIBLE);
                 } else {
                     channelsAdapter.setChannels(channels);
@@ -67,7 +67,7 @@ public class PublicChannelsActivity extends BaseActivity implements IMenuItemsCl
             @Override
             public void onResponseError(boolean connectionError, String errorMessage) {
                 hideLoading();
-                String textToShow="No fue posible obtener los canales. Intente más tarde.";
+                String textToShow = "No fue posible obtener los canales. Intente más tarde.";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
                 finish();
             }
@@ -97,7 +97,7 @@ public class PublicChannelsActivity extends BaseActivity implements IMenuItemsCl
     @Override
     public void onChannelClick(final Channel channel) {
         showLoading();
-        channelService.joinChannel(channel.getId(), new Client<Void>(){
+        channelService.joinChannel(channel.getId(), new Client<Void>() {
 
             @Override
             public void onResponseSuccess(Void responseBody) {

@@ -45,7 +45,7 @@ public class ImagePicker {
         activity.startActivityForResult(getImagePickerIntent(), PICK_IMAGE_REQUEST);
     }
 
-    private static Intent getImagePickerIntent(){
+    private static Intent getImagePickerIntent() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -71,7 +71,7 @@ public class ImagePicker {
         return filePath;
     }
 
-    public static Uri getFilePath(Intent data){
+    public static Uri getFilePath(Intent data) {
         return data.getData();
     }
 
@@ -85,7 +85,7 @@ public class ImagePicker {
         pickImage.setClickable(true);
     }
 
-    public boolean validate(){
+    public boolean validate() {
         boolean valid = filePath != null;
         errorText.setVisibility(valid ? View.INVISIBLE : View.VISIBLE);
         return valid;

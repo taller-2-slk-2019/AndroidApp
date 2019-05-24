@@ -36,7 +36,7 @@ public class MenuChannelItemViewHolder extends RecyclerView.ViewHolder {
         this.channel = channel;
     }
 
-    private void onHolderClick(){
+    private void onHolderClick() {
         listener.onChannelClick(channel);
     }
 }

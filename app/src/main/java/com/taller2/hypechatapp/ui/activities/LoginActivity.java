@@ -63,7 +63,7 @@ public class LoginActivity extends BaseActivity {
         setNormalLogin();
     }
 
-    private void setNormalLogin(){
+    private void setNormalLogin() {
         final Button loginButton = findViewById(R.id.login_button);
         emailText = findViewById(R.id.email_text);
         passwordText = findViewById(R.id.password_text);
@@ -107,16 +107,16 @@ public class LoginActivity extends BaseActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            if (!validateUserInput()) {
-                return;
-            }
-            showLoading();
-            firebaseNormalLogin();
+                if (!validateUserInput()) {
+                    return;
+                }
+                showLoading();
+                firebaseNormalLogin();
             }
         });
     }
 
-    private void setFacebookLogin(){
+    private void setFacebookLogin() {
         LoginButton fbLoginButton = findViewById(R.id.login_button_facebook);
         fbLoginButton.setReadPermissions("email", "public_profile");
 
@@ -152,18 +152,18 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if (FirebaseAuthService.isUserLoggedIn()){
+        if (FirebaseAuthService.isUserLoggedIn()) {
             userLoggedIn();
         }
     }
 
-    protected void showLoading(){
+    protected void showLoading() {
         passwordText.setError(null);
         super.showLoading();
     }
 
-    private void showError(boolean facebookError){
-        if (facebookError){
+    private void showError(boolean facebookError) {
+        if (facebookError) {
             Toast.makeText(this, R.string.fb_log_in_error, Toast.LENGTH_LONG).show();
         } else {
             passwordText.setError(getResources().getString(R.string.log_in_error));
@@ -174,15 +174,15 @@ public class LoginActivity extends BaseActivity {
         FirebaseAuthService.logOut(this);
     }
 
-    public void userLoggedIn(){
-        Log.i("LoginActivity","User is logged in with token: " + FirebaseAuthService.getCurrentUserToken());
+    public void userLoggedIn() {
+        Log.i("LoginActivity", "User is logged in with token: " + FirebaseAuthService.getCurrentUserToken());
         FirebaseAuthService.logIn(this);
         Intent intent = new Intent(this, ChatActivity.class);
         startActivity(intent);
         finish();
     }
 
-    public void facebookUserLoggedIn(){
+    public void facebookUserLoggedIn() {
         FirebaseUser user = FirebaseAuthService.getCurrentUser();
         User userRequest = new User();
         userRequest.setEmail(user.getEmail());
@@ -190,7 +190,7 @@ public class LoginActivity extends BaseActivity {
         userRequest.setToken(FirebaseAuthService.getCurrentUserToken());
         userRequest.setPicture(user.getPhotoUrl().toString());
 
-        userService.registerUser(userRequest, new Client<User>(){
+        userService.registerUser(userRequest, new Client<User>() {
             @Override
             public void onResponseSuccess(User responseUser) {
                 userLoggedIn();
@@ -220,50 +220,50 @@ public class LoginActivity extends BaseActivity {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         Log.i("Firebase log in", "handling facebook access token");
         mAuth.signInWithCredential(credential)
-            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        Log.i("Firebase log in", "Log in succesfull");
-                        facebookUserLoggedIn();
-                    } else {
-                        Log.w("Firebase log in", "Log in failed", task.getException());
-                        showError(true);
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.i("Firebase log in", "Log in succesfull");
+                            facebookUserLoggedIn();
+                        } else {
+                            Log.w("Firebase log in", "Log in failed", task.getException());
+                            showError(true);
+                        }
                     }
-                }
-            });
+                });
     }
 
     private void firebaseNormalLogin() {
         Log.i("Firebase log in", "handling normal log in");
         mAuth.signInWithEmailAndPassword(emailText.getText().toString(), passwordText.getText().toString())
-            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        Log.i("Firebase log in", "Log in succesfull");
-                        userLoggedIn();
-                    } else {
-                        Log.w("Firebase log in", "Log in failed", task.getException());
-                        if (task.getException() instanceof FirebaseNetworkException){
-                            hideLoading();
-                            Toast.makeText(LoginActivity.this,
-                                    getResources().getString(R.string.error_login_connection), Toast.LENGTH_LONG).show();
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.i("Firebase log in", "Log in succesfull");
+                            userLoggedIn();
                         } else {
-                            showError(false);
+                            Log.w("Firebase log in", "Log in failed", task.getException());
+                            if (task.getException() instanceof FirebaseNetworkException) {
+                                hideLoading();
+                                Toast.makeText(LoginActivity.this,
+                                        getResources().getString(R.string.error_login_connection), Toast.LENGTH_LONG).show();
+                            } else {
+                                showError(false);
+                            }
                         }
                     }
-                }
-            });
+                });
     }
 
     private boolean validateUserInput() {
-        if(TextUtils.isEmpty(emailText.getText().toString())){
+        if (TextUtils.isEmpty(emailText.getText().toString())) {
             emailText.setError("Ingrese un email");
             return false;
         }
 
-        if(TextUtils.isEmpty(passwordText.getText().toString())){
+        if (TextUtils.isEmpty(passwordText.getText().toString())) {
             passwordText.setError("Ingrese una contraseña");
             return false;
         }

@@ -37,7 +37,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageViewHolder> 
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.message, parent, false);
 
-        switch(messageTypes.get(viewType)){
+        switch (messageTypes.get(viewType)) {
             case Message.TYPE_TEXT:
                 return new MessageTextViewHolder(view);
             case Message.TYPE_IMAGE:
@@ -63,11 +63,11 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageViewHolder> 
 
     public void addOlderMessages(List<Message> messages) {
         Message first = null;
-        if (getItemCount() > 0){
+        if (getItemCount() > 0) {
             first = this.messages.get(0);
         }
-        for (Message message: messages) {
-            if (first == null || (compareMessages(message, first) && message.id < first.id)){
+        for (Message message : messages) {
+            if (first == null || (compareMessages(message, first) && message.id < first.id)) {
                 this.messages.add(0, message);
             }
         }
@@ -75,25 +75,25 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageViewHolder> 
     }
 
     public void addLastMessage(Message message) {
-        if (getItemCount() > 0){
+        if (getItemCount() > 0) {
             Message other = messages.get(0);
-            if (!compareMessages(message, other)){
+            if (!compareMessages(message, other)) {
                 return;
             }
         }
 
         int index = messages.size();
-        while (index > 0 ){
-            if (messages.get(index - 1).id < message.id){
+        while (index > 0) {
+            if (messages.get(index - 1).id < message.id) {
                 break;
             }
-            index --;
+            index--;
         }
         messages.add(index, message);
         notifyDataSetChanged();
     }
 
-    private boolean compareMessages(Message message, Message other){
+    private boolean compareMessages(Message message, Message other) {
         return other.channelId == message.channelId && other.conversationId == message.conversationId;
     }
 

@@ -19,7 +19,7 @@ public class NewConversationUsersAdapter extends RecyclerView.Adapter<NewConvers
     private IUserClick listener;
     private List<User> users = new ArrayList<>();
 
-    public NewConversationUsersAdapter(IUserClick listener){
+    public NewConversationUsersAdapter(IUserClick listener) {
         this.listener = listener;
     }
 
@@ -41,7 +41,7 @@ public class NewConversationUsersAdapter extends RecyclerView.Adapter<NewConvers
         return users.size();
     }
 
-    public void setUsers(List<User> users){
+    public void setUsers(List<User> users) {
         this.users = users;
         notifyDataSetChanged();
     }

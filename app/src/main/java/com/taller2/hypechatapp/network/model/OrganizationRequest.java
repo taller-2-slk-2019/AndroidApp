@@ -5,8 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class OrganizationRequest implements Serializable
-{
+public class OrganizationRequest implements Serializable {
 
     @SerializedName("name")
     @Expose
@@ -27,6 +26,5 @@ public class OrganizationRequest implements Serializable
     @Expose
     public String welcome;
     private final static long serialVersionUID = -581573439418199621L;
-
 
 }

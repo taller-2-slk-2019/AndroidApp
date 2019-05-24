@@ -27,7 +27,7 @@ public class MessageFileViewHolder extends MessageViewHolder implements Firebase
     }
 
     @Override
-    protected void initialize(View view){
+    protected void initialize(View view) {
         messageFile = view.findViewById(R.id.message_file);
     }
 

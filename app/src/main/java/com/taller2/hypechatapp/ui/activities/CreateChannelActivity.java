@@ -254,7 +254,7 @@ public class CreateChannelActivity extends BaseActivity {
     private void showError(boolean connectionError, boolean edit) {
         if (connectionError) {
             String textToShow = "No fue posible %1$s el canal. Intente más tarde.";
-            if (edit){
+            if (edit) {
                 textToShow = String.format(textToShow, "editar");
             } else {
                 textToShow = String.format(textToShow, "crear");

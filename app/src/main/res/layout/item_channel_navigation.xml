@@ -22,9 +22,9 @@
             android:id="@+id/channel_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/img_channel_privacy"
             android:text="Canal público"
-            android:layout_marginLeft="10dp"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             android:textStyle="bold" />

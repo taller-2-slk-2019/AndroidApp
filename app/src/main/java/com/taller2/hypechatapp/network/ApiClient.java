@@ -45,9 +45,9 @@ public class ApiClient {
 
 
         builder = new Retrofit.Builder()
-                        .baseUrl(API_BASE_URL)
-                        .callbackExecutor(Executors.newSingleThreadExecutor())
-                        .addConverterFactory(GsonConverterFactory.create());
+                .baseUrl(API_BASE_URL)
+                .callbackExecutor(Executors.newSingleThreadExecutor())
+                .addConverterFactory(GsonConverterFactory.create());
 
         retrofitExecutorCallback = builder
                 .client(httpClient.build())

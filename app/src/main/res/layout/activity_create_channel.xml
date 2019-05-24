@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.CreateChannelActivity"
-    android:id="@+id/layoutContainer">
+    tools:context=".ui.activities.CreateChannelActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/layout_toolbar"
@@ -66,11 +66,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
+        android:hint="@string/channel_name_hint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/swt_privacy"
-        app:layout_constraintVertical_bias="0.03"
-        android:hint="@string/channel_name_hint">
+        app:layout_constraintVertical_bias="0.03">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_channel_name"
@@ -87,11 +87,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
+        android:hint="@string/channel_description_hint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_channel_name"
-        app:layout_constraintVertical_bias="0.03"
-        android:hint="@string/channel_description_hint">
+        app:layout_constraintVertical_bias="0.03">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_channel_description"
@@ -108,11 +108,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
+        android:hint="@string/channel_welcome_hint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_channel_description"
-        app:layout_constraintVertical_bias="0.03"
-        android:hint="@string/channel_welcome_hint">
+        app:layout_constraintVertical_bias="0.03">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_channel_welcome"
@@ -120,22 +120,23 @@
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/btn_create"
-            style="@style/ButtonPrimaryAction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="56dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/btn_channel_create"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_channel_welcome" />
+    <Button
+        android:id="@+id/btn_create"
+        style="@style/ButtonPrimaryAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/btn_channel_create"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_channel_welcome" />
 
-        <include layout="@layout/progress_bar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <include
+        layout="@layout/progress_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,6 @@ package com.taller2.hypechatapp.ui.model;
 import android.view.View;
 import android.widget.ImageView;
 
-
 import com.google.android.material.textfield.TextInputEditText;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.SendInvitationsAdapter;
@@ -19,10 +18,10 @@ public class EmailInvitationViewHolder extends RecyclerView.ViewHolder {
     public EmailInvitationViewHolder(@NonNull View itemView, SendInvitationsAdapter.MyCustomEditTextListener myCustomEditTextListener) {
         super(itemView);
 
-        emailEditText=itemView.findViewById(R.id.email_invitation_edit_text);
-        clearButton=itemView.findViewById(R.id.email_invitation_clear_button);
+        emailEditText = itemView.findViewById(R.id.email_invitation_edit_text);
+        clearButton = itemView.findViewById(R.id.email_invitation_clear_button);
 
-        editTextListener=myCustomEditTextListener;
+        editTextListener = myCustomEditTextListener;
 
         emailEditText.addTextChangedListener(editTextListener);
 
