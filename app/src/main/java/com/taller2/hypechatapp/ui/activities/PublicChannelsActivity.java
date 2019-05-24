@@ -81,7 +81,7 @@ public class PublicChannelsActivity extends BaseActivity implements IMenuItemsCl
 
     private void setUpRecyclerView() {
         publicChannelsRecyclerView = findViewById(R.id.public_channels_list);
-        channelsAdapter = new MenuChannelsAdapter(this);
+        channelsAdapter = new MenuChannelsAdapter(this, true);
         publicChannelsRecyclerView.setAdapter(channelsAdapter);
         publicChannelsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         publicChannelsRecyclerView.setItemAnimator(new DefaultItemAnimator());

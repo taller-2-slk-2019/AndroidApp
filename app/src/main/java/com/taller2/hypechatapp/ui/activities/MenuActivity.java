@@ -199,7 +199,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
     private void setUpChannels() {
         RecyclerView rvChannels = findViewById(R.id.rvChannels);
-        channelsAdapter = new MenuChannelsAdapter(this);
+        channelsAdapter = new MenuChannelsAdapter(this, false);
         rvChannels.setAdapter(channelsAdapter);
 
         LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(this);

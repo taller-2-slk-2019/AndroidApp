@@ -19,11 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MenuChannelsAdapter extends RecyclerView.Adapter<MenuChannelItemViewHolder> implements Filterable {
 
     private final IMenuItemsClick listener;
+    private boolean withChannelDescription;
     private List<Channel> data = new ArrayList<>();
     private List<Channel> filteredData = new ArrayList<>();
 
-    public MenuChannelsAdapter(IMenuItemsClick listener) {
+    public MenuChannelsAdapter(IMenuItemsClick listener, boolean withChannelDescription) {
         this.listener = listener;
+        this.withChannelDescription = withChannelDescription;
     }
 
 
@@ -31,7 +33,7 @@ public class MenuChannelsAdapter extends RecyclerView.Adapter<MenuChannelItemVie
     @Override
     public MenuChannelItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_channel_navigation, parent, false);
-        return new MenuChannelItemViewHolder(view, listener);
+        return new MenuChannelItemViewHolder(view, listener, withChannelDescription);
     }
 
     @Override

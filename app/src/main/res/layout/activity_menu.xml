@@ -48,7 +48,10 @@
 
                     <include
                         android:id="@+id/new_channel_layout"
-                        layout="@layout/item_action_navigation" />
+                        layout="@layout/item_action_navigation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvChannels"
@@ -57,7 +60,10 @@
 
                     <include
                         android:id="@+id/new_conversation_layout"
-                        layout="@layout/item_action_navigation" />
+                        layout="@layout/item_action_navigation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvConversations"
