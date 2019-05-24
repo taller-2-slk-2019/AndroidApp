@@ -20,7 +20,7 @@ public class MenuChannelsAdapter extends RecyclerView.Adapter<MenuChannelItemVie
 
     private final IMenuItemsClick listener;
     private List<Channel> data = new ArrayList<>();
-    private List<Channel> filteredData=new ArrayList<>();
+    private List<Channel> filteredData = new ArrayList<>();
 
     public MenuChannelsAdapter(IMenuItemsClick listener) {
         this.listener = listener;
@@ -45,7 +45,7 @@ public class MenuChannelsAdapter extends RecyclerView.Adapter<MenuChannelItemVie
         return filteredData.size();
     }
 
-    public void setChannels(List<Channel> channels){
+    public void setChannels(List<Channel> channels) {
         data = channels;
         filteredData = channels;
         notifyDataSetChanged();
@@ -56,9 +56,28 @@ public class MenuChannelsAdapter extends RecyclerView.Adapter<MenuChannelItemVie
     }
 
     public void add(Channel channel) {
-        data.add(channel);
-        filteredData.add(channel);
+        addOrReplaceChannel(data, channel);
+        addOrReplaceChannel(filteredData, channel);
         this.notifyDataSetChanged();
+    }
+
+    private void addOrReplaceChannel(List<Channel> list, Channel channel) {
+        int index = getChannelIndex(list, channel);
+        if (index >= 0) {
+            list.remove(index);
+            list.add(index, channel);
+        } else {
+            list.add(channel);
+        }
+    }
+
+    private int getChannelIndex(List<Channel> list, Channel channel) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getId().equals(channel.getId())) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override

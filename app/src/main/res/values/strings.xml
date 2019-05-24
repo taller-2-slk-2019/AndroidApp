@@ -39,6 +39,8 @@
     <string name="hint_example_channel_name">Ej: #clientes</string>
     <string name="channel_privacy_open">Abierto</string>
     <string name="channel_privacy_closed">Cerrado</string>
+    <string name="title_channel_edit">Editar canal</string>
+    <string name="channel_edit">Editar</string>
 
     <!-- conversations creation view -->
     <string name="no_conversations_msg">No hay usuarios con quien conversar… Enviá invitaciones para agregar a tus colegas y amigos!</string>
@@ -65,7 +67,8 @@
     <string name="organization_profile_title">Perfil de la organización</string>
     <string name="description_organization_profile">Descripción</string>
     <string name="welcome_organization_profile">Mensaje de bienvenida</string>
-    <string name="users_list_title">Lista de usuarios</string>
+    <string name="organization_users_list_title">Usuarios de la organización</string>
+    <string name="channel_list_title">Lista de Canales</string>
 
     <!-- login and register view -->
     <string name="facebook_app_id">318283042209713</string>
@@ -106,8 +109,10 @@
     <string name="action_search">Search</string>
     <string name="search_hint">Escribe el nombre</string>
 
-    <!-- Public channels -->
+    <!-- Channel profile -->
     <string name="channel_profile_title">Información del canal</string>
+    <string name="channel_users_list_title">Usuarios del canal</string>
+    <string name="channel_new_users_list_title">Agregar usuarios al canal</string>
 
 
 </resources>

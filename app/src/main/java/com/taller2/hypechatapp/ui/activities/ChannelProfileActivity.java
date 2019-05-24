@@ -10,6 +10,8 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.taller2.hypechatapp.R;
+import com.taller2.hypechatapp.components.DialogConfirm;
+import com.taller2.hypechatapp.components.DialogService;
 import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.model.roles.RoleFactory;
 import com.taller2.hypechatapp.network.Client;
@@ -20,9 +22,13 @@ import androidx.appcompat.widget.Toolbar;
 
 public class ChannelProfileActivity extends BaseActivity {
 
+    public static final String CHANNEL_ID_KEY = "CHANNEL_ID_KEY";
+
     private ChannelService channelService;
     private TextInputEditText name, description, welcome, type;
     private UserManagerPreferences preferences;
+    private int channelId = 0;
+    private boolean currentChannelShown = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +39,20 @@ public class ChannelProfileActivity extends BaseActivity {
         preferences = new UserManagerPreferences(this);
         channelService = new ChannelService();
 
+        if (getIntent().getExtras() != null) {
+            channelId = getIntent().getExtras().getInt(CHANNEL_ID_KEY, 0);
+            currentChannelShown = false;
+        } else {
+            channelId = preferences.getSelectedChannel();
+        }
+
         setUpView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initializeChannel();
     }
 
     private void setUpView() {
@@ -47,12 +66,11 @@ public class ChannelProfileActivity extends BaseActivity {
         loading = findViewById(R.id.loading);
 
         setUpButtons();
-        initializeChannel();
     }
 
     private void initializeChannel() {
         showLoading();
-        channelService.getChannelInfo(preferences.getSelectedChannel(), new Client<Channel>() {
+        channelService.getChannelInfo(channelId, new Client<Channel>() {
             @Override
             public void onResponseSuccess(Channel responseBody) {
                 setChannel(responseBody);
@@ -96,6 +114,7 @@ public class ChannelProfileActivity extends BaseActivity {
                 abandonChannel();
             }
         });
+        abandonChannelButton.setVisibility(currentChannelShown ? View.VISIBLE : View.GONE);
 
         FloatingActionButton editButton = findViewById(R.id.channelEditButton);
         if (!RoleFactory.getRole(preferences.getOrganizationRole()).hasChannelsPermissions()) {
@@ -110,38 +129,44 @@ public class ChannelProfileActivity extends BaseActivity {
     }
 
     private void showChannelUsers() {
-        //TODO do something
+        Intent intent = new Intent(this, ChannelUsersListActivity.class);
+        intent.putExtra(ChannelUsersListActivity.CHANNEL_ID_KEY, channelId);
+        startActivity(intent);
     }
 
     private void abandonChannel() {
-        showLoading();
-        channelService.abandonChannel(preferences.getSelectedChannel(), new Client<Void>() {
+        DialogService.showConfirmDialog(this, "Seguro que desea abandonar el canal?", new DialogConfirm() {
             @Override
-            public void onResponseSuccess(Void responseBody) {
-                hideLoading();
-                Toast.makeText(getContext(), "Has abandonado el canal: " + name.getText(), Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getContext(), ChatActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
+            public void onConfirm() {
+                showLoading();
+                channelService.abandonChannel(preferences.getSelectedChannel(), new Client<Void>() {
+                    @Override
+                    public void onResponseSuccess(Void responseBody) {
+                        hideLoading();
+                        Toast.makeText(getContext(), "Has abandonado el canal: " + name.getText(), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getContext(), ChatActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
 
-            @Override
-            public void onResponseError(boolean connectionError, String errorMessage) {
-                hideLoading();
-                Toast.makeText(getContext(), "No se pudo abandonar el canal", Toast.LENGTH_LONG).show();
-            }
+                    @Override
+                    public void onResponseError(boolean connectionError, String errorMessage) {
+                        hideLoading();
+                        Toast.makeText(getContext(), "No se pudo abandonar el canal", Toast.LENGTH_LONG).show();
+                    }
 
-            @Override
-            public Context getContext() {
-                return ChannelProfileActivity.this;
+                    @Override
+                    public Context getContext() {
+                        return ChannelProfileActivity.this;
+                    }
+                });
             }
         });
     }
 
     private void editChannel() {
         Intent intent = new Intent(this, CreateChannelActivity.class);
-        intent.putExtra(CreateChannelActivity.CHANNEL_ID_KEY, preferences.getSelectedChannel());
-        //TODO refactor to allow non selected channel edition
+        intent.putExtra(CreateChannelActivity.CHANNEL_ID_KEY, channelId);
         startActivity(intent);
     }
 }

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:layout_height="match_parent"
-    android:paddingBottom="8dp">
+    android:paddingBottom="8dp"
+    tools:layout_height="match_parent">
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_image_view"
@@ -42,6 +42,23 @@
         tools:text="Nombre de usuario 1234" />
 
     <Button
+        android:id="@+id/addUserButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:paddingLeft="0dp"
+        android:paddingTop="0dp"
+        android:paddingRight="0dp"
+        android:paddingBottom="0dp"
+        android:text="Agregar"
+        android:visibility="gone"
+        app:backgroundTint="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/divider3"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
         android:id="@+id/deleteUserButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,9 +70,11 @@
         android:paddingRight="0dp"
         android:paddingBottom="0dp"
         android:text="Eliminar"
+        android:visibility="gone"
         app:backgroundTint="@android:color/holo_red_dark"
         app:layout_constraintBottom_toTopOf="@+id/divider3"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible" />
 
     <Spinner
         android:id="@+id/rolesSpinner"
@@ -66,10 +85,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/deleteUserButton"
         app:layout_constraintHorizontal_bias="0.32"
         app:layout_constraintStart_toEndOf="@+id/profile_image_view"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/username"
+        tools:visibility="visible" />
 
     <View
         android:id="@+id/divider3"
@@ -83,6 +104,6 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rolesSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_image_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

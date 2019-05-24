@@ -4,7 +4,7 @@ import com.taller2.hypechatapp.model.User;
 
 public interface UserListActionListener {
 
-    void onUserDeleted(User user);
+    void onUserAction(User user);
 
     void onUserRoleChanged(User user, String selectedRole);
 

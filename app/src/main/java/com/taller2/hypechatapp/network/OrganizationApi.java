@@ -51,4 +51,8 @@ public interface OrganizationApi {
     Call<Void> removeUser(@Path("id") int organizationId,
                               @Path("userId") int userId,
                               @Query("userToken") String userToken);
+
+    @DELETE("/organizations/{id}/users")
+    Call<Void> abandonOrganization(@Path("id") int organizationId,
+                          @Query("userToken") String userToken);
 }
