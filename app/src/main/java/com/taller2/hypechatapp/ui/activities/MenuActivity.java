@@ -1,10 +1,14 @@
 package com.taller2.hypechatapp.ui.activities;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,11 +19,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.IMenuItemsClick;
 import com.taller2.hypechatapp.adapters.MenuChannelsAdapter;
 import com.taller2.hypechatapp.adapters.MenuConversationsAdapter;
 import com.taller2.hypechatapp.adapters.OrganizationSpinnerAdapter;
+import com.taller2.hypechatapp.components.PermissionsRequester;
 import com.taller2.hypechatapp.components.PicassoLoader;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.Channel;
@@ -39,6 +47,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -416,6 +425,9 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             case R.id.organization_profile:
                 showOrganizationProfile();
                 return true;
+            case R.id.update_location:
+                updateUserLocation();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -442,7 +454,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
+        // Auto-generated method stub
     }
 
     @Override
@@ -491,6 +503,49 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         onChatSelected();
     }
 
+    private void updateUserLocation() {
+        if (PermissionsRequester.hasPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+            getAndUpdateUserLocation();
+        } else {
+            PermissionsRequester.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        boolean hasPermission = PermissionsRequester.analyzeResults(requestCode, grantResults);
+        if (hasPermission) {
+            getAndUpdateUserLocation();
+        } else {
+            Toast.makeText(this,
+                    "Necesitas aceptar los permisos para enviar tu ubicación", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @SuppressLint("MissingPermission") // permission already requested
+    private void getAndUpdateUserLocation() {
+        FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        locationClient.getLastLocation()
+                .addOnSuccessListener(new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            // Logic to handle location object
+                            Log.d("User location", "Latitude: " + location.getLatitude());
+                            Log.d("User location", "Longitude: " + location.getLongitude());
+                        } else {
+                            showLocationError();
+                        }
+                    }
+                });
+    }
+
+    private void showLocationError() {
+        Toast.makeText(this, "No se pudo actualizar la ubicación", Toast.LENGTH_LONG).show();
+    }
 
     @Override
     public void onDestroy() {
