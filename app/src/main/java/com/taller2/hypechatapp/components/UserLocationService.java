@@ -15,11 +15,12 @@ import com.google.android.gms.location.LocationServices;
 public class UserLocationService {
 
     private static String TAG = "User location";
-    private static int EXPIRATION = 2000;
+    private static int EXPIRATION = 10000;
 
     @SuppressLint("MissingPermission") // permission must be requested
     public static void getUserLocation(Activity activity, final UserLocationListener listener) {
         FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(activity);
+
         final Handler expirationHandler = new Handler();
         final Runnable expirationAction = new Runnable() {
             @Override
@@ -29,9 +30,11 @@ public class UserLocationService {
             }
         };
 
-        LocationRequest request = LocationRequest.create();
-        request.setNumUpdates(1);
-        request.setExpirationDuration(EXPIRATION);
+        LocationRequest request = LocationRequest.create()
+                .setNumUpdates(1)
+                .setInterval(500)
+                .setFastestInterval(500)
+                .setExpirationDuration(EXPIRATION);
 
         LocationCallback locationCallback = new LocationCallback() {
             @Override
