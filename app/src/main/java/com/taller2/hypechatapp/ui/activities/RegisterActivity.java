@@ -167,7 +167,7 @@ public class RegisterActivity extends BaseActivity implements FirebaseStorageUpl
         if (firebase) {
             errorText.setText(R.string.error_register_firebase);
         } else if (!connectionError) {
-            errorText.setText(R.string.error_register);
+            errorText.setText(R.string.error_username_exists);
         } else {
             Toast.makeText(this, R.string.error_register_connection, Toast.LENGTH_LONG).show();
         }

@@ -190,7 +190,7 @@ public class EditUserProfileActivity extends BaseActivity implements FirebaseSto
                                     }
                                 });
                             } else {
-                                Toast.makeText(EditUserProfileActivity.this, "Error: la constraseña ingresada es incorrecta", Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditUserProfileActivity.this, "Error: la contraseña ingresada es incorrecta", Toast.LENGTH_LONG).show();
                                 hideLoading();
                             }
                         }
@@ -216,7 +216,7 @@ public class EditUserProfileActivity extends BaseActivity implements FirebaseSto
                 if (connectionError) {
                     Toast.makeText(getContext(), "Error al actualizar usuario", Toast.LENGTH_LONG).show();
                 } else {
-                    username.setError("El nombre de usuario ya existe");
+                    username.setError(getString(R.string.error_username_exists));
                     username.requestFocus();
                 }
                 hideLoading();
