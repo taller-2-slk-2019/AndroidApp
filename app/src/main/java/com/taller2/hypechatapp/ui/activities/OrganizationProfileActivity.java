@@ -101,7 +101,7 @@ public class OrganizationProfileActivity extends BaseActivity {
         });
 
         // Abandon organization
-        FloatingActionButton abandonButton = findViewById(R.id.organizationAbandon);
+        Button abandonButton = findViewById(R.id.organizationAbandon);
         abandonButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
