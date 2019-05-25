@@ -35,6 +35,7 @@ import com.taller2.hypechatapp.model.Conversation;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
+import com.taller2.hypechatapp.network.model.UserLocationRequest;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
 import com.taller2.hypechatapp.services.ConversationService;
@@ -536,11 +537,32 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
                             // Logic to handle location object
                             Log.d("User location", "Latitude: " + location.getLatitude());
                             Log.d("User location", "Longitude: " + location.getLongitude());
+                            sendLocation(location);
                         } else {
                             showLocationError();
                         }
                     }
                 });
+    }
+
+    private void sendLocation(Location location) {
+        UserLocationRequest request = new UserLocationRequest(location);
+        userService.updateUserLocation(request, new Client<Void>() {
+            @Override
+            public void onResponseSuccess(Void responseBody) {
+                Toast.makeText(getContext(), "Ubicación actualizada", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onResponseError(boolean connectionError, String errorMessage) {
+                showLocationError();
+            }
+
+            @Override
+            public Context getContext() {
+                return MenuActivity.this;
+            }
+        });
     }
 
     private void showLocationError() {

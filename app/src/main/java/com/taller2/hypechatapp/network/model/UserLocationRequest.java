@@ -1,5 +1,7 @@
 package com.taller2.hypechatapp.network.model;
 
+import android.location.Location;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -11,6 +13,11 @@ public class UserLocationRequest {
     @SerializedName("longitude")
     @Expose
     private Double longitude;
+
+    public UserLocationRequest(Location location) {
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+    }
 
     public Double getLatitude() {
         return latitude;
