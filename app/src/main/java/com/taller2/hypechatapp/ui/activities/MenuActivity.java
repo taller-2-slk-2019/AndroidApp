@@ -1,14 +1,12 @@
 package com.taller2.hypechatapp.ui.activities;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,9 +17,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.adapters.IMenuItemsClick;
 import com.taller2.hypechatapp.adapters.MenuChannelsAdapter;
@@ -29,6 +24,7 @@ import com.taller2.hypechatapp.adapters.MenuConversationsAdapter;
 import com.taller2.hypechatapp.adapters.OrganizationSpinnerAdapter;
 import com.taller2.hypechatapp.components.PermissionsRequester;
 import com.taller2.hypechatapp.components.PicassoLoader;
+import com.taller2.hypechatapp.components.UserLocationService;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.model.Conversation;
@@ -58,7 +54,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public abstract class MenuActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, IMenuItemsClick {
+public abstract class MenuActivity extends AppCompatActivity
+        implements AdapterView.OnItemSelectedListener, IMenuItemsClick, UserLocationService.UserLocationListener {
 
     protected Toolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -525,27 +522,12 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         }
     }
 
-    @SuppressLint("MissingPermission") // permission already requested
     private void getAndUpdateUserLocation() {
-        FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        locationClient.getLastLocation()
-                .addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            // Logic to handle location object
-                            Log.d("User location", "Latitude: " + location.getLatitude());
-                            Log.d("User location", "Longitude: " + location.getLongitude());
-                            sendLocation(location);
-                        } else {
-                            showLocationError();
-                        }
-                    }
-                });
+        UserLocationService.getUserLocation(this, this);
     }
 
-    private void sendLocation(Location location) {
+    @Override
+    public void userLocationReceived(Location location) {
         UserLocationRequest request = new UserLocationRequest(location);
         userService.updateUserLocation(request, new Client<Void>() {
             @Override
@@ -555,7 +537,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
             @Override
             public void onResponseError(boolean connectionError, String errorMessage) {
-                showLocationError();
+                userLocationError();
             }
 
             @Override
@@ -565,7 +547,8 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         });
     }
 
-    private void showLocationError() {
+    @Override
+    public void userLocationError() {
         Toast.makeText(this, "No se pudo actualizar la ubicación", Toast.LENGTH_LONG).show();
     }
 
