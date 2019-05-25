@@ -109,6 +109,16 @@ public class OrganizationProfileActivity extends BaseActivity {
             }
         });
 
+        // Delete organization
+        Button deleteButton = findViewById(R.id.organizationDelete);
+        deleteButton.setVisibility(role.hasOrganizationPermissions() ? View.VISIBLE : View.GONE);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteOrganization();
+            }
+        });
+
         // Send invitations
         Button sendInvitationsButton = findViewById(R.id.sendInvitationsButton);
         sendInvitationsButton.setVisibility(role.hasUsersPermissions() ? View.VISIBLE : View.GONE);
@@ -153,27 +163,7 @@ public class OrganizationProfileActivity extends BaseActivity {
             @Override
             public void onConfirm() {
                 showLoading();
-                organizationService.abandonOrganization(prefs.getSelectedOrganization(), new Client<Void>() {
-                    @Override
-                    public void onResponseSuccess(Void responseBody) {
-                        hideLoading();
-                        Toast.makeText(getContext(), "Has abandonado la organización: " + name.getText(), Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getContext(), ChatActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onResponseError(boolean connectionError, String errorMessage) {
-                        hideLoading();
-                        Toast.makeText(getContext(), "No se pudo abandonar la organización", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public Context getContext() {
-                        return OrganizationProfileActivity.this;
-                    }
-                });
+                organizationService.abandonOrganization(prefs.getSelectedOrganization(), getDeleteClient(false));
             }
         });
     }
@@ -195,6 +185,42 @@ public class OrganizationProfileActivity extends BaseActivity {
     private void showChannels() {
         Intent intent = new Intent(this, ChannelsListActivity.class);
         startActivity(intent);
+    }
+
+    private void deleteOrganization() {
+        DialogService.showConfirmDialog(this, "Seguro que desea eliminar la organización?", new DialogConfirm() {
+            @Override
+            public void onConfirm() {
+                showLoading();
+                organizationService.deleteOrganization(prefs.getSelectedOrganization(), getDeleteClient(true));
+            }
+        });
+    }
+
+    private Client<Void> getDeleteClient(final boolean delete) {
+        return new Client<Void>() {
+            @Override
+            public void onResponseSuccess(Void responseBody) {
+                hideLoading();
+                String action = delete ? "eliminado" : "abandonado";
+                Toast.makeText(getContext(), "Has " + action + " la organización: " + name.getText(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getContext(), ChatActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onResponseError(boolean connectionError, String errorMessage) {
+                hideLoading();
+                String action = delete ? "eliminar" : "abandonar";
+                Toast.makeText(getContext(), "No se pudo " + action + " la organización", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public Context getContext() {
+                return OrganizationProfileActivity.this;
+            }
+        };
     }
 
 }

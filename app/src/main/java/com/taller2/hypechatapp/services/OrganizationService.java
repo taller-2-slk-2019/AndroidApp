@@ -54,6 +54,11 @@ public class OrganizationService extends RestService {
                 .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
     }
 
+    public void deleteOrganization(int organizationId, final Client client) {
+        organizationApi.deleteOrganization(organizationId, FirebaseAuthService.getCurrentUserToken())
+                .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
+    }
+
     public void updateUserRole(int organizationId, int userId, String role, final Client client) {
         RoleRequest roleRequest = new RoleRequest(role);
         organizationApi.updateUserRole(organizationId, userId, FirebaseAuthService.getCurrentUserToken(), roleRequest)
