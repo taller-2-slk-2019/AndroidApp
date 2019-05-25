@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/progress_bar" />
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/layout_toolbar"
         android:layout_width="match_parent"
@@ -137,9 +139,6 @@
                     android:layout_height="wrap_content"
                     android:focusable="false" />
             </com.google.android.material.textfield.TextInputLayout>
-
-            <include
-                layout="@layout/progress_bar" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

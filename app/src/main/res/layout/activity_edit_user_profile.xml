@@ -1,179 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/layoutContainer"
+    <include
+        layout="@layout/progress_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="30dp">
+        android:layout_height="match_parent" />
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/layout_toolbar"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/layoutContainer"
             android:layout_width="match_parent"
-            android:layout_height="264dp"
-            android:background="@drawable/register_bg"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="0dp">
+            android:layout_height="wrap_content"
+            android:paddingBottom="30dp">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar_edit_profile"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/layout_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                android:layout_height="264dp"
+                android:background="@drawable/register_bg"
+                android:theme="@style/AppTheme.AppBarOverlay"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="0dp">
 
-        </com.google.android.material.appbar.AppBarLayout>
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar_edit_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_image_view"
-            android:layout_width="124dp"
-            android:layout_height="128dp"
-            android:layout_marginStart="156dp"
-            android:layout_marginLeft="156dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="156dp"
-            android:layout_marginRight="156dp"
-            android:elevation="10dp"
-            android:src="@drawable/default_user"
-            app:civ_border_color="@color/whiteHype"
-            app:civ_border_width="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.461"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            </com.google.android.material.appbar.AppBarLayout>
 
-        <TextView
-            android:id="@+id/txt_user_email"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:elevation="10dp"
-            android:gravity="center_horizontal"
-            android:text="capolupo.mauro@gmail.com"
-            android:textColor="@color/whiteHype"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_image_view" />
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profile_image_view"
+                android:layout_width="124dp"
+                android:layout_height="128dp"
+                android:layout_marginStart="156dp"
+                android:layout_marginLeft="156dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="156dp"
+                android:layout_marginRight="156dp"
+                android:elevation="10dp"
+                android:src="@drawable/default_user"
+                app:civ_border_color="@color/whiteHype"
+                app:civ_border_width="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.461"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_username_profile"
-            style="@style/CreationForm.TextInputLayout.Profile"
-            android:layout_marginTop="32dp"
-            android:ems="10"
-            android:hint="@string/register_username"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_toolbar">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/username_profile"
-                style="@style/CreationForm.TextInputLayout.Text.Profile" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_name_profile"
-            style="@style/CreationForm.TextInputLayout.Profile"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="@string/register_name"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_username_profile">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/name_profile"
-                style="@style/CreationForm.TextInputLayout.Text.Profile" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_password"
-            style="@style/CreationForm.TextInputLayout.Profile"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="Contraseña actual"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_name_profile">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password_text"
-                style="@style/CreationForm.TextInputLayout.Text.Profile"
-                android:inputType="textPassword" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_password_new"
-            style="@style/CreationForm.TextInputLayout.Profile"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="Nueva contraseña"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_password">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password_text_confirm"
-                style="@style/CreationForm.TextInputLayout.Text.Profile"
-                android:inputType="textPassword" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/btn_update_user"
-            style="@style/ButtonPrimaryAction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginRight="40dp"
-            android:text="@string/btn_update_user"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_password_new" />
-
-        <include
-            android:id="@+id/include4"
-            layout="@layout/progress_bar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floating_btn_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:clickable="true"
-            app:elevation="100dp"
-            app:fabSize="mini"
-            app:layout_constraintEnd_toStartOf="@+id/profile_image_view"
-            app:layout_constraintHorizontal_bias="0.2"
-            app:layout_constraintStart_toEndOf="@+id/profile_image_view"
-            app:layout_constraintTop_toTopOf="@+id/profile_image_view"
-            app:srcCompat="@mipmap/baseline_edit_white_18" />
+            <TextView
+                android:id="@+id/txt_user_email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:elevation="10dp"
+                android:gravity="center_horizontal"
+                android:text="capolupo.mauro@gmail.com"
+                android:textColor="@color/whiteHype"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profile_image_view" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_username_profile"
+                style="@style/CreationForm.TextInputLayout.Profile"
+                android:layout_marginTop="32dp"
+                android:ems="10"
+                android:hint="@string/register_username"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_toolbar">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/username_profile"
+                    style="@style/CreationForm.TextInputLayout.Text.Profile" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_name_profile"
+                style="@style/CreationForm.TextInputLayout.Profile"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="@string/register_name"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_username_profile">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/name_profile"
+                    style="@style/CreationForm.TextInputLayout.Text.Profile" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_password"
+                style="@style/CreationForm.TextInputLayout.Profile"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="Contraseña actual"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_name_profile">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password_text"
+                    style="@style/CreationForm.TextInputLayout.Text.Profile"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_password_new"
+                style="@style/CreationForm.TextInputLayout.Profile"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="Nueva contraseña"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_password">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password_text_confirm"
+                    style="@style/CreationForm.TextInputLayout.Text.Profile"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_update_user"
+                style="@style/ButtonPrimaryAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginRight="40dp"
+                android:text="@string/btn_update_user"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_password_new" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floating_btn_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                app:elevation="100dp"
+                app:fabSize="mini"
+                app:layout_constraintEnd_toStartOf="@+id/profile_image_view"
+                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintStart_toEndOf="@+id/profile_image_view"
+                app:layout_constraintTop_toTopOf="@+id/profile_image_view"
+                app:srcCompat="@mipmap/baseline_edit_white_18" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
