@@ -37,8 +37,8 @@ public class Message implements Serializable {
     @Expose
     public String bot;
 
-    public String getSenderName(){
-        if (sender != null){
+    public String getSenderName() {
+        if (sender != null) {
             return sender.getName();
         }
         return "Bot " + bot;

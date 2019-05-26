@@ -3,16 +3,15 @@ package com.taller2.hypechatapp.services;
 
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.Channel;
+import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.ApiClient;
 import com.taller2.hypechatapp.network.ChannelApi;
 import com.taller2.hypechatapp.network.Client;
+import com.taller2.hypechatapp.network.NetworkCallback;
 import com.taller2.hypechatapp.network.model.ChannelRequest;
+import com.taller2.hypechatapp.network.model.UserIdRequest;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ChannelService extends RestService {
 
@@ -25,58 +24,68 @@ public class ChannelService extends RestService {
     }
 
     public void getChannelsByOrganizationAndUser(Integer organizationId, final Client client) {
-        channelApi.getChannels(organizationId, FirebaseAuthService.getCurrentUserToken(),Boolean.TRUE).enqueue(new Callback<List<Channel>>() {
-            @Override
-            public void onResponse(Call<List<Channel>> call, Response<List<Channel>> response) {
-                manageSuccessResponse(response, SERVICE_TAG, client);
-            }
+        channelApi.getChannels(organizationId, FirebaseAuthService.getCurrentUserToken(), Boolean.TRUE)
+                .enqueue(new NetworkCallback<List<Channel>>(SERVICE_TAG, client));
+    }
 
-            @Override
-            public void onFailure(Call<List<Channel>> call, Throwable t) {
-                manageFailure(SERVICE_TAG, t, client);
-            }
-        });
+    public void getAllOrganizationChannels(Integer organizationId, final Client client) {
+        channelApi.getAllOrganizationChannels(organizationId)
+                .enqueue(new NetworkCallback<List<Channel>>(SERVICE_TAG, client));
+    }
+
+    public void getChannelUsers(Integer channelId, final Client client) {
+        channelApi.getChannelUsers(channelId)
+                .enqueue(new NetworkCallback<List<User>>(SERVICE_TAG, client));
+    }
+
+    public void getChannelNewUsers(Integer channelId, final Client client) {
+        channelApi.getChannelNewUsers(channelId)
+                .enqueue(new NetworkCallback<List<User>>(SERVICE_TAG, client));
+    }
+
+    public void getChannelInfo(Integer channelId, final Client client) {
+        channelApi.getChannelInfo(channelId)
+                .enqueue(new NetworkCallback<Channel>(SERVICE_TAG, client));
     }
 
     public void getPublicChannelsByOrganizationAndUser(Integer organizationId, final Client client) {
-        channelApi.getChannels(organizationId, FirebaseAuthService.getCurrentUserToken(),Boolean.FALSE).enqueue(new Callback<List<Channel>>() {
-            @Override
-            public void onResponse(Call<List<Channel>> call, Response<List<Channel>> response) {
-                manageSuccessResponse(response, SERVICE_TAG, client);
-            }
-
-            @Override
-            public void onFailure(Call<List<Channel>> call, Throwable t) {
-                manageFailure(SERVICE_TAG, t, client);
-            }
-        });
+        channelApi.getChannels(organizationId, FirebaseAuthService.getCurrentUserToken(), Boolean.FALSE)
+                .enqueue(new NetworkCallback<List<Channel>>(SERVICE_TAG, client));
     }
 
     public void createChannel(ChannelRequest channelRequest, final Client client) {
-        channelApi.createChannel(FirebaseAuthService.getCurrentUserToken(), channelRequest).enqueue(new Callback<Channel>() {
-            @Override
-            public void onResponse(Call<Channel> call, Response<Channel> response) {
-                manageSuccessResponse(response, SERVICE_TAG, client);
-            }
-
-            @Override
-            public void onFailure(Call<Channel> call, Throwable t) {
-                manageFailure(SERVICE_TAG, t, client);
-            }
-        });
+        channelApi.createChannel(FirebaseAuthService.getCurrentUserToken(), channelRequest)
+                .enqueue(new NetworkCallback<Channel>(SERVICE_TAG, client));
     }
 
-    public void addUserToChannel(Integer channelId, final Client client) {
-        channelApi.addUserToChannel(channelId,FirebaseAuthService.getCurrentUserToken()).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                manageSuccessResponse(response, SERVICE_TAG, client);
-            }
+    public void editChannel(int channelId, ChannelRequest channelRequest, final Client client) {
+        channelApi.editChannel(channelId, FirebaseAuthService.getCurrentUserToken(), channelRequest)
+                .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
+    }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                manageFailure(SERVICE_TAG, t, client);
-            }
-        });
+    public void joinChannel(Integer channelId, final Client client) {
+        channelApi.joinChannel(channelId, FirebaseAuthService.getCurrentUserToken())
+                .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
+    }
+
+    public void addUserToChannel(Integer channelId, Integer userId, final Client client) {
+        UserIdRequest req = new UserIdRequest(userId);
+        channelApi.addUserToChannel(channelId, FirebaseAuthService.getCurrentUserToken(), req)
+                .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
+    }
+
+    public void abandonChannel(Integer channelId, final Client client) {
+        channelApi.abandonChannel(channelId, FirebaseAuthService.getCurrentUserToken())
+                .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
+    }
+
+    public void removeUser(Integer channelId, Integer userId, final Client client) {
+        channelApi.removeUser(channelId, userId, FirebaseAuthService.getCurrentUserToken())
+                .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
+    }
+
+    public void deleteChannel(Integer channelId, final Client client) {
+        channelApi.deleteChannel(channelId, FirebaseAuthService.getCurrentUserToken())
+                .enqueue(new NetworkCallback<Void>(SERVICE_TAG, client));
     }
 }

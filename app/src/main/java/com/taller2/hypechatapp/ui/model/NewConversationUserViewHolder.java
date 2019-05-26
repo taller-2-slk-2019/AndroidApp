@@ -43,7 +43,7 @@ public class NewConversationUserViewHolder extends RecyclerView.ViewHolder {
         PicassoLoader.load(context, user.getPicture(), profile);
     }
 
-    private void userClick(){
+    private void userClick() {
         listener.onUserClick(user);
     }
 }

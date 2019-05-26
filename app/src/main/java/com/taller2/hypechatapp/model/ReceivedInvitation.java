@@ -5,8 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ReceivedInvitation implements Serializable
-{
+public class ReceivedInvitation implements Serializable {
 
     @SerializedName("token")
     @Expose

@@ -1,13 +1,15 @@
 package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,13 +33,13 @@ import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
-import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
+import com.taller2.hypechatapp.ui.listeners.CustomDialogListener;
 import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private CallbackManager callbackManager;
     private FirebaseAuth mAuth;
@@ -45,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText emailText;
     private TextInputEditText passwordText;
-    private ProgressBar loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +63,8 @@ public class LoginActivity extends AppCompatActivity {
         setNormalLogin();
     }
 
-    private void setNormalLogin(){
-        Button loginButton = findViewById(R.id.login_button);
+    private void setNormalLogin() {
+        final Button loginButton = findViewById(R.id.login_button);
         emailText = findViewById(R.id.email_text);
         passwordText = findViewById(R.id.password_text);
 
@@ -76,27 +77,53 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        TextView forgotPassword = findViewById(R.id.forgot_account_text);
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                builder.setTitle(getString(R.string.input_email_recovery));
+
+                final EditText input = new EditText(LoginActivity.this);
+                input.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                builder.setView(input);
+
+                builder.setPositiveButton(getString(R.string.send_email_recovery), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // logic moved in CustomDialogListener
+                    }
+                });
+
+                AlertDialog dialog = builder.show();
+
+                Button dialogButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                dialogButton.setOnClickListener(new CustomDialogListener(dialog, input));
+            }
+        });
+
         // Callback registration
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            if (!validateUserInput()) {
-                return;
-            }
-            loading();
-            firebaseNormalLogin();
+                if (!validateUserInput()) {
+                    return;
+                }
+                showLoading();
+                firebaseNormalLogin();
             }
         });
     }
 
-    private void setFacebookLogin(){
+    private void setFacebookLogin() {
         LoginButton fbLoginButton = findViewById(R.id.login_button_facebook);
         fbLoginButton.setReadPermissions("email", "public_profile");
 
         fbLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loading();
+                showLoading();
             }
         });
 
@@ -125,24 +152,18 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if (FirebaseAuthService.isUserLoggedIn()){
+        if (FirebaseAuthService.isUserLoggedIn()) {
             userLoggedIn();
         }
     }
 
-    private void loading(){
+    protected void showLoading() {
         passwordText.setError(null);
-        loading.setVisibility(View.VISIBLE);
-        ScreenDisablerHelper.disableScreenTouch(getWindow());
+        super.showLoading();
     }
 
-    private void hideLoading(){
-        loading.setVisibility(View.INVISIBLE);
-        ScreenDisablerHelper.enableScreenTouch(getWindow());
-    }
-
-    private void showError(boolean facebookError){
-        if (facebookError){
+    private void showError(boolean facebookError) {
+        if (facebookError) {
             Toast.makeText(this, R.string.fb_log_in_error, Toast.LENGTH_LONG).show();
         } else {
             passwordText.setError(getResources().getString(R.string.log_in_error));
@@ -153,15 +174,15 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseAuthService.logOut(this);
     }
 
-    public void userLoggedIn(){
-        Log.i("LoginActivity","User is logged in with token: " + FirebaseAuthService.getCurrentUserToken());
+    public void userLoggedIn() {
+        Log.i("LoginActivity", "User is logged in with token: " + FirebaseAuthService.getCurrentUserToken());
         FirebaseAuthService.logIn(this);
         Intent intent = new Intent(this, ChatActivity.class);
         startActivity(intent);
         finish();
     }
 
-    public void facebookUserLoggedIn(){
+    public void facebookUserLoggedIn() {
         FirebaseUser user = FirebaseAuthService.getCurrentUser();
         User userRequest = new User();
         userRequest.setEmail(user.getEmail());
@@ -169,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
         userRequest.setToken(FirebaseAuthService.getCurrentUserToken());
         userRequest.setPicture(user.getPhotoUrl().toString());
 
-        userService.registerUser(userRequest, new Client<User>(){
+        userService.registerUser(userRequest, new Client<User>() {
             @Override
             public void onResponseSuccess(User responseUser) {
                 userLoggedIn();
@@ -199,50 +220,50 @@ public class LoginActivity extends AppCompatActivity {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         Log.i("Firebase log in", "handling facebook access token");
         mAuth.signInWithCredential(credential)
-            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        Log.i("Firebase log in", "Log in succesfull");
-                        facebookUserLoggedIn();
-                    } else {
-                        Log.w("Firebase log in", "Log in failed", task.getException());
-                        showError(true);
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.i("Firebase log in", "Log in succesfull");
+                            facebookUserLoggedIn();
+                        } else {
+                            Log.w("Firebase log in", "Log in failed", task.getException());
+                            showError(true);
+                        }
                     }
-                }
-            });
+                });
     }
 
     private void firebaseNormalLogin() {
         Log.i("Firebase log in", "handling normal log in");
         mAuth.signInWithEmailAndPassword(emailText.getText().toString(), passwordText.getText().toString())
-            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        Log.i("Firebase log in", "Log in succesfull");
-                        userLoggedIn();
-                    } else {
-                        Log.w("Firebase log in", "Log in failed", task.getException());
-                        if (task.getException() instanceof FirebaseNetworkException){
-                            hideLoading();
-                            Toast.makeText(LoginActivity.this,
-                                    getResources().getString(R.string.error_login_connection), Toast.LENGTH_LONG).show();
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.i("Firebase log in", "Log in succesfull");
+                            userLoggedIn();
                         } else {
-                            showError(false);
+                            Log.w("Firebase log in", "Log in failed", task.getException());
+                            if (task.getException() instanceof FirebaseNetworkException) {
+                                hideLoading();
+                                Toast.makeText(LoginActivity.this,
+                                        getResources().getString(R.string.error_login_connection), Toast.LENGTH_LONG).show();
+                            } else {
+                                showError(false);
+                            }
                         }
                     }
-                }
-            });
+                });
     }
 
     private boolean validateUserInput() {
-        if(TextUtils.isEmpty(emailText.getText().toString())){
+        if (TextUtils.isEmpty(emailText.getText().toString())) {
             emailText.setError("Ingrese un email");
             return false;
         }
 
-        if(TextUtils.isEmpty(passwordText.getText().toString())){
+        if (TextUtils.isEmpty(passwordText.getText().toString())) {
             passwordText.setError("Ingrese una contraseña");
             return false;
         }

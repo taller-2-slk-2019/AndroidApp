@@ -29,9 +29,9 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
-        if (organizationAdded){
+        if (organizationAdded) {
             // if an organization was added outside this activity, go to chat
             Intent intent = new Intent(this, ChatActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -40,12 +40,12 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
-    private void setUpUI(){
+    private void setUpUI() {
         Button createOrganizationButton = findViewById(R.id.btn_create_organization);
         createOrganizationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,17 +71,17 @@ public class WelcomeActivity extends AppCompatActivity {
         });
     }
 
-    private void createOrganization(){
+    private void createOrganization() {
         Intent intent = new Intent(this, CreateOrganizationActivity.class);
         startActivity(intent);
     }
 
-    private void showInvitations(){
+    private void showInvitations() {
         Intent intent = new Intent(this, ReceivedInvitationsActivity.class);
         startActivity(intent);
     }
 
-    private void logOut(){
+    private void logOut() {
         FirebaseAuthService.logOut(this);
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

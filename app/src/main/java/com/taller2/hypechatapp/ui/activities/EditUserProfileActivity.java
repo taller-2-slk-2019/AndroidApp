@@ -7,15 +7,22 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.components.ImagePicker;
 import com.taller2.hypechatapp.components.PicassoLoader;
@@ -24,18 +31,17 @@ import com.taller2.hypechatapp.firebase.FirebaseStorageUploadInterface;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.services.UserService;
-import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 
 import java.util.Arrays;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
-public class EditUserProfileActivity extends AppCompatActivity implements FirebaseStorageUploadInterface {
+public class EditUserProfileActivity extends BaseActivity implements FirebaseStorageUploadInterface {
     private UserService userService;
-    private TextInputEditText name, username;
+    private TextInputEditText name, username, password, newPassword;
     private TextView email;
     private FloatingActionButton editImage;
     private ImageView profilePicture;
@@ -43,7 +49,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
     private ImagePicker imagePicker;
     private Uri filePath;
     private String imageUrl;
-    private ProgressBar loading;
     private List<String> currentUserValues;
 
     @Override
@@ -61,15 +66,17 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
         setSupportActionBar(toolbar);
 
         loading = findViewById(R.id.loading);
-        loading.setVisibility(View.VISIBLE);
+        showLoading();
 
         name = findViewById(R.id.name_profile);
         username = findViewById(R.id.username_profile);
         email = findViewById(R.id.txt_user_email);
         profilePicture = findViewById(R.id.profile_image_view);
         editImage = findViewById(R.id.floating_btn_edit);
+        password = findViewById(R.id.password_text);
+        newPassword = findViewById(R.id.password_text_confirm);
 
-        imagePicker =  new ImagePicker(this, editImage, profilePicture, null);
+        imagePicker = new ImagePicker(this, editImage, profilePicture, null);
         updateUserBtn = findViewById(R.id.btn_update_user);
         updateUserBtn.setEnabled(false);
 
@@ -88,7 +95,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
                 updateUserBtn.setEnabled(false);
                 updatePreviousValues();
 
-                loading.setVisibility(View.INVISIBLE);
+                hideLoading();
             }
 
             @Override
@@ -109,7 +116,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
             @Override
             public void onClick(View v) {
                 if (isValidForm(username, name)) {
-                    showLoading(true);
+                    showLoading();
                     if (filePath != null) {
                         uploadProfileImage();
                     } else {
@@ -121,6 +128,8 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
 
         name.addTextChangedListener(new ChangesDetection());
         username.addTextChangedListener(new ChangesDetection());
+        password.addTextChangedListener(new ChangesDetection());
+        newPassword.addTextChangedListener(new ChangesDetection());
     }
 
     private boolean isValidForm(TextInputEditText username, TextInputEditText name) {
@@ -134,6 +143,14 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
             return false;
         }
 
+        String passwordStr = password.getText().toString();
+        String newPasswordStr = newPassword.getText().toString();
+
+        if ((passwordStr.isEmpty() && !newPasswordStr.isEmpty()) || (!passwordStr.isEmpty() && newPasswordStr.isEmpty())) {
+            password.setError("Debe completar Contraseña y Nueva contraseña.");
+            return false;
+        }
+
         return true;
     }
 
@@ -142,16 +159,53 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
     }
 
     private void updateUser() {
-        User userRequest = new User();
+        final User userRequest = new User();
         userRequest.setName(name.getText().toString());
         userRequest.setUsername(username.getText().toString());
         userRequest.setPicture(imageUrl);
         username.setError(null);
 
+        if (isChangePasswordOk(password, newPassword)) {
+
+            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            AuthCredential credential = EmailAuthProvider
+                    .getCredential(user.getEmail(), password.getText().toString());
+
+            user.reauthenticate(credential)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                user.updatePassword(newPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d(this.getClass().getName(), "Password updated");
+                                            updateUser(userRequest);
+
+                                        } else {
+                                            Toast.makeText(EditUserProfileActivity.this, "Error: la nueva contraseña debe tener 8 caracteres", Toast.LENGTH_LONG).show();
+                                            hideLoading();
+                                        }
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(EditUserProfileActivity.this, "Error: la contraseña ingresada es incorrecta", Toast.LENGTH_LONG).show();
+                                hideLoading();
+                            }
+                        }
+                    });
+        } else {
+            updateUser(userRequest);
+        }
+
+    }
+
+    private void updateUser(User userRequest) {
         userService.updateUser(userRequest, new Client<Void>() {
             @Override
             public void onResponseSuccess(Void nothing) {
-                showLoading(false);
+                hideLoading();
                 updateUserBtn.setEnabled(false);
                 updatePreviousValues();
                 Toast.makeText(getContext(), "Usuario actualizado ok!", Toast.LENGTH_LONG).show();
@@ -162,10 +216,10 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
                 if (connectionError) {
                     Toast.makeText(getContext(), "Error al actualizar usuario", Toast.LENGTH_LONG).show();
                 } else {
-                    username.setError("El nombre de usuario ya existe");
+                    username.setError(getString(R.string.error_username_exists));
                     username.requestFocus();
                 }
-                showLoading(false);
+                hideLoading();
             }
 
             @Override
@@ -173,7 +227,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
                 return EditUserProfileActivity.this;
             }
         });
-
     }
 
     @Override
@@ -203,31 +256,29 @@ public class EditUserProfileActivity extends AppCompatActivity implements Fireba
         Toast.makeText(this, "Error subiendo la imágen", Toast.LENGTH_LONG).show();
     }
 
-    private void showLoading(boolean isLoading) {
-        if (isLoading) {
-            loading.setVisibility(View.VISIBLE);
-            ScreenDisablerHelper.disableScreenTouch(getWindow());
-            imagePicker.disable();
-        } else {
-            loading.setVisibility(View.INVISIBLE);
-            ScreenDisablerHelper.enableScreenTouch(getWindow());
-            imagePicker.enable();
 
+    private boolean isChangePasswordOk(EditText password, EditText newPassword) {
+        String passwordStr = password.getText().toString();
+        String newPasswordStr = newPassword.getText().toString();
 
-        }
+        return !newPasswordStr.isEmpty();
     }
 
 
     public class ChangesDetection implements TextWatcher {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
 
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) { }
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (currentUserValues != null && !currentUserValues.contains(s.toString())) { updateUserBtn.setEnabled(true); }
+            if (currentUserValues != null && !currentUserValues.contains(s.toString())) {
+                updateUserBtn.setEnabled(true);
+            }
         }
     }
 }

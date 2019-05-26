@@ -39,6 +39,7 @@ public abstract class MessageViewHolder extends RecyclerView.ViewHolder {
     }
 
     protected abstract int getViewId();
+
     protected abstract void initialize(View view);
 
 }

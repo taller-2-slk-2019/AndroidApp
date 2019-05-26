@@ -26,6 +26,7 @@
             </intent-filter>
         </service>
 
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -66,8 +67,24 @@
             android:label="@string/organization_profile_title"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activities.UsersListActivity"
-            android:label="@string/users_list_title"
+            android:name=".ui.activities.ChannelProfileActivity"
+            android:label="@string/channel_profile_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.OrganizationUsersListActivity"
+            android:label="@string/organization_users_list_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.ChannelUsersListActivity"
+            android:label="@string/channel_users_list_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.ChannelNewUsersListActivity"
+            android:label="@string/channel_new_users_list_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.ChannelsListActivity"
+            android:label="@string/channel_list_title"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.activities.ChooseLocationActivity" />
 
@@ -113,6 +130,7 @@
         <activity
             android:name=".ui.activities.WelcomeActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.activities.PublicChannelsActivity"
             android:label="@string/public_channels_label"

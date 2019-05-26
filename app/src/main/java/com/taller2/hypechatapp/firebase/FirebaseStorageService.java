@@ -26,21 +26,21 @@ public class FirebaseStorageService {
 
     private FirebaseStorage firebaseStorage;
 
-    public FirebaseStorageService(){
+    public FirebaseStorageService() {
         firebaseStorage = FirebaseStorage.getInstance();
     }
 
     // Upload files or images
 
-    public void uploadLocalImage(final FirebaseStorageUploadInterface caller, Uri filePath){
+    public void uploadLocalImage(final FirebaseStorageUploadInterface caller, Uri filePath) {
         this.upload(caller, filePath, Message.TYPE_IMAGE);
     }
 
-    public void uploadLocalFile(final FirebaseStorageUploadInterface caller, Uri filePath){
+    public void uploadLocalFile(final FirebaseStorageUploadInterface caller, Uri filePath) {
         this.upload(caller, filePath, Message.TYPE_FILE);
     }
 
-    private void upload(final FirebaseStorageUploadInterface caller, Uri file, final String type){
+    private void upload(final FirebaseStorageUploadInterface caller, Uri file, final String type) {
         String fileName = UUID.randomUUID().toString() + file.getLastPathSegment();
         final StorageReference storage = firebaseStorage.getReference().child(fileName.replace("/", "a"));
         UploadTask uploadTask = storage.putFile(file);
@@ -61,7 +61,7 @@ public class FirebaseStorageService {
                 Uri downloadUrl = task.getResult();
                 Log.i("Firebase file uploaded", downloadUrl.toString());
 
-                if (caller != null){
+                if (caller != null) {
                     caller.onFileUploaded(downloadUrl.toString(), type);
                 }
             }
@@ -72,7 +72,7 @@ public class FirebaseStorageService {
                         // Handle unsuccessful uploads
                         Log.e("Firebase file upload", exception.getMessage());
 
-                        if (caller != null){
+                        if (caller != null) {
                             caller.onFileUploadError(exception);
                         }
                     }
@@ -81,17 +81,17 @@ public class FirebaseStorageService {
 
     // Download files
 
-    public void downloadFile(final FirebaseStorageDownloadInterface caller, String url){
+    public void downloadFile(final FirebaseStorageDownloadInterface caller, String url) {
         this.download(caller, url);
     }
 
-    private void download(final FirebaseStorageDownloadInterface caller, String url){
+    private void download(final FirebaseStorageDownloadInterface caller, String url) {
         final StorageReference storage = firebaseStorage.getReferenceFromUrl(url);
 
         File dir = caller.getContext().getFilesDir();
         final File localFile = new File(dir.getAbsolutePath() + '/' + storage.getName());
 
-        if (localFile.isFile() && localFile.length() > 0){
+        if (localFile.isFile() && localFile.length() > 0) {
             // File already exists, do not download again
             onFileDownloaded(storage, caller, localFile);
             return;
@@ -109,18 +109,18 @@ public class FirebaseStorageService {
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
                 Log.e("Firebase download error", exception.toString());
-                if (caller != null){
+                if (caller != null) {
                     caller.onFileDownloadError(exception);
                 }
             }
         });
     }
 
-    private Uri getLocalFileUri(Context context, File localFile){
+    private Uri getLocalFileUri(Context context, File localFile) {
         return FileProvider.getUriForFile(context, "com.taller2.hypechatapp.fileProvider", localFile);
     }
 
-    private void onFileDownloaded(StorageReference storage, final FirebaseStorageDownloadInterface caller, final File localFile){
+    private void onFileDownloaded(StorageReference storage, final FirebaseStorageDownloadInterface caller, final File localFile) {
         storage.getMetadata().addOnSuccessListener(
                 new OnSuccessListener<StorageMetadata>() {
                     @Override
@@ -132,7 +132,7 @@ public class FirebaseStorageService {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 Log.e("Firebase download error", exception.toString());
-                if (caller != null){
+                if (caller != null) {
                     caller.onFileDownloadError(exception);
                 }
             }

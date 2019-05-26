@@ -27,11 +27,8 @@ public class SendInvitationsAdapter extends RecyclerView.Adapter<EmailInvitation
     @NonNull
     @Override
     public EmailInvitationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.email_invitation, parent, false);
-
         EmailInvitationViewHolder vh = new EmailInvitationViewHolder(v, new MyCustomEditTextListener());
-
         return vh;
     }
 
@@ -43,8 +40,8 @@ public class SendInvitationsAdapter extends RecyclerView.Adapter<EmailInvitation
         holder.clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(holder.getAdapterPosition()==0 && emailList.size()==1){
-                    emailList.set(holder.getAdapterPosition(),"");
+                if (holder.getAdapterPosition() == 0 && emailList.size() == 1) {
+                    emailList.set(holder.getAdapterPosition(), "");
                     notifyItemChanged(holder.getAdapterPosition());
                 } else {
                     emailList.remove(holder.getAdapterPosition());
@@ -68,8 +65,8 @@ public class SendInvitationsAdapter extends RecyclerView.Adapter<EmailInvitation
             this.position = position;
         }
 
-        public void setClearButton(ImageView button){
-            clearButton=button;
+        public void setClearButton(ImageView button) {
+            clearButton = button;
         }
 
         @Override
@@ -79,13 +76,13 @@ public class SendInvitationsAdapter extends RecyclerView.Adapter<EmailInvitation
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            emailList.set(position,charSequence.toString());
+            emailList.set(position, charSequence.toString());
             //Add a new text box for the next email
-            if(!TextUtils.isEmpty(charSequence.toString())){
+            if (!TextUtils.isEmpty(charSequence.toString())) {
                 clearButton.setVisibility(View.VISIBLE);
-                if(getItemCount()-1 == position){
+                if (getItemCount() - 1 == position) {
                     emailList.add(new String());
-                    notifyItemInserted(position+1);
+                    notifyItemInserted(position + 1);
                 }
             } else {
                 clearButton.setVisibility(View.INVISIBLE);

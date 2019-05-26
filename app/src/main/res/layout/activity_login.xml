@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutContainer"
     android:layout_width="match_parent"
-    android:background="@drawable/login_bg"
     android:layout_height="match_parent"
-    android:id="@+id/layoutContainer">
+    android:background="@drawable/login_bg">
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -56,13 +56,13 @@
         android:id="@+id/login_button_facebook"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,10 +70,9 @@
 
     <include
         android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         layout="@layout/title_logo"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/label_no_account_text"
@@ -107,6 +106,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/label_no_account_text"
         app:layout_constraintTop_toBottomOf="@+id/login_button_facebook" />
+
+    <TextView
+        android:id="@+id/label_forgot_account_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="110dp"
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="48dp"
+        android:gravity="center_horizontal"
+        android:singleLine="false"
+        android:text="Olvidaste tu contraseña?"
+        android:textColor="@color/whiteHype"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_button_facebook"
+        tools:text="Olvidaste tu contraseña?" />
+
+    <TextView
+        android:id="@+id/forgot_account_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="13dp"
+        android:clickable="true"
+        android:text="Cambiala"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold|italic"
+        app:layout_constraintStart_toEndOf="@+id/label_forgot_account_text"
+        app:layout_constraintTop_toBottomOf="@+id/no_account_text" />
 
     <include
         layout="@layout/progress_bar"

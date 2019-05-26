@@ -11,7 +11,7 @@ import retrofit2.Response;
 public class RestService {
 
 
-    public void manageSuccessResponse(Response response, String serviceTag, Client client) {
+    public static void manageSuccessResponse(Response response, String serviceTag, Client client) {
         if (response.code() >= 200 && response.code() < 300) {
             client.onResponseSuccess(response.body());
             if (response.body() != null) {
@@ -29,7 +29,7 @@ public class RestService {
         }
     }
 
-    public void manageFailure(String serviceTag, Throwable t, Client client) {
+    public static void manageFailure(String serviceTag, Throwable t, Client client) {
         Log.e(serviceTag, t.getMessage());
         client.onResponseError(true, "");
     }

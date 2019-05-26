@@ -158,6 +158,9 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onJoinChannelEvent(Channel channel) {
         channelsAdapter.add(channel);
+        if (channel.getId().equals(userManagerPreferences.getSelectedChannel())) {
+            toolbar.setTitle(channel.getName());
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -196,7 +199,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
     private void setUpChannels() {
         RecyclerView rvChannels = findViewById(R.id.rvChannels);
-        channelsAdapter = new MenuChannelsAdapter(this);
+        channelsAdapter = new MenuChannelsAdapter(this, false);
         rvChannels.setAdapter(channelsAdapter);
 
         LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(this);

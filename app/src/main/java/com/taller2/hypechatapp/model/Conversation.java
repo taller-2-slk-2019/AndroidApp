@@ -17,10 +17,10 @@ public class Conversation implements Serializable {
     @Expose
     public List<User> users;
 
-    public String getName(){
+    public String getName() {
         StringBuilder name = new StringBuilder();
-        for (User user: users){
-            if (name.length() > 0){
+        for (User user : users) {
+            if (name.length() > 0) {
                 name.append(", ");
             }
             name.append(user.getName());

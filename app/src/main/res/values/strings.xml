@@ -39,6 +39,8 @@
     <string name="hint_example_channel_name">Ej: #clientes</string>
     <string name="channel_privacy_open">Abierto</string>
     <string name="channel_privacy_closed">Cerrado</string>
+    <string name="title_channel_edit">Editar canal</string>
+    <string name="channel_edit">Editar</string>
 
     <!-- conversations creation view -->
     <string name="no_conversations_msg">No hay usuarios con quien conversar… Enviá invitaciones para agregar a tus colegas y amigos!</string>
@@ -60,12 +62,14 @@
     <string name="btn_update_user">Actualizar</string>
     <string name="input_username_error">Ingrese un nombre de usuario</string>
     <string name="input_name_error">Ingrese un nombre</string>
+    <string name="error_username_exists">El nombre de usuario ya existe o contiene espacios</string>
 
     <!-- organization profile view -->
     <string name="organization_profile_title">Perfil de la organización</string>
     <string name="description_organization_profile">Descripción</string>
     <string name="welcome_organization_profile">Mensaje de bienvenida</string>
-    <string name="users_list_title">Lista de usuarios</string>
+    <string name="organization_users_list_title">Usuarios de la organización</string>
+    <string name="channel_list_title">Lista de Canales</string>
 
     <!-- login and register view -->
     <string name="facebook_app_id">318283042209713</string>
@@ -96,6 +100,13 @@
     <string name="send_invitations_error_message">Hubo un problema para enviar invitaciones a los siguientes correos. Asegurate que los correos pertenezcan a usuarios de Hypechat y que no pertenezcan actualmente a la organización.</string>
     <string name="received_invitation_empty_message">No hay más invitaciones pendientes.</string>
 
+    <!-- password recovery -->
+    <string name="input_email_recovery">Ingrese su email para reiniciar la contraseña:</string>
+    <string name="send_email_recovery">Enviar correo</string>
+    <string name="invalid_email_recovery">El email ingresado no existe</string>
+    <string name="email_sent_to">Se envió un correo a:</string>
+    <string name="wrong_format">Formato inválido</string>
+
     <!-- Other -->
     <string name="image_picker_error">Debe seleccionar una imagen!</string>
     <string name="fail_getting_info">No se pudo obtener toda la información</string>
@@ -105,6 +116,11 @@
     <string name="public_channels_empty_message">No hay canales públicos en esta Organización a los que no pertenezcas</string>
     <string name="action_search">Search</string>
     <string name="search_hint">Escribe el nombre</string>
+
+    <!-- Channel profile -->
+    <string name="channel_profile_title">Información del canal</string>
+    <string name="channel_users_list_title">Usuarios del canal</string>
+    <string name="channel_new_users_list_title">Agregar usuarios al canal</string>
 
 
 </resources>

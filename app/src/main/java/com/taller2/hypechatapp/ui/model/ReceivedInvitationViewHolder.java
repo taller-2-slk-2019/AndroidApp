@@ -18,8 +18,8 @@ public class ReceivedInvitationViewHolder extends RecyclerView.ViewHolder {
     public ReceivedInvitationViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        invitationTextView=itemView.findViewById(R.id.received_invitation_text_view);
-        acceptInvitationButton=itemView.findViewById(R.id.accept_invitation_button);
-        rejectInvitationButton=itemView.findViewById(R.id.reject_invitation_button);
+        invitationTextView = itemView.findViewById(R.id.received_invitation_text_view);
+        acceptInvitationButton = itemView.findViewById(R.id.accept_invitation_button);
+        rejectInvitationButton = itemView.findViewById(R.id.reject_invitation_button);
     }
 }

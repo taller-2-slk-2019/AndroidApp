@@ -44,10 +44,10 @@ public class CreateOrganizationStepOneFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        returnView=inflater.inflate(R.layout.create_organization_step1, container, false);
+        returnView = inflater.inflate(R.layout.create_organization_step1, container, false);
         returnView.findViewById(R.id.layoutContainer).setOnTouchListener(new OnViewTouchListener());
 
-        organizationRequest=(OrganizationRequest)getArguments().getSerializable("organizationRequest");
+        organizationRequest = (OrganizationRequest) getArguments().getSerializable("organizationRequest");
         setUpImagePicker();
 
         setUpUI();
@@ -65,7 +65,7 @@ public class CreateOrganizationStepOneFragment extends Fragment {
 
     }
 
-    public interface OnNextButtonClickListener{
+    public interface OnNextButtonClickListener {
         void onNextButtonClick(OrganizationRequest organizationRequest, Uri filePath);
 
     }
@@ -75,33 +75,33 @@ public class CreateOrganizationStepOneFragment extends Fragment {
         Toolbar toolbar = returnView.findViewById(R.id.toolbar_create_organization);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        MaterialButton nextButton=returnView.findViewById(R.id.new_organization_next_button);
+        MaterialButton nextButton = returnView.findViewById(R.id.new_organization_next_button);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-            TextInputEditText nameInputText = returnView.findViewById(R.id.organization_name_input);
-            TextInputEditText descriptionInputText = returnView.findViewById(R.id.organization_description_input);
+                TextInputEditText nameInputText = returnView.findViewById(R.id.organization_name_input);
+                TextInputEditText descriptionInputText = returnView.findViewById(R.id.organization_description_input);
 
-            if (!validateUserInput(nameInputText, descriptionInputText))
-                return;
+                if (!validateUserInput(nameInputText, descriptionInputText))
+                    return;
 
-            organizationRequest.name=nameInputText.getText().toString();
-            organizationRequest.description=descriptionInputText.getText().toString();
+                organizationRequest.name = nameInputText.getText().toString();
+                organizationRequest.description = descriptionInputText.getText().toString();
 
-            callback.onNextButtonClick(organizationRequest, filePath);
+                callback.onNextButtonClick(organizationRequest, filePath);
 
             }
         });
     }
 
     private boolean validateUserInput(TextInputEditText nameInputText, TextInputEditText descriptionInputText) {
-        if(TextUtils.isEmpty(nameInputText.getText().toString())){
+        if (TextUtils.isEmpty(nameInputText.getText().toString())) {
             nameInputText.setError("Ingrese el nombre de la organización");
             return false;
         }
 
-        if(TextUtils.isEmpty(descriptionInputText.getText().toString())){
+        if (TextUtils.isEmpty(descriptionInputText.getText().toString())) {
             descriptionInputText.setError("Ingrese una descripción para la organización");
             return false;
         }
@@ -115,7 +115,7 @@ public class CreateOrganizationStepOneFragment extends Fragment {
         errorText = returnView.findViewById(R.id.profile_image_error);
 
 
-        imagePicker = new ImagePicker((AppCompatActivity)getActivity(), pickImageButton, profileImageView, errorText);
+        imagePicker = new ImagePicker((AppCompatActivity) getActivity(), pickImageButton, profileImageView, errorText);
 
     }
 
@@ -123,8 +123,8 @@ public class CreateOrganizationStepOneFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == ImagePicker.PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null ) {
+        if (requestCode == ImagePicker.PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
             filePath = imagePicker.analyzeResult((AppCompatActivity) getActivity(), data);
         }
     }

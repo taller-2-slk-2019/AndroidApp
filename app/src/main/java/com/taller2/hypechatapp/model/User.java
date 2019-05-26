@@ -1,6 +1,4 @@
-
 package com.taller2.hypechatapp.model;
-
 
 import com.taller2.hypechatapp.model.roles.RoleFactory;
 

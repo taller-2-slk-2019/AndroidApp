@@ -37,7 +37,7 @@ public class SendInvitationsFragment extends Fragment {
     private View returnView;
     private RecyclerView emailsRecyclerView;
     private SendInvitationsAdapter sendInvitationsAdapter;
-    private List<String> emailsList=new ArrayList<>();
+    private List<String> emailsList = new ArrayList<>();
     private MaterialButton sendInvitationsButton;
     private OrganizationService organizationService;
     private ProgressBar loadingView;
@@ -46,11 +46,11 @@ public class SendInvitationsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        returnView=inflater.inflate(R.layout.fragment_send_invitations, container, false);
+        returnView = inflater.inflate(R.layout.fragment_send_invitations, container, false);
         returnView.findViewById(R.id.layoutContainer).setOnTouchListener(new OnViewTouchListener());
 
         //Add first line to the list
-        if(emailsList.isEmpty()){
+        if (emailsList.isEmpty()) {
             emailsList.add("");
         }
         organizationService = new OrganizationService();
@@ -71,7 +71,7 @@ public class SendInvitationsFragment extends Fragment {
         emailsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         emailsRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        sendInvitationsButton=returnView.findViewById(R.id.send_invitations_button);
+        sendInvitationsButton = returnView.findViewById(R.id.send_invitations_button);
         sendInvitationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +93,7 @@ public class SendInvitationsFragment extends Fragment {
             public void onResponseSuccess(List<String> failedInvitations) {
                 loadingView.setVisibility(View.INVISIBLE);
                 ScreenDisablerHelper.enableScreenTouch(getActivity().getWindow());
-                if (failedInvitations.isEmpty()){
+                if (failedInvitations.isEmpty()) {
                     Toast.makeText(getContext(), "Invitaciones Enviadas!!!", Toast.LENGTH_LONG).show();
                     getActivity().finish();
                 } else {
@@ -106,7 +106,7 @@ public class SendInvitationsFragment extends Fragment {
             public void onResponseError(boolean connectionError, String errorMessage) {
                 ScreenDisablerHelper.enableScreenTouch(getActivity().getWindow());
                 loadingView.setVisibility(View.INVISIBLE);
-                String textToShow="No fue posible enviar las invitaciones a los usuarios indicados. Intente más tarde.";
+                String textToShow = "No fue posible enviar las invitaciones a los usuarios indicados. Intente más tarde.";
                 Toast.makeText(getContext(), textToShow, Toast.LENGTH_LONG).show();
             }
 
@@ -119,21 +119,21 @@ public class SendInvitationsFragment extends Fragment {
 
     private UserInvitationRequest buildUserInvitationsRequest() {
         UserInvitationRequest userInvitationRequest = new UserInvitationRequest();
-        List<String> userEmails=new ArrayList<>();
+        List<String> userEmails = new ArrayList<>();
         userEmails.addAll(emailsList);
         userEmails.removeAll(Collections.singleton(""));
         userEmails.removeAll(Collections.singleton(null));
 
-        userInvitationRequest.userEmails=userEmails;
+        userInvitationRequest.userEmails = userEmails;
         return userInvitationRequest;
     }
 
-    public interface OnSendButtonClickListener{
+    public interface OnSendButtonClickListener {
         void onSendButtonClick(List<String> failedInvitations);
 
     }
 
-    public void setOnSendButtonClickListener(OnSendButtonClickListener callback){
-        this.callback=callback;
+    public void setOnSendButtonClickListener(OnSendButtonClickListener callback) {
+        this.callback = callback;
     }
 }

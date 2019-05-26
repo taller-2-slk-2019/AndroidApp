@@ -1,12 +1,12 @@
 package com.taller2.hypechatapp.network.model;
 
-import java.io.Serializable;
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class UserInvitationRequest implements Serializable
-{
+import java.io.Serializable;
+import java.util.List;
+
+public class UserInvitationRequest implements Serializable {
 
     @SerializedName("userEmails")
     @Expose

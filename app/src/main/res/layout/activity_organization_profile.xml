@@ -1,164 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/layout_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/register_bg"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/organizationProfileImage"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="156dp"
-        android:layout_marginLeft="156dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="156dp"
-        android:layout_marginRight="156dp"
-        android:elevation="10dp"
-        android:src="@drawable/default_user"
-        app:civ_border_color="@color/whiteHype"
-        app:civ_border_width="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/organizationProfileName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:elevation="10dp"
-        android:gravity="center_horizontal"
-        android:textColor="@color/whiteHype"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/organizationProfileImage"
-        tools:text="org name" />
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/organizationProfileDescriptionLayout"
-        style="@style/CreationForm.TextInputLayout.Profile"
-        android:layout_marginTop="32dp"
-        android:ems="10"
-        android:focusable="false"
-        android:hint="@string/description_organization_profile"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_toolbar">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/organizationProfileDescription"
-            style="@style/CreationForm.TextInputLayout.Text.Profile"
-            android:focusable="false" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/organizationProfileWelcomeLayout"
-        style="@style/CreationForm.TextInputLayout.Profile"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:focusable="false"
-        android:hint="@string/welcome_organization_profile"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/organizationProfileDescriptionLayout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/organizationProfileWelcome"
-            style="@style/CreationForm.TextInputLayout.Text.Profile"
-            android:focusable="false" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/organizationProfileEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
         android:clickable="true"
         android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_anchor="@+id/include6"
+        app:layout_anchorGravity="right|bottom"
         app:srcCompat="@mipmap/baseline_edit_white_18" />
 
     <include
-        android:id="@+id/include4"
-        layout="@layout/progress_bar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        android:id="@+id/include6"
+        layout="@layout/progress_bar" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/include4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/organizationProfileWelcomeLayout">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/sendInvitationsButton"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enviar Invitaciones" />
+            android:paddingBottom="30dp">
 
-        <Button
-            android:id="@+id/showUsersButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Lista de Usuarios" />
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/layout_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/register_bg"
+                android:theme="@style/AppTheme.AppBarOverlay"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="0dp">
 
-        <Button
-            android:id="@+id/showUsersMapButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Mapa de Usuarios" />
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <Button
-            android:id="@+id/showChannelsButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Canales" />
+            </com.google.android.material.appbar.AppBarLayout>
 
-    </LinearLayout>
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/organizationProfileImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginStart="156dp"
+                android:layout_marginLeft="156dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="156dp"
+                android:layout_marginRight="156dp"
+                android:elevation="10dp"
+                android:src="@drawable/default_user"
+                app:civ_border_color="@color/whiteHype"
+                app:civ_border_width="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.461"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/organizationProfileName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:elevation="10dp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/whiteHype"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/organizationProfileImage"
+                tools:text="org name" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/organizationProfileDescriptionLayout"
+                style="@style/CreationForm.TextInputLayout.Profile"
+                android:layout_marginTop="32dp"
+                android:ems="10"
+                android:focusable="false"
+                android:hint="@string/description_organization_profile"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/organizationProfileName">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/organizationProfileDescription"
+                    style="@style/CreationForm.TextInputLayout.Text.Profile"
+                    android:focusable="false" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/organizationProfileWelcomeLayout"
+                style="@style/CreationForm.TextInputLayout.Profile"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:focusable="false"
+                android:hint="@string/welcome_organization_profile"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/organizationProfileDescriptionLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/organizationProfileWelcome"
+                    style="@style/CreationForm.TextInputLayout.Text.Profile"
+                    android:focusable="false" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/organizationProfileWelcomeLayout">
+
+                <Button
+                    android:id="@+id/sendInvitationsButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Enviar Invitaciones" />
+
+                <Button
+                    android:id="@+id/showUsersButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lista de Usuarios" />
+
+                <Button
+                    android:id="@+id/showUsersMapButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mapa de Usuarios" />
+
+                <Button
+                    android:id="@+id/showChannelsButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Canales" />
+
+                <Button
+                    android:id="@+id/organizationAbandon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/holo_red_dark"
+                    android:text="Abandonar" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

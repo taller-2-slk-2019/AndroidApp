@@ -10,7 +10,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,12 +27,9 @@ import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.OrganizationService;
-import com.taller2.hypechatapp.ui.activities.utils.ScreenDisablerHelper;
 import com.taller2.hypechatapp.ui.listeners.OnViewTouchListener;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class EditOrganizationActivity extends AppCompatActivity implements FirebaseStorageUploadInterface {
+public class EditOrganizationActivity extends BaseActivity implements FirebaseStorageUploadInterface {
     private OrganizationService organizationService;
     private TextView name, description, welcome;
     private FloatingActionButton editImage;
@@ -43,7 +39,6 @@ public class EditOrganizationActivity extends AppCompatActivity implements Fireb
     private LocationPicker locationPicker;
     private UserManagerPreferences prefs;
     private Uri imagePath;
-    private ProgressBar loading;
     private Organization organization;
 
     @Override
@@ -203,16 +198,6 @@ public class EditOrganizationActivity extends AppCompatActivity implements Fireb
     @Override
     public void onFileUploadError(Exception exception) {
         Toast.makeText(this, "Error subiendo la imágen", Toast.LENGTH_LONG).show();
-    }
-
-    public void showLoading() {
-        loading.setVisibility(View.VISIBLE);
-        ScreenDisablerHelper.disableScreenTouch(getWindow());
-    }
-
-    public void hideLoading() {
-        loading.setVisibility(View.GONE);
-        ScreenDisablerHelper.enableScreenTouch(getWindow());
     }
 
     public void setChangesDetectors() {

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-app:layout_behavior="@string/appbar_scrolling_view_behavior"
-tools:context=".ui.activities.ChatActivity"
-android:id="@+id/layoutContainer"
-tools:showIn="@layout/app_bar_main">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.activities.ChatActivity"
+    tools:showIn="@layout/app_bar_main">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/chatMessagesListContainer"
@@ -40,6 +40,19 @@ tools:showIn="@layout/app_bar_main">
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/channelInfoButton"
+            android:layout_width="50dp"
+            android:layout_height="0dp"
+            android:layout_weight="0"
+            android:clickable="true"
+            android:src="@drawable/ic_info"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+            app:layout_constraintHorizontal_bias="0.88"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout"
+            app:layout_constraintTop_toTopOf="@+id/linearLayout" />
 
         <EditText
             android:id="@+id/newMessageText"
@@ -145,12 +158,12 @@ tools:showIn="@layout/app_bar_main">
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
             android:gravity="center"
-            tools:text="@string/no_channel_msg"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/no_channel_msg" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

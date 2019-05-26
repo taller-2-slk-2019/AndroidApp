@@ -15,6 +15,6 @@ public class FailedInvitationViewHolder extends RecyclerView.ViewHolder {
     public FailedInvitationViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        emailTextView=itemView.findViewById(R.id.failed_invitation_text_view);
+        emailTextView = itemView.findViewById(R.id.failed_invitation_text_view);
     }
 }

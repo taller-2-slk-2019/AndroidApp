@@ -8,19 +8,19 @@
     <RelativeLayout
         android:id="@+id/item_layout_container"
         android:layout_width="match_parent"
-        android:gravity="center_vertical"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/organization_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Organizaciones"
-        android:layout_marginLeft="10dp"
-        android:layout_alignParentLeft="true"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:textSize="12sp"/>
+        <TextView
+            android:id="@+id/organization_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:text="Organizaciones"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 

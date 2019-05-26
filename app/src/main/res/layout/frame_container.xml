@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/fragment_container_frame_layout"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_container_frame_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/progress_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="379dp" />
 
-        <include
-            layout="@layout/progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="379dp" />
-
-    </FrameLayout>
+</FrameLayout>
 

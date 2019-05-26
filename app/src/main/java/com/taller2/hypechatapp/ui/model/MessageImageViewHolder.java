@@ -18,7 +18,7 @@ public class MessageImageViewHolder extends MessageViewHolder {
     }
 
     @Override
-    protected void initialize(View view){
+    protected void initialize(View view) {
         messageImage = view.findViewById(R.id.message_image);
     }
 

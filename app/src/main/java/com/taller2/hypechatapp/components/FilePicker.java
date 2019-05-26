@@ -13,14 +13,14 @@ public class FilePicker {
         activity.startActivityForResult(getFilePickerIntent(), PICK_FILE_REQUEST);
     }
 
-    private static Intent getFilePickerIntent(){
+    private static Intent getFilePickerIntent() {
         Intent intent = new Intent();
         intent.setType("*/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         return Intent.createChooser(intent, "Seleccionar Archivo");
     }
 
-    public static Uri getFilePath(Intent data){
+    public static Uri getFilePath(Intent data) {
         return data.getData();
     }
 }

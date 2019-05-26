@@ -27,8 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_gravity="center"
-        android:visibility="invisible"
-        />
+        android:visibility="invisible" />
 
     <include layout="@layout/content_chat" />
 
