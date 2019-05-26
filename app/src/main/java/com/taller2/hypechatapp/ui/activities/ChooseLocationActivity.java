@@ -25,8 +25,8 @@ public class ChooseLocationActivity extends LocationActivity {
         super.onCreate(savedInstanceState);
 
         startLocation=getIntent().getParcelableExtra("startLocation");
-        if(startLocation==null){
-            startLocation=new LatLng(-34.6131500,-58.3772300);
+        if(startLocation == null){
+            startLocation = new LatLng(-34.6131500,-58.3772300);
         }
 
         setUpUI();
@@ -36,10 +36,10 @@ public class ChooseLocationActivity extends LocationActivity {
         chooseLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ChooseLocationActivity.this, CreateOrganizationActivity.class);
-                intent.putExtra("selectedLocation",marker.getPosition());
-                setResult(STEP_CODE, intent);
-                finish();
+            Intent intent = new Intent(ChooseLocationActivity.this, CreateOrganizationActivity.class);
+            intent.putExtra("selectedLocation",marker.getPosition());
+            setResult(STEP_CODE, intent);
+            finish();
             }
         });
     }
