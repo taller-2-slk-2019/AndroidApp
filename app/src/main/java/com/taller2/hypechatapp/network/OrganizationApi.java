@@ -41,6 +41,10 @@ public interface OrganizationApi {
                                   @Query("userToken") String userToken,
                                   @Body Organization organization);
 
+    @DELETE("/organizations/{id}")
+    Call<Void> deleteOrganization(@Path("id") int organizationId,
+                                  @Query("userToken") String userToken);
+
     @PUT("/organizations/{id}/users/{userId}")
     Call<Void> updateUserRole(@Path("id") int organizationId,
                               @Path("userId") int userId,

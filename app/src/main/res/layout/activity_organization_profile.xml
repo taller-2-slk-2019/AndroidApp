@@ -167,6 +167,13 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/holo_red_dark"
                     android:text="Abandonar" />
+
+                <Button
+                    android:id="@+id/organizationDelete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/holo_red_dark"
+                    android:text="Eliminar" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
