@@ -1,7 +1,7 @@
 package com.taller2.hypechatapp.ui.activities;
 
+import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,16 +15,14 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.button.MaterialButton;
 import com.taller2.hypechatapp.R;
+import com.taller2.hypechatapp.components.PermissionsRequester;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 public class ChooseLocationActivity extends FragmentActivity
         implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private LatLng startLocation;
     private static final int DEFAULT_ZOOM = 14;
     public static final int STEP_CODE = 400;
@@ -100,15 +98,11 @@ public class ChooseLocationActivity extends FragmentActivity
          * device. The result of the permission request is handled by a callback,
          * onRequestPermissionsResult.
          */
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
+        if (PermissionsRequester.hasPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
             mLocationPermissionGranted = true;
             updateLocationUI();
         } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            PermissionsRequester.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         }
     }
 
@@ -119,16 +113,7 @@ public class ChooseLocationActivity extends FragmentActivity
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
-        mLocationPermissionGranted = false;
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mLocationPermissionGranted = true;
-                }
-            }
-        }
+        mLocationPermissionGranted = PermissionsRequester.analyzeResults(requestCode, grantResults);
         updateLocationUI();
     }
 

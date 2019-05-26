@@ -110,6 +110,7 @@
     <!-- Other -->
     <string name="image_picker_error">Debe seleccionar una imagen!</string>
     <string name="fail_getting_info">No se pudo obtener toda la información</string>
+    <string name="update_location_menu_label">Actualizar Ubicación</string>
 
     <!-- Public channels -->
     <string name="public_channels_label">Canales Públicos</string>

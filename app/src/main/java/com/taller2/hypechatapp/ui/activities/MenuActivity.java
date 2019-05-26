@@ -1,8 +1,10 @@
 package com.taller2.hypechatapp.ui.activities;
 
+import android.Manifest;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,13 +22,16 @@ import com.taller2.hypechatapp.adapters.IMenuItemsClick;
 import com.taller2.hypechatapp.adapters.MenuChannelsAdapter;
 import com.taller2.hypechatapp.adapters.MenuConversationsAdapter;
 import com.taller2.hypechatapp.adapters.OrganizationSpinnerAdapter;
+import com.taller2.hypechatapp.components.PermissionsRequester;
 import com.taller2.hypechatapp.components.PicassoLoader;
+import com.taller2.hypechatapp.components.UserLocationService;
 import com.taller2.hypechatapp.firebase.FirebaseAuthService;
 import com.taller2.hypechatapp.model.Channel;
 import com.taller2.hypechatapp.model.Conversation;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
+import com.taller2.hypechatapp.network.model.UserLocationRequest;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.ChannelService;
 import com.taller2.hypechatapp.services.ConversationService;
@@ -39,6 +44,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -48,7 +54,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public abstract class MenuActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, IMenuItemsClick {
+public abstract class MenuActivity extends AppCompatActivity
+        implements AdapterView.OnItemSelectedListener, IMenuItemsClick, UserLocationService.UserLocationListener {
 
     protected Toolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -416,6 +423,9 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
             case R.id.organization_profile:
                 showOrganizationProfile();
                 return true;
+            case R.id.update_location:
+                updateUserLocation();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -442,7 +452,7 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
 
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
+        // Auto-generated method stub
     }
 
     @Override
@@ -491,6 +501,56 @@ public abstract class MenuActivity extends AppCompatActivity implements AdapterV
         onChatSelected();
     }
 
+    private void updateUserLocation() {
+        if (PermissionsRequester.hasPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+            getAndUpdateUserLocation();
+        } else {
+            PermissionsRequester.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        boolean hasPermission = PermissionsRequester.analyzeResults(requestCode, grantResults);
+        if (hasPermission) {
+            getAndUpdateUserLocation();
+        } else {
+            Toast.makeText(this,
+                    "Necesitas aceptar los permisos para enviar tu ubicación", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void getAndUpdateUserLocation() {
+        UserLocationService.getUserLocation(this, this);
+    }
+
+    @Override
+    public void userLocationReceived(Location location) {
+        UserLocationRequest request = new UserLocationRequest(location);
+        userService.updateUserLocation(request, new Client<Void>() {
+            @Override
+            public void onResponseSuccess(Void responseBody) {
+                Toast.makeText(getContext(), "Ubicación actualizada", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onResponseError(boolean connectionError, String errorMessage) {
+                userLocationError();
+            }
+
+            @Override
+            public Context getContext() {
+                return MenuActivity.this;
+            }
+        });
+    }
+
+    @Override
+    public void userLocationError() {
+        Toast.makeText(this, "No se pudo actualizar la ubicación", Toast.LENGTH_LONG).show();
+    }
 
     @Override
     public void onDestroy() {
