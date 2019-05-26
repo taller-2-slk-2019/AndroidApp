@@ -76,9 +76,11 @@ public class UsersLocationActivity extends LocationActivity {
 
         //Add markers for every user
         for (User user : users) {
-            LatLng userLocation=new LatLng(user.latitude,user.longitude);
-            addIcon(iconFactory, user.name, userLocation);
-            builder.include(userLocation);
+            if(user.latitude!=null && user.longitude!=null){
+                LatLng userLocation=new LatLng(user.latitude,user.longitude);
+                addIcon(iconFactory, user.name, userLocation);
+                builder.include(userLocation);
+            }
         }
 
         //Add markers for the organization
