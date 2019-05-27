@@ -26,6 +26,7 @@ public class OrganizationProfileActivity extends BaseActivity {
     private TextView name, description, welcomeMessage;
     private ImageView profilePicture;
     private UserManagerPreferences prefs;
+    private Organization organization;
 
 
     @Override
@@ -58,6 +59,7 @@ public class OrganizationProfileActivity extends BaseActivity {
         organizationService.getOrganizationProfile(prefs.getSelectedOrganization(), new Client<Organization>() {
             @Override
             public void onResponseSuccess(Organization responseBody) {
+                organization=responseBody;
                 hideLoading();
                 name.setText(responseBody.getName());
                 description.setText(responseBody.getDescription());
@@ -179,7 +181,10 @@ public class OrganizationProfileActivity extends BaseActivity {
     }
 
     private void showUsersMap() {
-        // TODO do something
+
+        Intent intent = new Intent(this, UsersLocationActivity.class);
+        intent.putExtra("organization",organization);
+        startActivity(intent);
     }
 
     private void showChannels() {

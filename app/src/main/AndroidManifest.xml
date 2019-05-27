@@ -144,7 +144,7 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".ui.activities.UsersLocationActivity" />
     </application>
 
 </manifest>
