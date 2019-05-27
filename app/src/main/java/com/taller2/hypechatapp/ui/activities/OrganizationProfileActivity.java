@@ -59,7 +59,7 @@ public class OrganizationProfileActivity extends BaseActivity {
         organizationService.getOrganizationProfile(prefs.getSelectedOrganization(), new Client<Organization>() {
             @Override
             public void onResponseSuccess(Organization responseBody) {
-                organization=responseBody;
+                organization = responseBody;
                 hideLoading();
                 name.setText(responseBody.getName());
                 description.setText(responseBody.getDescription());
@@ -181,9 +181,8 @@ public class OrganizationProfileActivity extends BaseActivity {
     }
 
     private void showUsersMap() {
-
         Intent intent = new Intent(this, UsersLocationActivity.class);
-        intent.putExtra("organization",organization);
+        intent.putExtra("organization", organization);
         startActivity(intent);
     }
 

@@ -15,12 +15,12 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
+import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.model.Organization;
 import com.taller2.hypechatapp.model.User;
 import com.taller2.hypechatapp.network.Client;
 import com.taller2.hypechatapp.preferences.UserManagerPreferences;
 import com.taller2.hypechatapp.services.UserService;
-import com.taller2.hypechatapp.R;
 
 import java.util.List;
 
@@ -38,7 +38,6 @@ public class UsersLocationActivity extends LocationActivity {
         preferences = new UserManagerPreferences(this);
 
         setUpUI();
-
         getUsers();
     }
 
@@ -47,8 +46,8 @@ public class UsersLocationActivity extends LocationActivity {
         userService.getUsersByOrganization(preferences.getSelectedOrganization(), new Client<List<User>>() {
             @Override
             public void onResponseSuccess(List<User> responseBody) {
-               users=responseBody;
-               setUpMarkers();
+                users = responseBody;
+                setUpMarkers();
             }
 
             @Override
@@ -72,12 +71,12 @@ public class UsersLocationActivity extends LocationActivity {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         IconGenerator iconFactory = new IconGenerator(this);
         iconFactory.setTextAppearance(R.style.UsersLocationTextStyle);
-        iconFactory.setContentPadding(5,0,5,0);
+        iconFactory.setContentPadding(5, 0, 5, 0);
 
         //Add markers for every user
         for (User user : users) {
-            if(user.latitude!=null && user.longitude!=null){
-                LatLng userLocation=new LatLng(user.latitude,user.longitude);
+            if (user.latitude != null && user.longitude != null) {
+                LatLng userLocation = new LatLng(user.latitude, user.longitude);
                 addIcon(iconFactory, user.name, userLocation);
                 builder.include(userLocation);
             }
@@ -85,7 +84,7 @@ public class UsersLocationActivity extends LocationActivity {
 
         //Add markers for the organization
         Organization organization = (Organization) getIntent().getSerializableExtra("organization");
-        LatLng organizationLocation=new LatLng(organization.getLatitude(),organization.getLongitude());
+        LatLng organizationLocation = new LatLng(organization.getLatitude(), organization.getLongitude());
         iconFactory.setColor(getResources().getColor(R.color.Blue200));
         addIcon(iconFactory, organization.getName(), organizationLocation);
 
@@ -113,7 +112,7 @@ public class UsersLocationActivity extends LocationActivity {
         try {
             map.getUiSettings().setMyLocationButtonEnabled(false);
             map.setMyLocationEnabled(false);
-        } catch (SecurityException e){
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
 
@@ -121,7 +120,7 @@ public class UsersLocationActivity extends LocationActivity {
 
     @Override
     public void onMapClick(LatLng latLng) {
-       //Do nothing
+        //Do nothing
     }
 
     @Override

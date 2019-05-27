@@ -7,12 +7,10 @@ import android.view.View;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-
 import com.taller2.hypechatapp.R;
 import com.taller2.hypechatapp.components.PermissionsRequester;
 
 import androidx.annotation.NonNull;
-
 import androidx.fragment.app.FragmentActivity;
 
 public abstract class LocationActivity extends FragmentActivity
@@ -40,7 +38,7 @@ public abstract class LocationActivity extends FragmentActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        map=googleMap;
+        map = googleMap;
         map.setOnMapClickListener(this);
         map.setOnMarkerClickListener(this);
 
@@ -91,7 +89,7 @@ public abstract class LocationActivity extends FragmentActivity
                 map.setMyLocationEnabled(false);
                 map.getUiSettings().setMyLocationButtonEnabled(false);
             }
-        } catch (SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }

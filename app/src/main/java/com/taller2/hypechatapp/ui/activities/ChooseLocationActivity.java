@@ -2,12 +2,10 @@ package com.taller2.hypechatapp.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -24,9 +22,9 @@ public class ChooseLocationActivity extends LocationActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        startLocation=getIntent().getParcelableExtra("startLocation");
-        if(startLocation == null){
-            startLocation = new LatLng(-34.6131500,-58.3772300);
+        startLocation = getIntent().getParcelableExtra("startLocation");
+        if (startLocation == null) {
+            startLocation = new LatLng(-34.6131500, -58.3772300);
         }
 
         setUpUI();
@@ -36,10 +34,10 @@ public class ChooseLocationActivity extends LocationActivity {
         chooseLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            Intent intent = new Intent(ChooseLocationActivity.this, CreateOrganizationActivity.class);
-            intent.putExtra("selectedLocation",marker.getPosition());
-            setResult(STEP_CODE, intent);
-            finish();
+                Intent intent = new Intent(ChooseLocationActivity.this, CreateOrganizationActivity.class);
+                intent.putExtra("selectedLocation", marker.getPosition());
+                setResult(STEP_CODE, intent);
+                finish();
             }
         });
     }
@@ -47,7 +45,7 @@ public class ChooseLocationActivity extends LocationActivity {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         super.onMapReady(googleMap);
-        marker=map.addMarker(new MarkerOptions().position(startLocation));
+        marker = map.addMarker(new MarkerOptions().position(startLocation));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 startLocation, DEFAULT_ZOOM));
     }
@@ -55,7 +53,7 @@ public class ChooseLocationActivity extends LocationActivity {
     @Override
     public void onMapClick(LatLng point) {
         map.clear();
-        marker=map.addMarker(new MarkerOptions().position(point));
+        marker = map.addMarker(new MarkerOptions().position(point));
         marker.hideInfoWindow();
     }
 

@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/login_bg">
 
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_email_text"
         style="@style/CreationForm.TextInputLayout"
@@ -74,24 +73,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/label_no_account_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="110dp"
-        android:layout_marginLeft="110dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center_horizontal"
-        android:singleLine="false"
-        android:text="Nuevo por aquí?"
-        android:textColor="@color/whiteHype"
-        android:textStyle="italic"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button_facebook"
-        tools:text="Nuevo por aquí?" />
-
-    <TextView
-        android:id="@+id/no_account_text"
+    <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -99,45 +82,71 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:clickable="true"
-        android:text="Regístrate"
-        android:textColor="@color/colorAccent"
-        android:textStyle="bold|italic"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/label_no_account_text"
-        app:layout_constraintTop_toBottomOf="@+id/login_button_facebook" />
-
-    <TextView
-        android:id="@+id/label_forgot_account_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="110dp"
-        android:layout_marginLeft="110dp"
-        android:layout_marginTop="48dp"
-        android:gravity="center_horizontal"
-        android:singleLine="false"
-        android:text="Olvidaste tu contraseña?"
-        android:textColor="@color/whiteHype"
-        android:textStyle="italic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button_facebook"
-        tools:text="Olvidaste tu contraseña?" />
+        app:layout_constraintTop_toBottomOf="@+id/login_button_facebook">
 
-    <TextView
-        android:id="@+id/forgot_account_text"
+        <TextView
+            android:id="@+id/label_no_account_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:singleLine="false"
+            android:text="Nuevo por aquí?"
+            android:textColor="@color/whiteHype"
+            android:textStyle="italic"
+            tools:text="Nuevo por aquí?" />
+
+        <TextView
+            android:id="@+id/no_account_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="Regístrate"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold|italic" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="13dp"
-        android:clickable="true"
-        android:text="Cambiala"
-        android:textColor="@color/colorAccent"
-        android:textStyle="bold|italic"
-        app:layout_constraintStart_toEndOf="@+id/label_forgot_account_text"
-        app:layout_constraintTop_toBottomOf="@+id/no_account_text" />
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+        <TextView
+            android:id="@+id/label_forgot_account_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:gravity="center_horizontal"
+            android:singleLine="false"
+            android:text="Olvidaste tu contraseña?"
+            android:textColor="@color/whiteHype"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/forgot_account_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="Cambiala"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold|italic" />
+    </LinearLayout>
 
     <include
+        android:id="@+id/include2"
         layout="@layout/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="485dp"
