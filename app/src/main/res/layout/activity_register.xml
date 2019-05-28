@@ -5,11 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        layout="@layout/progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -131,22 +126,27 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/include" />
 
-            <include
-                layout="@layout/error_text"
+            <TextView
+                android:id="@+id/error_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/layout_email_register"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.03"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/include"
+                android:text="Debes seleccionar una imágen"
+                android:textColor="@android:color/holo_red_light"
+                android:textStyle="bold"
+                android:visibility="invisible" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <include
+        layout="@layout/progress_bar"
+        android:visibility="visible" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

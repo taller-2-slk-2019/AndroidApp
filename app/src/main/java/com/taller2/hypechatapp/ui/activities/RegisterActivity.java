@@ -157,17 +157,13 @@ public class RegisterActivity extends BaseActivity implements FirebaseStorageUpl
         finish();
     }
 
-    protected void showLoading() {
-        errorText.setVisibility(View.INVISIBLE);
-        super.showLoading();
-    }
-
     private void showError(boolean firebase, boolean connectionError) {
-        errorText.setVisibility(View.VISIBLE);
         if (firebase) {
-            errorText.setText(R.string.error_register_firebase);
+            email.setError(getString(R.string.error_register_firebase));
+            email.requestFocus();
         } else if (!connectionError) {
-            errorText.setText(R.string.error_username_exists);
+            username.setError(getString(R.string.error_username_exists));
+            username.requestFocus();
         } else {
             Toast.makeText(this, R.string.error_register_connection, Toast.LENGTH_LONG).show();
         }
